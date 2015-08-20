@@ -24,4 +24,5 @@ Should eventually use a java.util.Properties file to connect to database instead
 
 PHPMyAdmin needs 2 versions of a user: host %, and host localhost. See user 'iamroot'
 
+[DONE] Set up online repo.
  -->
