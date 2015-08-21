@@ -22,12 +22,6 @@ import hashing.PasswordHash;
  */
 public class DataAccessObject {
 
-	//Static vars
-	//private static String URL = "url";
-    //private static String DRIVER = "driver";
-    //private static String USERNAME = "username";
-    //private static String PASSWORD = "password";
-    //private static String URL = "jdbc:mysql://localhost:3306/hpdata";
     private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
     private static String DRIVER = "com.mysql.jdbc.Driver";
     private static String DBUSERNAME = "iamroot";
@@ -38,6 +32,16 @@ public class DataAccessObject {
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
 	
+//    //_______________OpenShift PMA________________
+//    //Admin
+//    private static String DBUSERNAME = "adminSjSmTnT";
+//    private static String DBPASSWORD = "Y1TxvCHy--cN";
+//    //DB
+//    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+//    private static String URL = "mysql://127.6.67.130:3306/candidatedatabase";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+   
+    
     //Varibales
     private Connection con = null;
     //private boolean isCompany=false; //!@# I've set default to candidate

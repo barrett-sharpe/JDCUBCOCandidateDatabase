@@ -8,8 +8,8 @@ public class FillDatabase {
 
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
-	private static Integer NUM_CANDIDATES=10;
-	private static Integer NUM_COMPANIES=10;
+	private static Integer NUM_CANDIDATES=5;
+	private static Integer NUM_COMPANIES=5;
 	
 	//Constructor
 	public FillDatabase(){}
