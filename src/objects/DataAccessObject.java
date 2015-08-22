@@ -40,13 +40,13 @@ public class DataAccessObject {
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
 	
-    //_______________OpenShift PMA________________
+    //_______________OpenShift PMA via 'rhc port-forward'________________
     //Admin
     private static String DBUSERNAME = "adminSjSmTnT";
     private static String DBPASSWORD = "Y1TxvCHy--cN";
     //DB
     //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-    private static String URL = "jdbc:mysql://127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
     private static String DRIVER = "com.mysql.jdbc.Driver";
     
     
@@ -101,34 +101,34 @@ public class DataAccessObject {
     	return isConnected;
     }
 
-    //TOMCAT 7 establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-    		InitialContext ic = new InitialContext();
-    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    	    con = datasource.getConnection();
-			
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		} catch (NamingException e) {
-			System.err.println("I couldn't open the connection. A Naming Exception");
-			e.printStackTrace();
-		}
-    }    
-    
-//!@# ORIGINAL establishConnection
+//    //TOMCAT 7 establishConnection
 //    public void establishConnection(){
 //    	con=null;
 //    	try {
-//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//    		InitialContext ic = new InitialContext();
+//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+//    	    con = datasource.getConnection();
+//			
 //		} catch (SQLException e) {
 //			System.err.println("I couldn't open the connection.");
 //			e.printStackTrace();
+//		} catch (NamingException e) {
+//			System.err.println("I couldn't open the connection. A Naming Exception");
+//			e.printStackTrace();
 //		}
-//    }
+//    }    
+    
+//!@# ORIGINAL establishConnection
+    public void establishConnection(){
+    	con=null;
+    	try {
+			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection.");
+			e.printStackTrace();
+		}
+    }
     
     public void closeConnection(){
     	try {
