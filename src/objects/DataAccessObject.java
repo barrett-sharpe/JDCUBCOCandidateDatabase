@@ -11,6 +11,11 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import com.sun.rowset.CachedRowSetImpl;
 
 import hashing.PasswordHash;
@@ -22,30 +27,39 @@ import hashing.PasswordHash;
  */
 public class DataAccessObject {
 
-    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
-    private static String DBUSERNAME = "iamroot";
-    private static String DBPASSWORD = "iamroot";
+	//
+	//_________________LocalHost________________________________
+	//
+//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "iamroot";
+//    private static String DBPASSWORD = "iamroot";
     
     static String CANDB = "cancredentials";
     static String CODB = "cocredentials";
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
 	
-//    //_______________OpenShift PMA________________
-//    //Admin
-//    private static String DBUSERNAME = "adminSjSmTnT";
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    //DB
-//    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-//    private static String URL = "mysql://127.6.67.130:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
-   
+    //_______________OpenShift PMA________________
+    //Admin
+    private static String DBUSERNAME = "adminSjSmTnT";
+    private static String DBPASSWORD = "Y1TxvCHy--cN";
+    //DB
+    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.6.67.130:3306/candidatedatabase";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
+    
+    
+    
+    
+    
+    
     
     //Varibales
     private Connection con = null;
-    //private boolean isCompany=false; //!@# I've set default to candidate
     private boolean isCompany;
+    //private boolean isCompany=false; //!@# I've set default to candidate
+    
     
     //Constructors
     public DataAccessObject (){
@@ -86,16 +100,35 @@ public class DataAccessObject {
     	}
     	return isConnected;
     }
-    
+
+    //TOMCAT 7 establishConnection
     public void establishConnection(){
     	con=null;
     	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    con = datasource.getConnection();
+			
 		} catch (SQLException e) {
 			System.err.println("I couldn't open the connection.");
 			e.printStackTrace();
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
 		}
-    }
+    }    
+    
+//!@# ORIGINAL establishConnection
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
     
     public void closeConnection(){
     	try {
