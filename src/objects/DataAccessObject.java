@@ -27,6 +27,12 @@ import hashing.PasswordHash;
  */
 public class DataAccessObject {
 
+	//Table Names
+    static String CANDB = "cancredentials";
+    static String CODB = "cocredentials";
+    static String CANDIDATE = "candidate";
+    static String COMPANY = "company";
+	
 	//
 	//_________________LocalHost________________________________
 	//
@@ -35,11 +41,8 @@ public class DataAccessObject {
 //    private static String DBUSERNAME = "iamroot";
 //    private static String DBPASSWORD = "iamroot";
     
-    static String CANDB = "cancredentials";
-    static String CODB = "cocredentials";
-    static String CANDIDATE = "candidate";
-    static String COMPANY = "company";
-	
+
+	//
     //_______________OpenShift PMA via 'rhc port-forward'________________
     //Admin
     private static String DBUSERNAME = "adminSjSmTnT";
@@ -71,10 +74,13 @@ public class DataAccessObject {
     	DBUSERNAME=db_username;
     	DBPASSWORD=db_password;
     	
-    	//Establish Connection
-    	if(checkForDriver()==true){
-    		establishConnection();
-    	}
+    	//!@#$webapp
+//    	//Establish Connection
+//    	if(checkForDriver()==true){
+//    		establishConnection();
+//    	}
+    	
+    	establishConnection();
     	
     }
 	
@@ -102,33 +108,43 @@ public class DataAccessObject {
     }
 
 //    //TOMCAT 7 establishConnection
-//    public void establishConnection(){
-//    	con=null;
-//    	try {
-//    		InitialContext ic = new InitialContext();
-//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-//    	    con = datasource.getConnection();
-//			
-//		} catch (SQLException e) {
-//			System.err.println("I couldn't open the connection.");
-//			e.printStackTrace();
-//		} catch (NamingException e) {
-//			System.err.println("I couldn't open the connection. A Naming Exception");
-//			e.printStackTrace();
-//		}
-//    }    
-    
-//!@# ORIGINAL establishConnection
     public void establishConnection(){
     	con=null;
     	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    con = datasource.getConnection();
+			
 		} catch (SQLException e) {
 			System.err.println("I couldn't open the connection.");
 			e.printStackTrace();
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
 		}
-    }
+    	
+    	//TEST
+    	if(con==null){
+    		System.out.println("con=null");
+    	}else{
+    		System.out.println("con is not null");
+    	}
+    	
+    	
+    	
+    }    
+    
+//!@# ORIGINAL establishConnection
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
     
     public void closeConnection(){
     	try {
