@@ -13,6 +13,12 @@
 
 <a href="login.jsp">Login as Existing User</a><br>
 <a href="AccountCreation/Candidate/createCandidateCredentials.jsp">Create and Login a New User</a>
+
+
+<!-- !@# TEST mysql.jsp to connect to rhcloud mysql -->
+<%@ include file="mysql.jsp" %>
+
+
 </body>
 </html>
 
