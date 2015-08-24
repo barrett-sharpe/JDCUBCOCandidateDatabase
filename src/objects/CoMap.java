@@ -34,6 +34,7 @@ public class CoMap implements Map<String, java.lang.Object>{
 	}
 
 	//Custom toString
+	@Override
 	public String toString(){
 		String result="";
 		result+=(String)map.get("coid");

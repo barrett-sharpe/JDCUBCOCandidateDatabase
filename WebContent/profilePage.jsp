@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
     
 <%@page import="objects.*" %>
+<!-- Cannot have java.time.*. It's a 1.8 feature, and this project is compiler in 1.7 -->
 
  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -73,7 +74,7 @@ if(isCompany){
 	out.println("<table id=theTable>");
 	out.println("<tr><td>"+"Candidate ID:"+"</td><td>"+can.getCid()+"</td></tr>"); //cid
 	out.println("<tr><td>"+"Gender:"+"</td><td>"+can.getGender().toString()+"</td></tr>"); //Gender
-	out.println("<tr><td>"+"Date Of Birth:"+"</td><td>"+can.getDob()+"</td></tr>"); //date of birth
+	out.println("<tr><td>"+"Date Of Birth:"+"</td><td>"+can.getDob()+"</td></tr>"); //date of birth //!@#
 	out.println("<tr><td>"+"Year Of Study:"+"</td><td>"+can.getcYear()+"</td></tr>"); //year of study
 	out.println("<tr><td>"+"Degree/Area:"+"</td><td>"+can.getDegree().toString()+"</td></tr>"); //DEGREE
 	out.println("<tr><td>"+"Job History:"+"</td><td>"+can.getcJobHistory()+"</td></tr>"); //job history

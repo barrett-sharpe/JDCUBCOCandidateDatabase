@@ -33,24 +33,24 @@ public class DataAccessObject {
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
 	
-	//
+	//!@#$local
 	//_________________LocalHost________________________________
 	//
-//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
-//    private static String DBUSERNAME = "iamroot";
-//    private static String DBPASSWORD = "iamroot";
+    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
+    private static String DBUSERNAME = "iamroot";
+    private static String DBPASSWORD = "iamroot";
     
 
-	//
+	//!@#$webapp
     //_______________OpenShift PMA via 'rhc port-forward'________________
     //Admin
-    private static String DBUSERNAME = "adminSjSmTnT";
-    private static String DBPASSWORD = "Y1TxvCHy--cN";
-    //DB
-    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "adminSjSmTnT";
+//    private static String DBPASSWORD = "Y1TxvCHy--cN";
+//    //DB
+//    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     
     
@@ -74,13 +74,14 @@ public class DataAccessObject {
     	DBUSERNAME=db_username;
     	DBPASSWORD=db_password;
     	
-    	//!@#$webapp
-//    	//Establish Connection
-//    	if(checkForDriver()==true){
-//    		establishConnection();
-//    	}
+//!@#$local
+    	//Establish Connection
+    	if(checkForDriver()==true){
+    		establishConnection();
+    	}
     	
-    	establishConnection();
+//!@#$webapp
+//    	establishConnection();
     	
     }
 	
@@ -107,44 +108,36 @@ public class DataAccessObject {
     	return isConnected;
     }
 
-//    //TOMCAT 7 establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-    		InitialContext ic = new InitialContext();
-    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    	    con = datasource.getConnection();
-			
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		} catch (NamingException e) {
-			System.err.println("I couldn't open the connection. A Naming Exception");
-			e.printStackTrace();
-		}
-    	
-    	//TEST
-    	if(con==null){
-    		System.out.println("con=null");
-    	}else{
-    		System.out.println("con is not null");
-    	}
-    	
-    	
-    	
-    }    
-    
-//!@# ORIGINAL establishConnection
+//!@#$webapp establishConnection
 //    public void establishConnection(){
 //    	con=null;
 //    	try {
-//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//    		InitialContext ic = new InitialContext();
+//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+//    	    con = datasource.getConnection();
+//			
 //		} catch (SQLException e) {
 //			System.err.println("I couldn't open the connection.");
 //			e.printStackTrace();
+//		} catch (NamingException e) {
+//			System.err.println("I couldn't open the connection. A Naming Exception");
+//			e.printStackTrace();
 //		}
-//    }
+//    	
+//    	
+//    }    
+    
+//!@#$local establishConnection
+    public void establishConnection(){
+    	con=null;
+    	try {
+			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection.");
+			e.printStackTrace();
+		}
+    }
     
     public void closeConnection(){
     	try {
@@ -912,7 +905,8 @@ public class DataAccessObject {
      * @param enumName
      * @return
      */
-  	public String[] getEnumListFromDatabase(String enumName){
+  	@Deprecated
+	public String[] getEnumListFromDatabase(String enumName){
   		//sql: SHOW COLUMNS FROM Table LIKE field
   		//choosing to go static
    		String tmp="";

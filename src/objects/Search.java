@@ -101,7 +101,7 @@ public class Search {
 					//for now, no wildcard on integers
 					
 					//cid
-					PreparedStatement stmt1= con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cid=?"+ARGS);
+					PreparedStatement stmt1= con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cid=?"+ARGS);
 			    	stmt1.setString(1, tokens[i]);
 			    	ResultSet rst1=stmt1.executeQuery();
 			    	//if query has results, add to all
@@ -115,7 +115,7 @@ public class Search {
 					}
 					
 					//cyearofstudy
-					PreparedStatement stmt2= con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cyearofstudy=?"+ARGS);
+					PreparedStatement stmt2= con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cyearofstudy=?"+ARGS);
 			    	stmt2.setString(1, tokens[i]);
 			    	ResultSet rst2=stmt2.executeQuery();
 			    	//if query has results, add to all
@@ -124,7 +124,7 @@ public class Search {
 					}
 					
 					//cphonenumber
-					PreparedStatement stmt3= con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cphonenumber=?"+ARGS);
+					PreparedStatement stmt3= con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cphonenumber=?"+ARGS);
 			    	stmt3.setString(1, tokens[i]);
 			    	ResultSet rst3=stmt3.executeQuery();
 			    	//if query has results, add to all
@@ -146,7 +146,7 @@ public class Search {
 				try {
 					
 					//cfirstname
-					PreparedStatement stmt1 = con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cfirstname LIKE ?"+ARGS); //!@#modifying
+					PreparedStatement stmt1 = con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cfirstname LIKE ?"+ARGS); //!@#modifying
 					stmt1.setString(1, "%"+tokens[i]+"%");
 			    	ResultSet rst1=stmt1.executeQuery();
 			    	//if query has results, add to all
@@ -160,7 +160,7 @@ public class Search {
 					}
 					
 					//clastname
-					PreparedStatement stmt2 = con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE clastname LIKE ?"+ARGS);
+					PreparedStatement stmt2 = con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE clastname LIKE ?"+ARGS);
 					stmt2.setString(1, "%"+tokens[i]+"%");
 			    	ResultSet rst2=stmt2.executeQuery();
 			    	//if query has results, add to all
@@ -174,7 +174,7 @@ public class Search {
 					}
 					
 					//cemail
-					PreparedStatement stmt3 = con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cemail LIKE ?"+ARGS);
+					PreparedStatement stmt3 = con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cemail LIKE ?"+ARGS);
 					stmt3.setString(1, "%"+tokens[i]+"%");
 			    	ResultSet rst3=stmt3.executeQuery();
 			    	//if query has results, add to all
@@ -188,7 +188,7 @@ public class Search {
 					}
 				
 					//cjobhistory
-					PreparedStatement stmt4 = con.prepareStatement("SELECT cid FROM "+dao.CANDIDATE+" WHERE cjobhistory LIKE ?"+ARGS);
+					PreparedStatement stmt4 = con.prepareStatement("SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE cjobhistory LIKE ?"+ARGS);
 					stmt4.setString(1, "%"+tokens[i]+"%");
 			    	ResultSet rst4=stmt4.executeQuery();
 			    	//if query has results, add to all

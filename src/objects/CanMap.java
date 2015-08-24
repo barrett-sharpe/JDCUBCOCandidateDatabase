@@ -36,6 +36,7 @@ public class CanMap implements Map<String, java.lang.Object>{
 	}
 
 	//Custom toString
+	@Override
 	public String toString(){
 		String result="";
 		result+="\n"+(String)map.get("cid");
