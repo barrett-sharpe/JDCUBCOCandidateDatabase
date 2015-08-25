@@ -70,11 +70,16 @@ if(isCompany){
 	out.println("</table>");
 }else{
 	//Candidate Profile
+	
+	//prep the dob string
+	String dob=can.getDob().toString();
+	dob=(String)dob.subSequence(0,dob.length()-11); //" 00:00:00" is 11 indexes (9 chars+space)	
+	//profile html
 	out.println("<h3>"+can.getcFirstName()+" "+can.getcLastName()+"</h3>");
 	out.println("<table id=theTable>");
 	out.println("<tr><td>"+"Candidate ID:"+"</td><td>"+can.getCid()+"</td></tr>"); //cid
 	out.println("<tr><td>"+"Gender:"+"</td><td>"+can.getGender().toString()+"</td></tr>"); //Gender
-	out.println("<tr><td>"+"Date Of Birth:"+"</td><td>"+can.getDob()+"</td></tr>"); //date of birth //!@#
+	out.println("<tr><td>"+"Date Of Birth:"+"</td><td>"+dob+"</td></tr>"); //date of birth //!@#
 	out.println("<tr><td>"+"Year Of Study:"+"</td><td>"+can.getcYear()+"</td></tr>"); //year of study
 	out.println("<tr><td>"+"Degree/Area:"+"</td><td>"+can.getDegree().toString()+"</td></tr>"); //DEGREE
 	out.println("<tr><td>"+"Job History:"+"</td><td>"+can.getcJobHistory()+"</td></tr>"); //job history

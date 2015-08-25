@@ -27,11 +27,11 @@ public class GeneratorCompany {
 	
 	public static Company[] generateCompanies(int numCompanies, Integer startCOID){
 		Company[] arr=new Company[numCompanies];
+		Random random=new Random();
 		
 		for(int i=0;i<numCompanies;i++){
 			Integer coid=startCOID+i;
 			Company c=new Company(coid.toString());
-			Random random=new Random();
 			c.setCoName(first[random.nextInt(first.length)]+" "+(last[random.nextInt(last.length)]));
 			c.setCoYearEstablished(random.nextInt(40)+1980);
 			c.setCoEmail(c.getCoName()+"_"+random.nextInt(10)+"@email.com");

@@ -404,7 +404,9 @@ public class DataAccessObject {
 			c.put("cid", rs.getInt("cid"));
 			c.put("cFirstName",rs.getString("cfirstname"));
 			c.put("cLastName", rs.getString("clastname"));
-			c.put("dob", rs.getDate("cdateofbirth"));
+			//DOB
+			String dob=rs.getDate("cdateofbirth").toString()+" 00:00:00";
+			c.put("dob", dob);//!@#
 			c.put("cYear",rs.getInt("cyearofstudy"));
 			c.put("gender",rs.getString("gender")); //!@#
 			c.put("degree",rs.getString("cdegreeprogram")); //!@#

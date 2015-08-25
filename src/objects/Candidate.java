@@ -1,13 +1,7 @@
 package objects;
 
 import java.io.Serializable;
-import java.sql.Date; //.sql is a subclass of .util
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.sql.SQLException;
 import java.sql.Timestamp;
-
-import com.sun.rowset.CachedRowSetImpl;
 
 /**
  * A java object representing a Candidate in the database
@@ -23,7 +17,8 @@ public class Candidate implements Serializable {
 	private String cid="";
 	private String cFirstName="";
 	private String cLastName="";
-	private LocalDate dob=LocalDate.MIN;
+	//private LocalDate dob=LocalDate.MIN;
+	private Timestamp dob=Timestamp.valueOf("1000-1-1 00:00:00");
 	private Integer cYear=0;
 	public Gender gender=Gender.NotDeclared;
 	public Degree degree=Degree.None_Of_Above;
@@ -46,7 +41,38 @@ public class Candidate implements Serializable {
 	}
 	
 	
-	//Print and Helper Methods
+	//Print, formatTimestamp, and Helper Methods
+	/**
+	 * Helps to form a timestamp. Month from 1-12. Returns null if values are bad
+	 * @param year
+	 * @param month
+	 * @param day
+	 * @return Timestamp
+	 */
+	public static Timestamp formTimestamp(int year, int month, int day){
+		
+		//check values
+		if(year>9999||year<1000){
+			return null;
+		}
+		if(month<1||month>12){
+			return null;
+		}
+		if(day<1||day>31){
+			return null;
+		}
+		
+		//String
+		String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)+" 00:00:00";
+		
+		//TEST
+		System.out.println(date);
+		
+		//timestamp
+		Timestamp ts=Timestamp.valueOf(date);
+		return ts;
+	}
+	
 	public void printToConsole(){
 		System.out.println(printoutString(true));
 	}
@@ -84,6 +110,7 @@ public class Candidate implements Serializable {
 	
 	
 	//HashCode and Equals Methods
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -190,7 +217,8 @@ public class Candidate implements Serializable {
 			return false;
 		return true;
 	}
-	
+
+
 	
 	//Get and Set Candidate Methods
 	
@@ -201,12 +229,19 @@ public class Candidate implements Serializable {
 			setCid(map.get("cid").toString());
 			setcFirstName(map.get("cFirstName").toString());
 			setcLastName(map.get("cLastName").toString());
-					
-			if(LocalDate.parse(map.get("dob").toString()).equals(LocalDate.MIN)){ //LocalDate.Min
-				setDob(LocalDate.MIN);
+			
+			if(map.get("dob").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
+				setDob(Timestamp.valueOf("1000-1-1 00:00:00"));
 			}else{
-				setDob(LocalDate.parse(map.get("dob").toString()));
+				setDob(Timestamp.valueOf(map.get("dob").toString()));
 			}
+			
+// java.time.LocalDate		
+//			if(LocalDate.parse(map.get("dob").toString()).equals(LocalDate.MIN)){ //LocalDate.Min
+//				setDob(LocalDate.MIN);
+//			}else{
+//				setDob(LocalDate.parse(map.get("dob").toString()));
+//			}
 			
 			setcYear((Integer)map.get("cYear"));
 			setGender(Gender.valueOf(map.get("gender").toString()));
@@ -241,7 +276,8 @@ public class Candidate implements Serializable {
 		c.put("cid", String.valueOf(getCid()));
 		c.put("cFirstName", String.valueOf(getcFirstName()));
 		c.put("cLastName", String.valueOf(getcLastName()));
-		c.put("dob", getDob().toString());
+		//c.put("dob", getDob().toString());
+		c.put("dob", (getDob()==null)? "1000-1-1 00:00:00" : getDob().toString());
 		c.put("cYear",Integer.valueOf(getcYear()));
 		c.put("gender",getGender().toString());
 		c.put("degree",getDegree().toString());
@@ -250,8 +286,8 @@ public class Candidate implements Serializable {
 		c.put("cPhoneNumber",String.valueOf(getcPhoneNumber()));
 		c.put("cDescription",String.valueOf(getcDescription()));
 		c.put("cJobHistory",String.valueOf(getcJobHistory()));
-		c.put("cDateCreated",(getcDateCreated()==null)? "0000-0-0 00:00:00" : getcDateCreated().toString());
-		c.put("cDateLastModified",(getcDateLastModified()==null)? "0000-0-0 00:00:00" : getcDateLastModified().toString());
+		c.put("cDateCreated",(getcDateCreated()==null)? "1000-1-1 00:00:00" : getcDateCreated().toString());
+		c.put("cDateLastModified",(getcDateLastModified()==null)? "1000-1-1 00:00:00" : getcDateLastModified().toString());
 		return c;
 	}
 	
@@ -282,11 +318,11 @@ public class Candidate implements Serializable {
 		this.cLastName = cLastName;
 	}
 
-	public LocalDate getDob() {
+	public Timestamp getDob() {
 		return dob;
 	}
 
-	public void setDob(LocalDate dob) {
+	public void setDob(Timestamp dob) {
 		this.dob = dob;
 	}
 

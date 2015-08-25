@@ -23,14 +23,17 @@ public class GeneratorCandidate {
 	
 	public static Candidate[] generateCandidates(int numCandidates, Integer sequentialCIDstart){
 		Candidate[] arr=new Candidate[numCandidates];
+		Random random=new Random();
 		
 		for(int i=0;i<numCandidates;i++){
 			Integer cid=sequentialCIDstart+i;
 			Candidate c=new Candidate(cid.toString());
-			Random random=new Random();
+			
 			c.setcFirstName(first[random.nextInt(first.length)]);
 			c.setcLastName(last[random.nextInt(last.length)]);
-			c.setDob(LocalDate.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(28)+1));
+			//c.setDob(LocalDate.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(28)+1)); //original
+			//c.setDob(Timestamp.valueOf(LocalDateTime.now())); //works as well
+			c.setDob(Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60))));
 			c.setcYear(random.nextInt(40)+1980);
 			c.setGender((random.nextBoolean()==true)? Gender.Male : Gender.Female);
 			c.setDegree((random.nextBoolean()==true)? Degree.Bachelors_Of_Management_Accounting : Degree.Masters_Of_Arts);

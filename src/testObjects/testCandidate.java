@@ -29,6 +29,13 @@ public class testCandidate {
 			c.printToConsole();
 		}
 		
+		//test Candidate.formTimestamp
+		arr[1].setDob(Candidate.formTimestamp(1969, 12, 25));
+		for(Candidate c:arr){
+			c.printToConsole();
+			System.out.println("________________________________________________");
+		}
+		
 	}//main
 
 }
