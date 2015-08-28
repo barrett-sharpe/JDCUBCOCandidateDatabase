@@ -40,7 +40,7 @@ out.println("<h1> Welcome back, " + user + ".</h1>");
 	if(isCompany){
 		//Company
 		out.println("<h3><u><a href='profilePage.jsp'> View Company's Profile</a></u></h3>");
-		out.println("<h3><u><a href='Search For A Candidate/search.jsp'>Search</a></u></h3>");
+		out.println("<h3><u><a href='Search/search.jsp'>Search For A Candidate</a></u></h3>");
 		//!@# to do
 		out.println("<h3><p>To Do:</p></h3>");
 		out.println("<h3><u> Edit Company Profile</u></h3>");
