@@ -12,10 +12,10 @@ public class testSearch {
 		
 		//Search Strings
 		String queryString=""; //f  //l   //fl   //lf
-		String queryNum="254956375";  //cid  //phone#
-		String area="";  //
+		String queryNum="";  //cid  //phone#
+		String area="Masters_Of_Arts";  //
 		String yearInt=""; //
-		String yearLogic=""; 
+		String yearLogic="equal"; 
 		//From Result Options
 		String orderBy="cid";
 		String orderByDirection="asc";
