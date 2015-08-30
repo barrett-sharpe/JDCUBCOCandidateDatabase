@@ -7,10 +7,15 @@
 <title>Search</title>
 </head>
 <body>
-	<!-- <h3>Search For A Candidate</h3>-->
+
+<!-- Error Message -->
+<p>Potential Error Message</p>
 
 <!-- Search Form  //!@# check if 'get' or 'post' needed-->
 <form name="searchForm" method=get action="searchResult.jsp">
+
+<!-- FIELDSET 1: Candidate Info -->
+<br>
 <fieldset>
 <legend>Candidate Search</legend>
 <table width="80%">
@@ -95,26 +100,35 @@
 		</td>
 	</tr>
 
-<!-- ROW 6: RESULTS -->
+</table>
+</fieldset>
+
+<!-- FIELDSET 2: RESULT OPTIONS -->
+<br>
+<fieldset>
+<legend>Result Options</legend>
+	<table width="80%">
+	
+	
+	<!-- ROW 1: RESULTS -->
 	<tr>
 		<td>
-		</td>
-		
-		<td>
-			<div align="right">
+			<div align="left">
 			<!-- ORDER BY -->
-			Order Results By 
+			Sort the results by 
 			<select name="orderBy">
 				<option value="cid">ID Number</option>
 				<option value="cfirstname">First Name</option>
 				<option value="clastname" selected>Last Name</option>
 			</select>
-			<br>
+			, in 
+			<!-- DIRECTION -->
 			<input type="radio" name="orderByDirection" value="asc" checked>Ascending
-			<input type="radio" name="orderByDirection" value="dec">Descending
-			<br>
-			<!-- LIMIT Number -->
-			Limit Results To 
+			<input type="radio" name="orderByDirection" value="desc">Descending
+			 order, 
+			
+			<!-- NUMRESULTS -->
+			limiting the page to 
 				<select name="numResults">
 					<option value=1>1</option>
 					<option value=5>5</option>
@@ -122,17 +136,24 @@
 					<option value=25>25</option>
 					<option value=50>50</option>
 					<option value=100>100</option>
-				</select>			
+				</select>
+				results.			
 			</div>
 		</td>
 	</tr>	
 	
-<!-- ROW 7: SUMBIT -->
-	<tr>
-		<td></td>
-		<td><div align="right"><input type="submit" name="search" value="Search"></div></td>
-	</tr>
-</table>
+	</table>
+</fieldset>
+<br>
+<div align="center"><input type="submit" name="search" value="Search"></div>
+</form>
+
+
+</body>
+</html>
+
+
+
 
 
 
@@ -157,12 +178,6 @@ Date Range Query (a later feature, time permitting)
 	</tr>
 -->
 
-</fieldset>
-</form>
-
-
-</body>
-</html>
 
 
 <!-- Option List V1

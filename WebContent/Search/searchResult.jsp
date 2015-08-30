@@ -12,7 +12,7 @@
 <!-- Variables -->
 <%! String query;%>
 <%! String area; %>
-<%! String[] args;%>
+<%! %>
 
 <!-- Get Session/Query -->
 <%
@@ -21,17 +21,6 @@
 	//Get "QueryString"
 	query=request.getParameter("queryString");
 	//Get the arguments (args). Either "on" or "null"
-	args=new String[5];
-	//By Daniel's Request, No Ability To Filter By Gender
-	//args[0]=request.getParameter("isMale");
-	//args[1]=request.getParameter("isFemale");
-	//args[2]=request.getParameter("isTrans");
-	//args[3]=request.getParameter("isOther");
-	args[0]=null;
-	args[1]=null;
-	args[2]=null;
-	args[3]=null;
-	args[4]=request.getParameter("area");
 %>
 
 <!-- Header -->
@@ -40,10 +29,7 @@
 
 <!-- Java Object -->
 <%
-//TEST PRINT Args
-for(String s: args){
-	out.println(s);
-}
+
 
 //new Search object
 //Search s=new Search();

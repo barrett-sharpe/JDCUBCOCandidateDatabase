@@ -61,7 +61,6 @@ public class DataAccessObject {
     //Varibales
     private Connection con = null;
     private boolean isCompany;
-    //private boolean isCompany=false; //!@# I've set default to candidate
     
     
     //Constructors
@@ -138,7 +137,11 @@ public class DataAccessObject {
 			e.printStackTrace();
 		}
     }
+
     
+    /**
+     * Closes the connection.
+     */
     public void closeConnection(){
     	try {
 			con.close();
@@ -405,7 +408,7 @@ public class DataAccessObject {
 			c.put("cFirstName",rs.getString("cfirstname"));
 			c.put("cLastName", rs.getString("clastname"));
 			//DOB
-			String dob=rs.getDate("cdateofbirth").toString()+" 00:00:00";
+			String dob=rs.getDate("cdateofbirth").toString()+" 00:00:00"; //!@#$ verify if this getDate instead of getTimestamp works
 			c.put("dob", dob);//!@#
 			c.put("cYear",rs.getInt("cyearofstudy"));
 			c.put("gender",rs.getString("gender")); //!@#
@@ -458,7 +461,7 @@ public class DataAccessObject {
 				ps.setString(2, user.get("cFirstName").toString());
 				ps.setString(3, user.get("cLastName").toString());
 				ps.setString(4, user.get("gender").toString());
-				ps.setString(5, user.get("dob").toString());
+				ps.setString(5, user.get("dob").toString()); //does this work?
 				ps.setString(6, user.get("cYear").toString());
 				ps.setString(7, user.get("degree").toString());
 				ps.setString(8, user.get("cJobHistory").toString());
