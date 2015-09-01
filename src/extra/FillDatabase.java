@@ -1,5 +1,7 @@
 package extra;
 
+import java.util.Random;
+
 import objects.Candidate;
 import objects.Company;
 import objects.DataAccessObject;
@@ -8,8 +10,9 @@ public class FillDatabase {
 
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
-	private static Integer NUM_CANDIDATES=5;
-	private static Integer NUM_COMPANIES=5;
+	private static Integer NUM_CANDIDATES=200;
+	private static Integer NUM_COMPANIES=50;
+	public static DataAccessObject dao2=new DataAccessObject();
 	
 	//Constructor
 	public FillDatabase(){}
@@ -19,32 +22,38 @@ public class FillDatabase {
 		DataAccessObject dao=new DataAccessObject();
 		Company[] arr=null;
 		Candidate[] arr2 = null;
+		Random rand=new Random();
+		Integer count=number;
 		if(isCompany){
-			arr=GeneratorCompany.generateCompanies(number, 100100);
+			arr=GeneratorCompany.generateCompanies(number, dao.nextAvailableCOID());
 			//for each company
 			for(Company c: arr){
-				//username:(lowercase/nospaces anywhere)name
-				dao.addCredentialsCompany(c.getCoName().toLowerCase().replaceAll(" ", ""), PASSWORD,c.getCoid());
-				dao.addCompany(c.getCompany());
+				//username:(lowercase/nospaces anywhere)name+[random number 0-99]
+				dao.addCredentialsCompany(c.getCoName().toLowerCase().replaceAll(" ", "")+(rand.nextInt(100)), PASSWORD,c.getCoid());
+				if(!dao.addCompany(c.getCompany())){
+					count--;
+				}
 			}
 		}else{
-			arr2=GeneratorCandidate.generateCandidates(number, 1000100);
+			arr2=GeneratorCandidate.generateCandidates(number, dao.nextAvailableCID());
 			//for each candidate
 			for(Candidate c: arr2){
-				//username:(lowercase)firstlast
-				dao.addCredentialsCandidate(c.getcFirstName().toLowerCase()+c.getcLastName().toLowerCase(), PASSWORD,c.getCid());
-				dao.addCandidate(c.getCandidate());
+				//username:(lowercase)firstlast+[random number 0-999]
+				dao.addCredentialsCandidate(c.getcFirstName().toLowerCase()+c.getcLastName().toLowerCase()+(rand.nextInt(1000)), PASSWORD,c.getCid());
+				if(!dao.addCandidate(c.getCandidate())){
+					count--;
+				}
 			}
 		}
 		
 		//Printout
 		if(!isCompany){
-			System.out.println("\n\nCandidates: ("+arr2.length+"/"+NUM_CANDIDATES+")");
+			System.out.println("\n\nCandidates: ("+count+"/"+arr2.length+")");
 			for(Candidate c: arr2){
 				System.out.println(c.getcFirstName()+" "+c.getcLastName()+": "+c.getCid());
 			}
 		}else{
-			System.out.println("\n\nCompanies: ("+arr.length+"/"+NUM_COMPANIES+")");
+			System.out.println("\n\nCompanies: ("+count+"/"+arr.length+")");
 			for(Company c:arr){
 				System.out.println(c.getCoName()+ ": "+c.getCoid());
 			}
@@ -57,6 +66,8 @@ public class FillDatabase {
 	public static void main(String[] args) {
 		FillDatabase.fill(true,NUM_COMPANIES);
 		FillDatabase.fill(false,NUM_CANDIDATES);
+		//System.out.println(dao2.nextAvailableCID());
+		//System.out.println(dao2.nextAvailableCOID());
 	}//main
 
 }//class

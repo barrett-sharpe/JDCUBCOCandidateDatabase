@@ -11,40 +11,28 @@ public class testSearch {
 		DataAccessObject dao=new DataAccessObject();
 		
 		//Search Strings
-		String queryString=""; //f  //l   //fl   //lf
-		String queryNum="";  //cid  //phone#
-		String area="Masters_Of_Arts";  //
-		String yearInt=""; //
-		String yearLogic="equal"; 
+		String queryFirst="";
+		String queryLast="Monaling";
+		String queryID="1000200";
+		String queryPhone="889472010";
+		String area="";  
+		String yearInt=""; 
+		String yearLogic="lessThan"; 
 		//From Result Options
-		String orderBy="cid";
+		int[] attrindex=new int[]{1,2,3,4,6,7};
+		int orderBy=1; //cid=1
 		String orderByDirection="asc";
 		Integer numResults=25;	
 		
 		//Search object
-		Search s=new Search(queryString, queryNum, area, yearInt, yearLogic, orderBy, orderByDirection, numResults);
-		
-//		//Length test
-//		System.out.println("Length Test:");
-//		String test=queryString;
-//		String[] testa=test.split(" ");
-//		System.out.println(testa.length);
-		
-//		//countAttribute Test
-//		System.out.println("\nCountAttribute Test:");
-//		Integer[] indexes=new Integer[]{3};
-//		String[] values=new String[]{"ethan"};
-//		System.out.println("count:"+s.countAttribute(indexes, values));
-		
-		
+		Search s=new Search(queryFirst,queryLast,queryID,queryPhone, area, yearInt, yearLogic);
+			
 		
 		//getResults Test
-		System.out.println("\ngetResults() Test: ___________________________");
-		s.getResults(0);
+		//System.out.println("\ngetResultsSQLQuery() Test: ___________________________");
+		String output=s.getResultSQLQuery(attrindex, orderBy, 0, numResults, orderByDirection);
+		System.out.println(output);
 		
-		//showAll
-				s.showAll();
-
 	}//main
 
 }//class

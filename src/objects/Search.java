@@ -4,33 +4,33 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
 import java.util.ArrayList;
-import java.util.HashSet;
-
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.NMTOKENDatatypeValidator;
-import com.sun.rowset.CachedRowSetImpl;
 
 public class Search {
 
-	//Variables
+	//VARIABLES FOR CLASS
 	DataAccessObject dao;
 	Connection con;
 	Character[] unacceptable=new Character[]{'-','!','@','#','$','%','^','&','*','(',')','_','+','=','{','}',':',';','\\','"','?','<','>',',','.','|'};
+	String finalQuery=null; 
+	
+	//VARIABLES FOR QUERY
+	
 	//From Candidate Options
-	String queryString="";
-	String queryNum="";
+	String queryFirst="";
+	String queryLast="";
+	String queryID="";
+	String queryPhone="";
 	String area="";
 	String yearInt="";
 	String yearLogic="";
-	//From Result Options
-	String orderBy="";
-	String orderByDirection="";
-	Integer numResults=null;
+	//From Result Options (Defaults; .getResults() take these params in
+	String orderBy="cid";  //
+	String orderByDirection="asc";
+	Integer numResults=25;
 	
 	//!@#$Thnigs for later
 	/*
-	 * Add in the ability to search on only 1 parameter (currently, need two in order to get the SQL to form properly
 	 * Sanatizing queryNum of symbols +()- 
 	 * fix all error conditions so they return null or something.
 	 * 
@@ -40,15 +40,22 @@ public class Search {
 	
 	
 	//Constructor
-	public Search(String queryString, String queryNum, String area, String yearInt, String yearLogic, String orderBy, String orderByDirection, Integer numResults){
-		this.queryString=queryString;
-		this.queryNum=queryNum;
+	/**
+	 * Constructor
+	 * @param queryString
+	 * @param queryNum
+	 * @param area
+	 * @param yearInt
+	 * @param yearLogic
+	 */
+	public Search(String queryFirst, String queryLast, String queryID, String queryPhone, String area, String yearInt, String yearLogic){
+		this.queryFirst=queryFirst;
+		this.queryLast=queryLast;
+		this.queryID=queryID;
+		this.queryPhone=queryPhone;
 		this.area=area;
 		this.yearInt=yearInt;
 		this.yearLogic=yearLogic;
-		this.orderBy=orderBy;
-		this.orderByDirection=orderByDirection;
-		this.numResults=numResults;
 		
 		//instantiate dao and con
 		dao=new DataAccessObject();
@@ -56,23 +63,30 @@ public class Search {
 	}
 
 	//helper methods
-	
+	/**
+	 * Prints out the Search object's Candidate's Options
+	 * @return
+	 */
 	public String showAll(){
-		String result="ALL CURRENT SEARCH VARIABLES:\n";
-		result+="queryString:"+queryString;
-		result+="\nqueryNum:"+queryNum;
+		String result="ALL CURRENT QUERY VALUES:\n";
+		result+="queryFirst:"+queryFirst;
+		result+="\nqueryLast:"+queryLast;
+		result+="\nqueryID:"+queryID;
+		result+="\nqueryPhone:"+queryPhone;
 		result+="\narea:"+area;
 		result+="\nyearInt:"+yearInt;
 		result+="\nyearLogic:"+yearLogic;
-		result+="\norderBy:"+orderBy;
-		result+="\norderByDirection:"+orderByDirection;
-		result+="\nnumResults:"+numResults;
+
 		//print
 		System.out.println(result);
 		//and return
 		return result;
 	}
 	
+	/**
+	 * Validates and sanitizes the input to the search method. Returns a boolean, indicating whether or not it can proceded with given inputs.
+	 * @return boolean
+	 */
 	public boolean validateInput(){
 		boolean result=true;
 		
@@ -94,7 +108,7 @@ public class Search {
 	}
 
 	/**
-	 *!@#Fix this descriptionReturns the counted integer, given the selected attribute index, and the value of that attribute
+	 *Returns the counted integer, given the selected attribute index, and the value of that attribute
 	 * 1) cid
 	 * 2) cfirstname
 	 * 3) clastname
@@ -105,9 +119,8 @@ public class Search {
 	 * 8) cjobhistory
 	 * 9) cemail
 	 * 10) cphonenumber
-	 * 11) cdescription
-	 * 12) cphoto
-	 * 
+	 * 11) cresumelink
+	 * 12) cdescription
 	 * 
 	 */
 	public Integer countAttribute(Integer[] indexes, String[] values){
@@ -149,10 +162,10 @@ public class Search {
 				attr[i]="cphonenumber";
 				break;
 			case 11:
-				attr[i]="cdescription";
+				attr[i]="cresumelink";
 				break;
 			case 12:
-				attr[i]="cphoto";
+				attr[i]="cdescription";
 				break;
 	//		case 13:
 	//			attr[i]="";
@@ -201,39 +214,57 @@ public class Search {
 	
 	
 	/**
-	 * Fetches results of this Search object
+	 * This method returns a String SQL query, which contains all of the CID's of candidates that match the user's inputs. That query can then be launched by {@link getREsultsFromQuery()} method. 
+	 * @param attributeIndex
+	 * @param orderByIndex
+	 * @param startOffset
+	 * @param totalNumber
+	 * @param orderByDirection
+	 * @return
 	 */
-	public ArrayList<CanMap> getResults(Integer startOffset){
+	public String getResultSQLQuery(int[] attributeIndex, int orderByIndex, int startOffset, int totalNumber, String orderByDirection){
 		
 		String sql="";
 		
-		//STEP 1: PARSE AND VALIDATE VARIABLES _______________________________________________________________________________
-		
-		//1.1 Parse queryString for first AND/OR last name. Only first two words taken at the moment.
-		String[] names;
-		names=queryString.split(" ");
-		
-		//1.2 yearInt validate
+		//STEP 1: VALIDATE VARIABLES _______________________________________________________________________________
+
 		boolean valid=validateInput();
 		
 		
 		
 		//STEP 2: FIGURE OUT WHAT QUERIES TO BE DONE, BY ESTABLISHING WHAT FIELDS ARE EMPTY.  __________________________________
 		
-		boolean hasQueryString=true; //qs 	has[0]
-		boolean hasQueryNum=true;	//qn 	has[1]
-		boolean hasYearInt=true;	//yi 	has[2]
-		boolean hasArea=true;		//ha 	has[3]
-		Boolean[] has=new Boolean[4]; 
-		Integer qCount=4;
+		boolean hasQueryFirst=true;
+		boolean hasQueryLast=true;
+		boolean hasQueryID=true;
+		boolean hasQueryPhone=true;
+		boolean hasYearInt=true;
+		boolean hasArea=true;
+		Boolean[] has=new Boolean[6]; 
+		Integer qCount=6;
 		
 		//If The Given Inputs Were Valid
 		if(valid){		
 			System.out.println("Inputs Valid"); //TEST
 			
-			if(queryString==null||queryString.isEmpty()||queryString.length()==0||queryString.equalsIgnoreCase("")){
-				//nothing was input to queryString, so nothing in names
-				hasQueryString=false;
+			if(queryFirst==null||queryFirst.isEmpty()||queryFirst.length()==0||queryFirst.equalsIgnoreCase("")){
+				//nothing was input to queryFirst, so no first name
+				hasQueryFirst=false;
+				qCount--;
+			}
+			if(queryLast==null||queryLast.isEmpty()||queryLast.length()==0||queryLast.equalsIgnoreCase("")){
+				//nothing was input to queryLast, so no first name
+				hasQueryLast=false;
+				qCount--;
+			}
+			if(queryID==null||queryID.isEmpty()||queryID.length()==0||queryID.equalsIgnoreCase("")){
+				//nothing entered for queryID, so no specific cid
+				hasQueryID=false;
+				qCount--;
+			}
+			if(queryPhone==null||queryPhone.isEmpty()||queryPhone.length()==0||queryPhone.equalsIgnoreCase("")){
+				//nothing entered for queryPhone, so no specific phone number
+				hasQueryPhone=false;
 				qCount--;
 			}
 			if(area==null||area=="null"||area.isEmpty()||area.length()==0||area.equalsIgnoreCase("")){
@@ -241,12 +272,7 @@ public class Search {
 				//Either way, it means we do not have to specify a particular area.
 				hasArea=false;
 				qCount--;
-			}
-			if(queryNum==null||queryNum.isEmpty()||queryNum.length()==0||queryNum.equalsIgnoreCase("")){
-				//nothing entered for queryNum, so no specific cid or cphonenumber
-				hasQueryNum=false;
-				qCount--;
-			}
+			}	
 			if(yearInt==null||yearInt.isEmpty()||yearInt.length()==0||yearInt.equalsIgnoreCase("")){
 				//nothing entered for graduating year
 				hasYearInt=false;
@@ -259,43 +285,451 @@ public class Search {
 		}
 		
 		//Populate 'has' array with booleans
-		has[0]=hasQueryString;
-		has[1]=hasQueryNum;
-		has[2]=hasYearInt;
-		has[3]=hasArea;
+		has[0]=hasQueryFirst;
+		has[1]=hasQueryLast;
+		has[2]=hasQueryID;
+		has[3]=hasQueryPhone;
+		has[4]=hasYearInt;
+		has[5]=hasArea;
 		
 		//Only Need Attribute 'cid' For Inner Join Selects
 		String attrs="cid";
-		
 		
 		
 		//STEP 3: DETERMINE AND COMPILE QUERIES  _______________________________________________________________________________
 		
 		System.out.println("Determining Query:\n"+qCount+ " attributes used."); //TEST
 		
-		//Based On the Number Of Fields Filled In By The User, The Formation Of The SQL Query Is Different. Observe the following 2 cases:
+		//Based On the Number Of Fields Filled In By The User, The Formation Of The SQL Query Is Different. Observe the following 3 cases:
 		//CASE 1: (1 FIELD). A simple query like: "SELECT cid FROM candidate WHERE cfirstname='devon' UNION DISTINCT SELECT cid FROM candidate WHERE clastname='devon'" may be used.
 		//CASE 2: (2+ FIELDs). A JOIN is need to assure that rows in the final output meet ALL of the conditions of the query. This involves using aliases to do joins, and the variable nature of the input make this complicated. Example:
-		/* 
-		SELECT a.cid AS results FROM
-		(
-				SELECT cid FROM candidate WHERE cfirstname='devon'
-				UNION DISTINCT
-				SELECT cid FROM candidate WHERE clastname='devon'
-		) AS a
-		INNER JOIN
-		(
-				SELECT cid FROM candidate WHERE cphonenumber='254956375'
-		) AS b
-		ON a.cid = b.cid;
-		*/
-		//Therfore, a single if condition will span the two sql creation types
+		//CASE 3: (0 fields). Show no results.
 		
+	
 		if(qCount>1){		
-		//CASE 2: (2+ FIELDS) Two or more fields were enterd by the user.
+			//CASE 2: (2+ FIELDs). An INNER JOIN is need
+			
+			//ALPHA: alias, attrName and values ArrayLists
+			ArrayList<String> alias=new ArrayList<String>();
+			ArrayList<String> attrName=new ArrayList<String>();
+			ArrayList<String> values=new ArrayList<String>();
+			
+			for(int i=0;i<has.length;i++){
+				switch(i){
+				case 0: //queryFirst
+					if(has[i]){
+						alias.add("queryFirst");
+						attrName.add("cfirstname");
+						values.add(queryFirst);
+					}
+					break;
+				case 1: //queryLast
+					if(has[i]){
+						alias.add("queryLast");
+						attrName.add("clastname");
+						values.add(queryLast);
+					}
+					break ;
+				case 2: //queryID
+					if(has[i]){
+						alias.add("queryID");
+						attrName.add("cid");
+						values.add(queryID);
+					}
+					break;
+				case 3: //queryPhone
+					if(has[i]){
+						alias.add("queryPhone");
+						attrName.add("cphonenumber");
+						values.add(queryPhone);
+					}
+					break;
+				case 4: //yearInt
+					if(has[i]){
+						alias.add("yearInt");
+						attrName.add("cyearofstudy");
+						values.add(yearInt);
+					}
+					break;
+				case 5: //area
+					if(has[i]){
+						alias.add("area");
+						attrName.add("cdegreeprogram");
+						values.add(area);
+					}	
+					break;
+				default:
+					break;
+				}
+			}//for
 			
 			
-			//3.0: Overall SELECT cid
+			//BRAVO: Create INNER JOIN SQL
+			boolean first=true;
+			for(int i=0;i<alias.size();i++){
+				if(first){
+					sql+=""+DataAccessObject.CANDIDATE+" AS "+alias.get(i);
+					first=false;
+				}else{
+					sql+=" INNER JOIN "+DataAccessObject.CANDIDATE+" AS "+alias.get(i)+" ON ";
+					sql+=""+alias.get(i-1)+".cid = "+alias.get(i)+".cid";
+				}
+			}//Bfor
+			
+			//CHARLIE: WHERE conditions
+			sql+=" WHERE";
+			for(int i=0;i<alias.size();i++){
+				//if it's an integer (alias: yearInt)
+				if(alias.get(i).equalsIgnoreCase("yearInt")){
+					String sign="";
+					if(yearLogic.equalsIgnoreCase("equal")){
+						sign="=";
+					}else if(yearLogic.equalsIgnoreCase("lessThan")){
+						sign="<";
+					}else{
+						sign=">";
+					}
+					sql+=" "+alias.get(i)+"."+attrName.get(i)+" "+sign+" "+values.get(i)+" AND";
+				}else{
+					//not an integer, normal.
+					sql+=" "+alias.get(i)+"."+attrName.get(i)+"='"+values.get(i)+"' AND";
+				}
+			}
+			sql=sql.substring(0,sql.length()-4); //check 4
+			
+			
+			//DELTA: Form Beginning of SQL
+			sql="SELECT "+alias.get(0)+".cid FROM "+sql;;
+				
+			//!@#%ERROR TESTING
+			System.out.println("INITIAL QUERY:\n"+sql);
+			
+			
+			
+			
+			
+			
+		}else if(qCount==1){
+			// Case 1: (1 Field) Only a single field was entered by the user.
+					
+			//ALPHA: alias, attrName and values ArrayLists
+			ArrayList<String> alias=new ArrayList<String>();
+			ArrayList<String> attrName=new ArrayList<String>();
+			ArrayList<String> values=new ArrayList<String>();
+			
+			for(int i=0;i<has.length;i++){
+				switch(i){
+				case 0: //queryFirst
+					if(has[i]){
+						alias.add("queryFirst");
+						attrName.add("cfirstname");
+						values.add(queryFirst);
+					}
+					break;
+				case 1: //queryLast
+					if(has[i]){
+						alias.add("queryLast");
+						attrName.add("clastname");
+						values.add(queryLast);
+					}
+					break ;
+				case 2: //queryID
+					if(has[i]){
+						alias.add("queryID");
+						attrName.add("cid");
+						values.add(queryID);
+					}
+					break;
+				case 3: //queryPhone
+					if(has[i]){
+						alias.add("queryPhone");
+						attrName.add("cphonenumber");
+						values.add(queryPhone);
+					}
+					break;
+				case 4: //yearInt
+					if(has[i]){
+						alias.add("yearInt");
+						attrName.add("cyearofstudy");
+						values.add(queryPhone);
+					}
+					break;
+				case 5: //area
+					if(has[i]){
+						alias.add("area");
+						attrName.add("cdegreeprogram");
+						values.add(area);
+					}	
+					break;
+				default:
+					break;
+				}
+			}//for
+			
+			//BRAVO: Make statement
+			sql="SELECT "+attrs+" FROM "+DataAccessObject.CANDIDATE+" WHERE "+attrName.get(0)+"='"+values.get(0)+"'";
+			
+						
+		//1 or More Fields
+		}else{
+			//0 Fields
+			System.out.println("0 fields used. No entries.");	
+			//show all from database
+			sql+="SELECT cid FROM "+DataAccessObject.CANDIDATE+" WHERE 0";
+
+		}//0 Fields
+
+		
+		
+		//STEP 4: Launch Results and Populate cidList _______________________________________________________________________________________________
+		
+		//Launch/Collect applicable cid's
+		ArrayList<Integer> cidList=new ArrayList<Integer>();
+		try {
+			PreparedStatement ps1=con.prepareStatement(sql);
+			ResultSet rs1=ps1.executeQuery();
+			while(rs1.next()){
+				Integer next=rs1.getInt("cid");
+				cidList.add(next);
+				//note: null's are 0;
+			}	
+		}catch(SQLException x){
+			x.printStackTrace();			
+		}
+				
+		//Create new SQL statement to collect detailed information
+		
+				//User-Requested Attribute for final output
+				String attributes="";
+				for(int i: attributeIndex){
+					switch(i){
+					case 1:
+						attributes+="cid, ";
+						break;
+					case 2:
+						attributes+="cfirstname, ";
+						break;
+					case 3:
+						attributes+="clastname, ";
+						break;
+					case 4:
+						attributes+="gender, ";
+						break;
+					case 5:
+						attributes+="cdateofbirth, ";
+						break;
+					case 6:
+						attributes+="cyearofstudy, ";
+						break;
+					case 7:
+						attributes+="cdegreeprogram, ";
+						break;
+					case 8:
+						attributes+="cjobhistory, ";
+						break;
+					case 9:
+						attributes+="cemail, ";
+						break;
+					case 10:
+						attributes+="cphonenumber, ";
+						break;
+					case 11:
+						attributes+="cresumelink, ";
+						break;
+					case 12:
+						attributes+="cdescription, ";
+						break;
+					}
+				}
+				attributes=attributes.substring(0, attributes.length()-2); //check
+				
+				
+				//newSQL
+				String newSQL="SELECT "+attributes+" FROM "+DataAccessObject.CANDIDATE+" WHERE";
+				
+				
+				boolean results=false;
+				//for every CID in the cidList, add a cid condidtion
+				for(Integer i: cidList){
+					newSQL+=" cid='"+i.toString()+"' OR";
+					results=true;
+				}
+				//Query has results. If extra characters (caused by adding cids) at end, remove them
+				if(results){
+					newSQL=newSQL.substring(0,newSQL.length()-3);//check 5 ? check 4 NO check 3 YES(1,?) //!@#$
+				}else{
+					//Query has no results. Add 0 to the WHERE clause
+					newSQL=newSQL+" 0";
+				}
+				
+				//STEP 5: RESULTSET OPTIONS AND LAUNCH _______________________________________________________________________________________________
+				
+				String resultOptions="";
+				
+				//5.1 OrderBy
+				resultOptions+="ORDER BY ";
+				switch(orderByIndex){
+				case 1:
+					resultOptions+="cid";
+					break;
+				case 2:
+					resultOptions+="cfirstname";
+					break;
+				case 3:
+					resultOptions+="clastname";
+					break;
+				case 4:
+					resultOptions+="gender";
+					break;
+				case 5:
+					resultOptions+="cdateofbirth";
+					break;
+				case 6:
+					resultOptions+="cyearofstudy";
+					break;
+				case 7:
+					resultOptions+="cdegreeprogram";
+					break;
+				case 8:
+					resultOptions+="cjobhistory";
+					break;
+				case 9:
+					resultOptions+="cemail";
+					break;
+				case 10:
+					resultOptions+="cphonenumber";
+					break;
+				case 11:
+					resultOptions+="cresumelink";
+					break;
+				case 12:
+					resultOptions+="cdescription";
+					break;
+				default:
+					resultOptions+="cid";
+					System.out.println("shouldnt hell naw be here");
+					break;
+				}
+				
+			
+				
+				//5.2 orderbydirection
+				
+				if(orderByDirection.equalsIgnoreCase("asc")){
+					resultOptions+=" ASC";
+				}else if(orderByDirection.equalsIgnoreCase("desc")){
+					resultOptions+=" DESC";
+				}else{
+					//Error
+				}
+				
+				//5.3 num results	
+				resultOptions+=" LIMIT "+startOffset+", "+totalNumber;
+				
+				//5.4 Add to sql
+				newSQL+=" "+resultOptions;
+				
+				
+				//STEP 6: REturn SQL
+				
+				//set final sql query to finalquery
+				finalQuery=newSQL;
+				return newSQL;	
+	}//method
+	
+	
+	public ArrayList<CanMap> getResultsFromQuery(String sql, int[] attributeIndex, int orderByIndex, int startOffset, int totalNumber, String orderByDirection){
+	
+		
+		//Collect candidates
+		ArrayList<CanMap> result= new ArrayList<CanMap>();
+		try {
+			PreparedStatement ps2=con.prepareStatement(sql);
+			ResultSet rs2=ps2.executeQuery();
+			
+			//iterate through each result
+			while(rs2.next()){
+				
+				CanMap can=new CanMap();
+				
+				//and pick/add only the specified attrs
+				for(int i: attributeIndex){
+					switch(i){
+					case 1:
+						can.put("cid", rs2.getString("cid"));
+						break;
+					case 2:
+						can.put("cFirstName", rs2.getString("cfirstname"));
+						break;
+					case 3:
+						can.put("cLastName", rs2.getString("clastname"));
+						break;
+					case 4:
+						can.put("gender", rs2.getString("gender"));
+						break;
+					case 5:
+						can.put("dob", rs2.getString("cdateofbirth"));
+						break;
+					case 6:
+						can.put("cYear", rs2.getString("cyearofstudy"));
+						break;
+					case 7:
+						can.put("degree", rs2.getString("cdegreeprogram"));
+						break;
+					case 8:
+						can.put("cJobHistory", rs2.getString("cjobhistory"));
+						break;
+					case 9:
+						can.put("cEmail", rs2.getString("cemail"));
+						break;
+					case 10:
+						can.put("cPhoneNumber", rs2.getString("cphonenumber"));
+						break;
+					case 11:
+						can.put("cResumeLink", rs2.getString("cresumelink"));
+						break;
+					case 12:
+						can.put("cDescription", rs2.getString("cdescription"));
+						break;
+					default:
+						System.out.println("Nope nope nope.");
+						break;
+					
+					}//switch
+				}
+				
+				//add can to result
+				result.add(can);
+				
+			}//while			
+			
+		}catch(SQLException x){
+			x.printStackTrace();			
+		}
+		
+		//TEST
+//		System.out.println("FINAL QUERIES:");
+//		System.out.println(finalQuery);
+		
+		//return Candidate List
+		return result;
+		
+		
+	}//Method
+	
+	//
+	//GETTERS AND SETTERS______________________________________-
+	//
+	
+	public String getFinalQuery(){
+		return finalQuery;
+	}
+	
+}//class
+
+/*
+
+//3.0: Overall SELECT cid
 			sql+="SELECT ";
 			//Select the temporary table name to alias the cid.
 			done:
@@ -539,278 +973,22 @@ public class Search {
 				}
 				//remove final '=' sign
 				sql=sql.substring(0, sql.length()-2);
-		
-		}else{
-			// Case 1: (1 Field) Only a single field was entered by the user.
-			
-			//!@#$ continue to fix below for single query, as it was copied from above more complex two+ query level		
-			
-			//3.1 queryString
-			if(hasQueryString){
-				System.out.println("queryString found"); //TEST
-				//a string was entered into the querystring box. Now we attempt to determine what is meant by the user, based on the following list of cases:
-				
-				if(names.length==1){
-				//CASE 1: a signle name was entered	
-					//this could be either a first or last name. Check the count for both
-					String[] value=new String[]{names[0]};
-					
-					Integer first=countAttribute(new Integer[]{2}, value); //cfirstname 2
-					Integer last=countAttribute(new Integer[]{3}, value); //clastname 3
-					
-					//If the counts for either of them are 0, we know that they were probably looking for the other one
-					//(else they searched for a non-existant record)
-					if(first==0&&last==0){
-						//No result for for names[0] as a first or last name
-						System.out.println("No record for "+names[0]+" as either a first or last name.");
-						
-					}else if(first==0&&last!=0){
-						//A result for last name only
-						System.out.println("Last name of "+names[0]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE clastname='"+names[0]+"')";
-					}else if(first!=0&&last==0){
-						//A result for first name only
-						System.out.println("First name of "+names[0]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE cfirstname='"+names[0]+"')";
-					}else if(first!=0&&last!=0){
-						//Results for BOTH first and last name
-						System.out.println("First name AND Last name of "+names[0]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE cfirstname='"+names[0]+"')";
-						sql+=" UNION DISTINCT ";
-						sql+="(SELECT "+attrs+" FROM candidate WHERE clastname='"+names[0]+"')";
-					}else{
-						//error
-						System.out.println("Error. First="+first+",Last="+last);
-					}
-					
-				
-				
-				
-				}else if(names.length>=2){
-				//CASE 2: two names were entered, most likely a first and last (in any order)	
-					
-					//this could be either a 'last/first' OR a 'first/last' situation. We count.
-					String[] values=new String[]{names[0],names[1]};
-					
-					Integer firstLast=countAttribute(new Integer[]{2, 3},values); //2,3: first/last
-					Integer lastFirst=countAttribute(new Integer[]{3, 2},values); //3,2: last/first
-					
-					//If the counts for either of them are 0, we know that they were probably looking for the other one
-					//(else they searched for a non-existant record)
-					if(firstLast==0&&lastFirst==0){
-						//No result for for names[0]names[1] as a first or last name combination
-						System.out.println("No record for "+names[0]+" "+names[1]+" as any first/last name combination.");
-						
-					}else if(firstLast==0&&lastFirst!=0){
-						//A result for lastFirst name only
-						System.out.println("Last First of "+names[0]+" "+names[1]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE clastname='"+names[0]+"' AND cfirstname='"+names[1]+"')";
-					}else if(firstLast!=0&&lastFirst==0){
-						//A result for firstLast name only
-						System.out.println("First Last of "+names[0]+" "+names[1]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE cfirstname='"+names[0]+"' AND clastname='"+names[1]+"')";
-					}else if(firstLast!=0&&lastFirst!=0){
-						//Results for BOTH firstLast AND lastFirst names
-						System.out.println("BOTH FirstLast and Last First for"+names[0]+" "+names[1]+" found.");
-						//statement
-						sql+="(SELECT "+attrs+" FROM candidate WHERE cfirstname='"+names[0]+"' AND clastname='"+names[1]+"')";
-						sql+=" UNION DISTINCT ";
-						sql+="(SELECT "+attrs+" FROM candidate WHERE clastname='"+names[0]+"' AND cfirstname='"+names[1]+"')";
-					}else{
-						//error
-						System.out.println("Error. FirstLast="+firstLast+",LastFirst="+lastFirst);
-					}
-				
-				}//
 
-				
-			}//hasQueryString
-			
-			//3.2 hasQueryNum
-			if(hasQueryNum){
-				System.out.println("queryNum found");
-				//a number was entered into the field. It could be either a phone number or a cid. We count 
-						
-				//count
-				Integer phone=countAttribute(new Integer[]{10}, new String[]{queryNum}); //10 cphonenumber
-				Integer cid=countAttribute(new Integer[]{1}, new String[]{queryNum}); //1 cphonenumber
-				
-				//If the counts for either of them are 0, we know that they were probably looking for the other one
-				//(else they searched for a non-existant record)
-				if(phone==0&&cid==0){
-					//No result for for queryNum as either phone number of cid
-					System.out.println("No record for "+queryNum+" as cid or cphonenumber.");
-					
-				}else if(phone==0&&cid!=0){
-					//A result for cid only
-					System.out.println("cid of "+queryNum+" found.");
-					//statement
-					sql+="(SELECT "+attrs+" FROM candidate WHERE cid='"+queryNum+"')";
-				}else if(phone!=0&&cid==0){
-					//A result for phone only
-					System.out.println("cphonenumber of "+queryNum+" found.");
-					//statement
-					sql+="(SELECT "+attrs+" FROM candidate WHERE cphonenumber='"+queryNum+"')";
-				}else if(phone!=0&&cid!=0){
-					//Results for BOTH phone AND cid names //!@#remove case? can't/shouldn't happen
-					System.out.println("BOTH phone and cid for"+queryNum+" found. Hmmm...");
-					//statement
-					sql+="(SELECT "+attrs+" FROM candidate WHERE cid='"+queryNum+"')";
-					sql+=" UNION DISTINCT ";
-					sql+="(SELECT "+attrs+" FROM candidate WHERE cphonenumber='"+queryNum+"')";
-				}else{
-					//error
-					System.out.println("Error. phone="+phone+",cid="+cid);
-				}
-				
-			}//queryNum
-			
-			//3.3 hasYearInt
-			if(hasYearInt){
-				System.out.println("yearInt found");
-				//a graduating year has been specified
-				
-				//confirm yearLogic
-				if(yearLogic.equalsIgnoreCase("lessThan")){
-					System.out.println("< "+yearInt);
-					//statement
-					sql+="SELECT "+attrs+" FROM "+DataAccessObject.CANDIDATE+" WHERE cyearofstudy < "+yearInt;
-				}else if(yearLogic.equalsIgnoreCase("equal")){
-					System.out.println("== "+yearInt);
-					//statement
-					sql+="SELECT "+attrs+" FROM "+DataAccessObject.CANDIDATE+" WHERE cyearofstudy = "+yearInt;
-				}else if(yearLogic.equalsIgnoreCase("greaterThan")){
-					System.out.println("> "+yearInt);
-					//statement
-					sql+="SELECT "+attrs+" FROM "+DataAccessObject.CANDIDATE+" WHERE cyearofstudy > "+yearInt;
-				}else{
-					//error
-					System.out.println("Error in direction");
-				}
-				
-			}//hasYearInt
-			
-			//3.4 hasArea
-			if(hasArea){
-				System.out.println("area found");
-				//an area has been found
-				System.out.println(""+area);
-			
-				//statement
-				sql+="(SELECT "+attrs+" FROM candidate WHERE cdegreeprogram='"+area+"')";
-			
-			}//hasArea
-			
-			
-		}//1 or More Fields
 
-		
-		
-		//STEP 4: Launch Results and Prepare FINAL QUERY _______________________________________________________________________________________________
-		
-		//Launch/Collect applicable cid's
-		ArrayList<Integer> cidList=new ArrayList<Integer>();
-		try {
-			PreparedStatement ps1=con.prepareStatement(sql);
-			ResultSet rs1=ps1.executeQuery();
-			while(rs1.next()){
-				Integer next=rs1.getInt("cid");
-				cidList.add(next);
-				//note: null's are 0;
-			}	
-		}catch(SQLException x){
-			x.printStackTrace();			
-		}
-		
-		//Create new SQL statement to collect detailed information
-		
-		//User-Requested Attribute for final output
-		String attributes="cid, clastname, cdegreeprogram, cyearofstudy";
-		
-		//newSQL
-		String newSQL="SELECT "+attributes+" FROM "+DataAccessObject.CANDIDATE+" WHERE";
-		
-		
-		boolean results=false;
-		//for every CID in the cidList, add a cid condidtion
-		for(Integer i: cidList){
-			newSQL+=" cid='"+i.toString()+"' OR";
-			results=true;
-		}
-		//Query has results. If extra characters (caused by adding cids) at end, remove them
-		if(results){
-			newSQL=newSQL.substring(0,newSQL.length()-3);//check 5 ? check 4 NO check 3 YES(1,?) //!@#$
-		}else{
-			//Query has no results. Add 0 to the WHERE clause
-			newSQL=newSQL+" 0";
-		}
-		
-		//STEP 5: RESULTSET OPTIONS AND LAUNCH _______________________________________________________________________________________________
-		
-		String resultOptions="";
-		
-		//5.1 OrderBy
-		if(orderBy.equalsIgnoreCase("cid")){
-			resultOptions+="ORDER BY cid";
-		}else if(orderBy.equalsIgnoreCase("cfirstname")){
-			resultOptions+=" ORDER BY cfirstname";
-		}else if(orderBy.equalsIgnoreCase("clastname")){
-			resultOptions+=" ORDER BY clastname";
-		}else{
-			//error
-			System.out.println("shouldnt hell naw be here");
-		}
-		
-		//5.2 orderbydirection
-		
-		if(orderByDirection.equalsIgnoreCase("asc")){
-			resultOptions+=" ASC";
-		}else if(orderByDirection.equalsIgnoreCase("desc")){
-			resultOptions+=" DESC";
-		}else{
-			//Error
-		}
-		
-		//5.3 num results	
-		resultOptions+=" LIMIT "+startOffset+", "+numResults;
-		
-		//5.4 Add to sql
-		newSQL+=" "+resultOptions;
-		
-		
-		//5.5 Lanuch  //!@#$ resume here. Ready to launch/collect and return results
-		try {
-			PreparedStatement ps2=con.prepareStatement(newSQL);
-			ResultSet rs2=ps2.executeQuery();
-			while(rs2.next()){
-				Integer next=rs2.getInt("cid");
-				System.out.println(next);
-				//note: null's are 0;
-			}	
-		}catch(SQLException x){
-			x.printStackTrace();			
-		}
-		
-		//STEP 6 TEST PRINT _____________________________________________________________________________________________
-		
-		
-		System.out.println("FINAL QUERIES:");
-		System.out.println(sql);
-		System.out.println(newSQL);
-		System.out.println("____________________________");
-		
-		
-		
-		return null;
-	}//METHOD
-	
-	
-}//class
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 

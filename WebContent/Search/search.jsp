@@ -19,15 +19,23 @@
 <fieldset>
 <legend>Candidate Search</legend>
 <table width="80%">
-<!-- ROW 1: QUERYSTRING -->
+<!-- ROW 1: First&Last -->
 	<tr>
-			<td>Name:</td>
-			<td><input type="text" name="queryString" size=40></td>
+			<td>First Name:</td>
+			<td><input type="text" name="queryFirst" size=40></td>
 	</tr>
-<!-- ROW 2: QUERYNUM -->
 	<tr>
-			<td>ID or Phone Number</td>
-			<td><input type="text" name="queryNum" size=40></td>
+			<td>Last Name:</td>
+			<td><input type="text" name="queryLast" size=40></td>
+	</tr>
+<!-- ROW 2: Numbers -->
+	<tr>
+			<td>ID Number:</td>
+			<td><input type="text" name="queryID" size=40></td>
+	</tr>
+	<tr>
+			<td>Phone Number:</td>
+			<td><input type="text" name="queryPhone" size=40></td>
 	</tr>
 <!-- ROW 3: Area -->
 	<tr>
@@ -39,7 +47,8 @@
 				
 				<select name="area">
 					<optgroup label="All or None">
-						<option value="null" selected="selected">Any Area/Degree</option>
+						<!-- Any/All option value is empty ("") and not "null". This to not have search pick this attribute. But it might be filtered out with nill detection -->
+						<option value="" selected="selected">Any Area/Degree</option>
 						<option value="None_Of_Above">None Of Above</option>
 					</optgroup>
 					<optgroup label="Management">
@@ -117,9 +126,11 @@
 			<!-- ORDER BY -->
 			Sort the results by 
 			<select name="orderBy">
-				<option value="cid">ID Number</option>
-				<option value="cfirstname">First Name</option>
-				<option value="clastname" selected>Last Name</option>
+				<!-- Note: using the index number of the attribute. ex. cid=1, cfirstname=2, etc -->
+				<option value="1">ID Number</option> 
+				<option value="2">First Name</option>
+				<option value="3" selected>Last Name</option>
+				<option value="6">Graduating Year</option>
 			</select>
 			, in 
 			<!-- DIRECTION -->
@@ -132,10 +143,11 @@
 				<select name="numResults">
 					<option value=1>1</option>
 					<option value=5>5</option>
-					<option value=10 selected>10</option>
-					<option value=25>25</option>
+					<option value=10>10</option>
+					<option value=25 selected>25</option>
 					<option value=50>50</option>
 					<option value=100>100</option>
+					<option value=9000000>All</option>
 				</select>
 				results.			
 			</div>
@@ -170,14 +182,6 @@
 		</td>
 	</tr>
 -->
-<!-- 
-Date Range Query (a later feature, time permitting)
-	<tr>
-		<td><div align="center"><input type="datetime-local" name="begining"></div></td>
-		<td><div align="center"><input type="datetime-local" name="end"></div></td>
-	</tr>
--->
-
 
 
 <!-- Option List V1
