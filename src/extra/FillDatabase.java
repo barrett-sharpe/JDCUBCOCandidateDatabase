@@ -10,8 +10,8 @@ public class FillDatabase {
 
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
-	private static Integer NUM_CANDIDATES=200;
-	private static Integer NUM_COMPANIES=50;
+	private static Integer NUM_CANDIDATES=1;
+	private static Integer NUM_COMPANIES=1;
 	public static DataAccessObject dao2=new DataAccessObject();
 	
 	//Constructor

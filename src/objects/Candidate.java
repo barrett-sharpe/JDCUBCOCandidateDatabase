@@ -17,7 +17,6 @@ public class Candidate implements Serializable {
 	private String cid="";
 	private String cFirstName="";
 	private String cLastName="";
-	//private LocalDate dob=LocalDate.MIN;
 	private Timestamp dob=Timestamp.valueOf("1000-1-1 00:00:00");
 	private Integer cYear=0;
 	public Gender gender=Gender.NotDeclared;
@@ -71,6 +70,32 @@ public class Candidate implements Serializable {
 		//timestamp
 		Timestamp ts=Timestamp.valueOf(date);
 		return ts;
+	}
+	
+	/**
+	 * Helps to form a timestamp, with a given string of the date (most likely the oputput of the Candidate.formStringDate() method)
+	 * @param stringDate
+	 * @return Timestamp
+	 */
+	public static Timestamp formTimestamp(String stringDate){
+		Timestamp ts=Timestamp.valueOf(stringDate+" 00:00:00");
+		return ts;
+	}
+	
+	/**
+	 * Parses a String, containing the date, from an input Timestamp
+	 * @param Timestamp
+	 * @return String
+	 */
+	@SuppressWarnings("deprecation")
+	public static String formStringDate(Timestamp t){
+		String result="";
+		result+=t.getYear()+1900;
+		result+="-";
+		result+=t.getMonth()+1;
+		result+="-";
+		result+=t.getDate();
+		return result;
 	}
 	
 	public void printToConsole(){

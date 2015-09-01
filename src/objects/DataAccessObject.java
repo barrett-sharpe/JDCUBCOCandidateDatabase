@@ -33,8 +33,8 @@ public class DataAccessObject {
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
 	
-	//!@#$local
-	//_________________LocalHost________________________________
+//	//!@#$local
+//	//_________________LocalHost________________________________
 	//
     private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
     private static String DRIVER = "com.mysql.jdbc.Driver";
@@ -42,23 +42,30 @@ public class DataAccessObject {
     private static String DBPASSWORD = "iamroot";
     
 
-	//!@#$webapp
-    //_______________OpenShift PMA via 'rhc port-forward'________________
-    //Admin
+//	//!@#$webapp
+//    //_______________OpenShift PMA via 'rhc port-forward'________________
+//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+//    private static String DBPASSWORD = "Y1TxvCHy--cN";
+//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+    
+    /*
+     * INSTRUCTIONS:
+     * 
+     * Use the following Global Variables in the following use cases.
+     * 
+     */
+    
+//    //!@#$ PORT FORWARDING (rhc port-forward -a candidatedatabase). Use the 'local' methods and 'webapp' credentials above
+   
 //    private static String DBUSERNAME = "adminSjSmTnT";
 //    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    //DB
-//    //private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
 //    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
 //    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     
-    
-    
-    
-    
-    
-    //Varibales
+    //Variables
     private Connection con = null;
     private boolean isCompany;
     

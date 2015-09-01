@@ -83,11 +83,11 @@ We just need some basic information in order to create your account with us.<br>
 		</td>
 	</tr>
 	<tr>
-		<td>Year Of Study (or Graduating Year)</td>
+		<td>Expected Graduating Year</td>
 		<td><input type="text" name='yearOfStudy' value='YYYY'></td>
 	</tr>
 	<tr>
-		<td>Degree/Area of Expertise</td>
+		<td>Area of Degree/Program</td>
 		<td>
 			<select name="area">
 					<!-- <option value="null" selected="selected"></option> -->

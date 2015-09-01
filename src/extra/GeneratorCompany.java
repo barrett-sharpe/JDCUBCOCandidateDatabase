@@ -41,8 +41,9 @@ public class GeneratorCompany {
 			c.setCoTel((random.nextInt(900000000)+100000000)+"");
 			c.setCoDescription("blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
 			c.setCoSocial(c.getCoUrl());
-			c.setCoDateCreated(Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60))));
-			c.setCoDateLastModified(Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60))));
+			Timestamp ts=Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60)));
+			c.setCoDateCreated(ts);
+			c.setCoDateLastModified(ts);
 			//add
 			arr[i]=c;
 		}		

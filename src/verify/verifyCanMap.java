@@ -1,6 +1,6 @@
 package verify;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import objects.CanMap;
@@ -80,14 +80,16 @@ public class verifyCanMap {
 		// 4) DOB (DATE OF BIRTH; yyyy-mm-dd)
 		
 		//variables
-		String dobString=(String)can.get("dob");
+		//String dobString=(String)can.get("dob"); //remote pointed to this line. Unhappy with cast: timestamp cant cast to string
+		Timestamp ts=(Timestamp) can.get("dob");
+		String dobString=ts.toString();
 		String[] arr=dobString.split("-", 3); //!@# ?3 necessary
 		
 		//TEST //!@#
-		for(String a: arr){
-			//System.out.println("arr: '"+a+"'");
-		}
-		LocalDate now=LocalDate.now();
+//		for(String a: arr){
+//			//System.out.println("arr: '"+a+"'");
+//		}
+		
 		boolean valid=true;
 		
 		for(int i=0;i<3;i++){
@@ -99,7 +101,7 @@ public class verifyCanMap {
 				case 0:
 					unit="year";
 					min=1900;
-					max=now.getYear();
+					max=2015; //!@# //hardcodedYear
 					break;
 				case 1:
 					unit="month";
@@ -132,10 +134,14 @@ public class verifyCanMap {
 		
 		if(valid){
 		//CHECK now > dateOfBirth
-		LocalDate givenDOB=LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
-			if(givenDOB.isAfter(now)){
-				problems.add("The Date of Birth provided is invalid. It defines a date that hasn't occured yet ("+givenDOB.toString()+" [yyyy-mm-dd]).");
-			}		
+			
+			//!@#Ignoring the now !> dateOfBirth issue for the moment. See "//hardcodedYear" above
+			
+//		LocalDate givenDOB=LocalDate.of(Integer.parseInt(arr[0]), Integer.parseInt(arr[1]), Integer.parseInt(arr[2]));
+//			if(givenDOB.isAfter(now)){
+//				problems.add("The Date of Birth provided is invalid. It defines a date that hasn't occured yet ("+givenDOB.toString()+" [yyyy-mm-dd]).");
+//			}
+	
 		}	
 		
 		

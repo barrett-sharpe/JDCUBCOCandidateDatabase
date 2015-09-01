@@ -1,6 +1,6 @@
+<%@page import="objects.Candidate"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="verify.verifyCanMap"%>
-<%@page import="java.time.LocalDateTime"%>
 <%@page import="java.sql.Timestamp"%>
 <%@page import="objects.CanMap"%>
 <%@page import="objects.DataAccessObject"%>
@@ -43,7 +43,10 @@ CanMap user=new CanMap();
 	user.put("cid",cid);
 	user.put("cFirstName",request.getParameter("firstName"));
 	user.put("cLastName", request.getParameter("lastName"));
-	user.put("dob", request.getParameter("dateOfBirth"));
+	//Date Of Birth
+	String dob=request.getParameter("dateOfBirth");
+	Timestamp ts=Candidate.formTimestamp(dob); //see if formTimestamp
+	user.put("dob", ts);
 	user.put("cYear", request.getParameter("yearOfStudy"));
 	user.put("gender", request.getParameter("gender"));
 	user.put("degree", request.getParameter("area"));
@@ -74,14 +77,12 @@ CanMap user=new CanMap();
 
 <!-- Redirect To Login Page -->
 <% 
-LocalDateTime now=LocalDateTime.now();//TEST
-
 if(updated){
 	out.println("<h1> Thank you "+request.getParameter("firstName")+" "+request.getParameter("lastName")+"! Information Updated.</h1>" ); 
 	request.getRequestDispatcher("../../protectedPage.jsp").forward(request, response); //THIS ACTUALLY WORKS!!!!
 	//request.getRequestDispatcher("../../protectedPage.jsp").forward(request, response);
 }else{
-	session.setAttribute("UpdateMessage", "Some of the information you entered was not valid. Please try again. [Time: "+now.toString()+" ].");
+	session.setAttribute("UpdateMessage", "Some of the information you entered was not valid. Please try again.");
 	out.println("<h1>Error.</h1>" ); 
 	response.sendRedirect("editCandidate.jsp");
 }

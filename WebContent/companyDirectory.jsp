@@ -41,7 +41,7 @@ ArrayList<CoMap> result=udao.getCompanyDirectory(attrs, 0, 0, 900000);
 
 <!-- Print Table -->
 <%
-out.println("<h3>JDCW: UBCO Company Directory</h3>");
+out.println("<h1>Company Directory for JDC West UBC Okanagan</h1>");
 out.println("<table id=directoryCompany>");
 
 //Print The Column Names, selected by the attribute index []
@@ -89,7 +89,7 @@ for(int i: attrs){
 //Print Column Names
 out.println("<tr>");
 for(String s: columnNames){
-	out.println("<td>"+s+"</td>");
+	out.println("<td><h3><b><u>"+s+"</u></b></h3></td>");
 }
 out.println("</tr>");
 

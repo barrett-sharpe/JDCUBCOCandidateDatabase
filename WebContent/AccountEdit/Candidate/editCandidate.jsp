@@ -1,7 +1,7 @@
 <%@page import="objects.Candidate"%>
 <%@page import="objects.DataAccessObject"%>
 <%@page import="objects.CanMap"%>
-
+<%@page import="java.sql.Timestamp" %>
 <%@page import="java.util.ArrayList" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -134,15 +134,20 @@ Please edit your profile information below, and hit save at the bottom of the pa
 		</td>
 	</tr> 
 	<tr>
+		<%
+		//Change the date
+		Timestamp ts=Timestamp.valueOf(can.get("dob").toString());
+		String dob=Candidate.formStringDate(ts);
+		%>
 		<td>Date Of Birth</td>
-		<td><input type='text' name='dateOfBirth' value='<%=can.get("dob").toString()%>'></td>
+		<td><input type='text' name='dateOfBirth' value='<%=dob%>'></td>
 	</tr>
 	<tr>
-		<td>Year Of Study (or Graduating Year)</td>
+		<td>Expected Graduating Year)</td>
 		<td><input type="text" name='yearOfStudy' value='<%=can.get("cYear").toString()%>'></td>
 	</tr>
 	<tr>
-		<td>Degree/Area of Expertise</td>
+		<td>Area of Degree/Program</td>
 		<td>
 			<select name="area">
 				<!-- JSP to select default value -->

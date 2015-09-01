@@ -42,9 +42,9 @@ public class GeneratorCandidate {
 			c.setcPhoneNumber((random.nextInt(900000000)+100000000)+"");
 			c.setcDescription("blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
 			c.setcJobHistory("blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
-			c.setcDateCreated(Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60))));
-			c.setcDateLastModified(Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60))));
-			
+			Timestamp ts=Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60)));
+			c.setcDateCreated(ts);
+			c.setcDateLastModified(ts);
 			//add
 			arr[i]=c;
 		}//for
