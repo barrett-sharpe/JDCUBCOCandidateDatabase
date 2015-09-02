@@ -22,7 +22,7 @@ public class CanMap implements Map<String, java.lang.Object>{
 		map.put("cid",null);
 		map.put("cFirstName",null);
 		map.put("cLastName", null);
-		map.put("dob", null);
+		map.put("dob", null);  //should be put back as a timestamp
 		map.put("cYear", null);
 		map.put("gender", null);
 		map.put("degree", null);

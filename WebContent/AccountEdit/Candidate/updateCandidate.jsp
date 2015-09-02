@@ -46,7 +46,7 @@ CanMap user=new CanMap();
 	//Date Of Birth
 	String dob=request.getParameter("dateOfBirth");
 	Timestamp ts=Candidate.formTimestamp(dob); //see if formTimestamp
-	user.put("dob", ts);
+	user.put("dob", ts.toString());  //using toString
 	user.put("cYear", request.getParameter("yearOfStudy"));
 	user.put("gender", request.getParameter("gender"));
 	user.put("degree", request.getParameter("area"));

@@ -81,9 +81,13 @@ public class verifyCanMap {
 		
 		//variables
 		//String dobString=(String)can.get("dob"); //remote pointed to this line. Unhappy with cast: timestamp cant cast to string
-		Timestamp ts=(Timestamp) can.get("dob");
+		Timestamp ts=Timestamp.valueOf((String)can.get("dob"));
 		String dobString=ts.toString();
 		String[] arr=dobString.split("-", 3); //!@# ?3 necessary
+		
+		//third split"-" has time. Remove it
+		String[] justDay=arr[2].split(" ");
+		arr[2]=justDay[0];
 		
 		//TEST //!@#
 //		for(String a: arr){

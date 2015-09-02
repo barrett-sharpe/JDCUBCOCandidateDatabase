@@ -62,7 +62,7 @@ public class Candidate implements Serializable {
 		}
 		
 		//String
-		String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)+" 00:00:00";
+		String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)+" 00:00:00.0";
 		
 		//TEST
 		System.out.println(date);
@@ -78,7 +78,7 @@ public class Candidate implements Serializable {
 	 * @return Timestamp
 	 */
 	public static Timestamp formTimestamp(String stringDate){
-		Timestamp ts=Timestamp.valueOf(stringDate+" 00:00:00");
+		Timestamp ts=Timestamp.valueOf(stringDate+" 00:00:00.0");
 		return ts;
 	}
 	

@@ -134,13 +134,17 @@ Please edit your profile information below, and hit save at the bottom of the pa
 		</td>
 	</tr> 
 	<tr>
+		<!-- Date Of Birth -->	
+	
 		<%
 		//Change the date
 		Timestamp ts=Timestamp.valueOf(can.get("dob").toString());
 		String dob=Candidate.formStringDate(ts);
+		//TESTPRINT
+		System.out.println("AccountEdit;\nTimestamp(from CanMap): "+ts.toString()+"\nString dob (in field): "+dob);
 		%>
 		<td>Date Of Birth</td>
-		<td><input type='text' name='dateOfBirth' value='<%=dob%>'></td>
+		<td><input type='text' name='dateOfBirth' value='<%out.println(dob);%>'></td>
 	</tr>
 	<tr>
 		<td>Expected Graduating Year)</td>
