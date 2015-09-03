@@ -27,6 +27,11 @@
 	session.setAttribute("authenticatedUser", user);
 %>
 
+<!-- Logout -->
+<%
+out.println("<a href=\"logout.jsp\">Log Out</a>");
+%>
+
 <!-- Header -->
 <%
 out.println("<h1> Welcome back, " + user + ".</h1>");

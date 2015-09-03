@@ -56,13 +56,17 @@
 	Map<String, Object> c=access.getUser(usr);
 	String id="";
 	if(isCompany){
-		//Company
 		valid=access.validateCompany(usr, pswd);
-		id=c.get("coid").toString(); 
+		//if Company is valid, get coid
+		if(valid){
+			id=c.get("coid").toString(); 
+		}
 	}else{
-		//Candidate
 		valid=access.validateCandidate(usr, pswd);
-		id=c.get("cid").toString();
+		//if Candidate is valid, get cid number
+		if(valid){
+			id=c.get("cid").toString();
+		}
 	}
 	
 	

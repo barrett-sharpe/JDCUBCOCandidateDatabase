@@ -18,12 +18,7 @@
 <%!Company co;%>
 <%!DataAccessObject dao=new DataAccessObject();%>
 
-<!-- TEST: URL Parameter Parsing -->
-<%
-//String val1=request.getParameter("val1");
-//String val2=request.getParameter("val1");
-//out.println("Val1: "+val1+"; Val2: "+val2+";");
-%>
+
 <!-- Session -->
 <%
 	// Grab session object from request.
@@ -33,6 +28,12 @@
 	String id = (String) session.getAttribute("uid");
 	boolean isCompany = Boolean.parseBoolean(String.valueOf(session.getAttribute("isCompany")));
 %>
+
+<!-- Back Button -->
+<%
+out.println("<a href=\"protectedPage.jsp\">Return To Page</a>");
+%>
+
 <!-- Page Title / Grab user from DB -->
 <%
 	if(isCompany){

@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<!-- Back Button -->
+<%
+out.println("<a href=\"../protectedPage.jsp\">Return To Page</a>");
+%>
 <!-- Error Message -->
 <p>Potential Error Message</p>
 

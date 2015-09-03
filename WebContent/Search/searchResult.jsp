@@ -51,6 +51,10 @@
 	
 %>
 
+<!-- Back Button -->
+<%
+out.println("<a href=\"search.jsp\">Return To Search</a>");
+%>
 <!-- Header -->
 <h3>Search Results for Candidates:</h3>
 <ul>

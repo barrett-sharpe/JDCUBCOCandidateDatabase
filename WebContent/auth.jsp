@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Authenticating User...</title>
 </head>
 <body>
+
 <%
 	Object authUser= session.getAttribute("authenticatedUser");
 	boolean authenticated = (authUser==null)? false : true;

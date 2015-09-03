@@ -1,3 +1,4 @@
+<%@page import="objects.Captcha"%>
 <%@page import="objects.DataAccessObject"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
@@ -14,8 +15,11 @@
 <%!
 String username="";
 String password="";
+String captchaInput="";
+String capid="";
 Integer cid=0;
 boolean exists=true;
+boolean capCorrect=false;
 DataAccessObject dao=new DataAccessObject();
 %>
 
@@ -26,6 +30,10 @@ DataAccessObject dao=new DataAccessObject();
 	//Collect the username (uname) entered by the user, from the session.
 	username = request.getParameter("uname");
 	password = request.getParameter("pword");
+	//Collect the captcha input
+	captchaInput=request.getParameter("capinput");
+	//capid = request.getParameter("capid").toString(); //this for som ereason throws an error
+	
 	
 	//Clean session of unwanted attributes
 	session.removeAttribute("authenticatedUser");
@@ -35,22 +43,35 @@ DataAccessObject dao=new DataAccessObject();
 	%>
 <!-- Attempt to add the Candidate to the db -->
 <%
+	//Validate captcha
+	Captcha c=new Captcha();
+	Integer id=Integer.parseInt(capid);
+	capCorrect=c.validateCaptchaAnswer(captchaInput, id );
+
+	//Check If User Already Exists
 	exists=dao.userInCandidateDB(username);
-	if(!exists){
+	
+	//Attempt to add if human and available. Beep Boop Beep.
+	if(!exists && capCorrect){
+		//add
 		cid=dao.addCredentialsCandidate(username, password);
 	}
 %>
 
 <!-- Redirects-->
 <% 
-	if(!exists){
-		out.println("<h1> Thank you "+username+"!</h3>" ); 
+	if(!exists && capCorrect){
+		out.println("<h1> Thank you "+username+" !</h3>" ); 
 		session.setAttribute("cid", cid);
 		response.sendRedirect("createCandidate.jsp");
+	}else if(!exists && !capCorrect){
+		out.println("<h1>Invalid</h1>");
+		session.setAttribute("CandidateCredentialsMessage", "The captcha entered was incorrect. However, the username '"+username+"' is still available, so lucky for you!");
+		response.sendRedirect("createCandidateCredentials.jsp");	
 	}else{
 		out.println("<h1>Invalid</h1>");
 		session.setAttribute("CandidateCredentialsMessage", "The username '"+username+"' already exists. Please choose another username.");
-		response.sendRedirect("createCandidateCredentials.jsp");	
+		response.sendRedirect("createCandidateCredentials.jsp");
 	}
 %>
 

@@ -79,8 +79,8 @@ CanMap user=new CanMap();
 <% 
 if(updated){
 	out.println("<h1> Thank you "+request.getParameter("firstName")+" "+request.getParameter("lastName")+"! Information Updated.</h1>" ); 
-	request.getRequestDispatcher("../../protectedPage.jsp").forward(request, response); //THIS ACTUALLY WORKS!!!!
-	//request.getRequestDispatcher("../../protectedPage.jsp").forward(request, response);
+	//request.getRequestDispatcher("../../protectedPage.jsp").forward(request, response); //This works only once.
+	response.sendRedirect("../../protectedPage.jsp"); //This works for double
 }else{
 	session.setAttribute("UpdateMessage", "Some of the information you entered was not valid. Please try again.");
 	out.println("<h1>Error.</h1>" ); 

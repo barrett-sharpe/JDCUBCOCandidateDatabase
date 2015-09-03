@@ -39,6 +39,11 @@ ArrayList<CoMap> result=udao.getCompanyDirectory(attrs, 0, 0, 900000);
 
 %>
 
+<!-- Back Button -->
+<%
+out.println("<a href=\"protectedPage.jsp\">Return To Page</a>");
+%>
+
 <!-- Print Table -->
 <%
 out.println("<h1>Company Directory for JDC West UBC Okanagan</h1>");

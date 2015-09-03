@@ -5,16 +5,8 @@
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
     <welcome-file>index.jsp</welcome-file>
-    <!-- 
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    -->
     <welcome-file>homePage.jsp</welcome-file>
   </welcome-file-list>
-  
-  <!-- JSP File Aliases -->
-  
   <servlet>
     <servlet-name>Login Choice</servlet-name>
     <jsp-file>/homePage.jsp</jsp-file>
@@ -23,15 +15,12 @@
     <servlet-name>Login Portal</servlet-name>
     <jsp-file>/login.jsp</jsp-file>
   </servlet>
-  
-
-<!-- URL Aliases -->
   <servlet-mapping>
     <servlet-name>Login Choice</servlet-name>
-    <url-pattern>/loginChoice</url-pattern> <!-- Any URL you want here -->
+    <url-pattern>/loginChoice</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Login Portal</servlet-name>
-    <url-pattern>/loginPortal</url-pattern> <!-- Any URL you want here -->
+    <url-pattern>/loginPortal</url-pattern>
   </servlet-mapping>
 </web-app>

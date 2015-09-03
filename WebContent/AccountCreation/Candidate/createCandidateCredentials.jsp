@@ -1,3 +1,4 @@
+<%@page import="objects.Captcha"%>
 <%@page import="objects.DataAccessObject"%>
 
 <%@page import="java.util.ArrayList" %>
@@ -12,9 +13,9 @@
 </head>
 <body>
 
-<h1>Join JDC West Today!</h1>
+<h1>Join the JDC West UBC Okanagan Candidate Database Today!</h1>
 <h3>
-Please create a username and password for your account.<br>
+Please create a Username and a Password for your new account.<br>
 </h3>
 	
 <!-- Print Prior Error Account Message If Needed -->
@@ -25,6 +26,11 @@ Please create a username and password for your account.<br>
 
 <!-- Account Form -->
 <form name="CandidateCredentialsForm" action="addCandidateCredentials.jsp" method=POST>
+
+<fieldset >
+<legend>Step 1: Account</legend>
+
+
 	<table width="70%">
 	<tr>
 		<td>Username:</td>
@@ -35,10 +41,28 @@ Please create a username and password for your account.<br>
 		<td><input type='password' name='pword' value=''></td>
 	</tr>	
 	</table>
+</fieldset>
+
+<fieldset>
+<legend>Step 2: Captcha</legend>
+
+	<!-- //Capcha -->
+	Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)
+	<%
+	Captcha c=new Captcha();
+	Integer id=c.getRandomCaptchaID();
+	request.setAttribute("capid", id.toString());
+	System.out.println("CreateCandidateCredentials\n-id:"+id);
+	%>
+	<br>
+	<img src="${pageContext.request.contextPath}/captcha?capid=<%=id%>" />
+	<br>
+	<input type="text" name='capinput'>
+	<br>
 	
-	<!-- //!@# Future Capcha to go here -->
-	Capcha Here
+</fieldset>	
 	
+	<br>
 	<br>
 	<input type="submit" name="submit" value="Create Account">
 </form>
