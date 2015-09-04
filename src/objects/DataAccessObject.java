@@ -35,20 +35,20 @@ public class DataAccessObject {
 	
 //	//!@#$local
 //	//_________________LocalHost________________________________
-//	//
-//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
-//    private static String DBUSERNAME = "iamroot";
-//    private static String DBPASSWORD = "iamroot";
+	//
+    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
+    private static String DBUSERNAME = "iamroot";
+    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
-    //_______________OpenShift PMA via 'rhc port-forward'________________
-    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-    private static String DBPASSWORD = "Y1TxvCHy--cN";
-    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    //_______________OpenShift PMA via 'rhc port-forward'________________
+//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+//    private static String DBPASSWORD = "Y1TxvCHy--cN";
+//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -81,13 +81,13 @@ public class DataAccessObject {
     	DBPASSWORD=db_password;
     	
 //!@#$local
-//    	//Establish Connection
-//    	if(checkForDriver()==true){
-//    		establishConnection();
-//    	}
+    	//Establish Connection
+    	if(checkForDriver()==true){
+    		establishConnection();
+    	}
     	
 //!@#$webapp
-    	establishConnection();
+//   	establishConnection();
     	
     }
 	
@@ -115,35 +115,32 @@ public class DataAccessObject {
     }
 
 //!@#$webapp establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-    		InitialContext ic = new InitialContext();
-    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    	    con = datasource.getConnection();
-			
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		} catch (NamingException e) {
-			System.err.println("I couldn't open the connection. A Naming Exception");
-			e.printStackTrace();
-		}
-    	
-    	
-    }    
-    
-//!@#$local establishConnection
 //    public void establishConnection(){
 //    	con=null;
 //    	try {
-//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//    		InitialContext ic = new InitialContext();
+//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+//    	    con = datasource.getConnection();		
 //		} catch (SQLException e) {
 //			System.err.println("I couldn't open the connection.");
 //			e.printStackTrace();
-//		}
-//    }
+//		} catch (NamingException e) {
+//			System.err.println("I couldn't open the connection. A Naming Exception");
+//			e.printStackTrace();
+//		}    	
+//    }    
+    
+//!@#$local establishConnection
+    public void establishConnection(){
+    	con=null;
+    	try {
+			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection.");
+			e.printStackTrace();
+		}
+    }
 
     
     /**

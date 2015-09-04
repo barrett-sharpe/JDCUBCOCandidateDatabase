@@ -30,10 +30,11 @@ DataAccessObject dao=new DataAccessObject();
 	//Collect the username (uname) entered by the user, from the session.
 	username = request.getParameter("uname");
 	password = request.getParameter("pword");
-	//Collect the captcha input
-	captchaInput=request.getParameter("capinput");
-	//capid = request.getParameter("capid").toString(); //this for som ereason throws an error
 	
+	//Collect the Captcha Input
+	captchaInput=request.getParameter("capinput");
+	//capid = (String)request.getSession().getAttribute("capid").toString(); //from internet. Works also!!! Inspired below line
+	capid=session.getAttribute("capid").toString();
 	
 	//Clean session of unwanted attributes
 	session.removeAttribute("authenticatedUser");
@@ -43,11 +44,11 @@ DataAccessObject dao=new DataAccessObject();
 	%>
 <!-- Attempt to add the Candidate to the db -->
 <%
-	//Validate captcha
+	//VALIDATE CAPTCHA
 	Captcha c=new Captcha();
-	Integer id=Integer.parseInt(capid);
+	Integer id=Integer.parseInt(capid);//capid
 	capCorrect=c.validateCaptchaAnswer(captchaInput, id );
-
+	System.out.println("capCorrect:"+capCorrect);//TEST
 	//Check If User Already Exists
 	exists=dao.userInCandidateDB(username);
 	

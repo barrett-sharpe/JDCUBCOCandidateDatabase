@@ -110,3 +110,7 @@ public class Captcha {
 	
 	
 }//class
+
+/*
+ * Assistance from: https://akiraly.github.io/cage/quickstart.html
+*/

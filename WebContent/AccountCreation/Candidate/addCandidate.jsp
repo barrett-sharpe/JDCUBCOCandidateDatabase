@@ -1,7 +1,7 @@
 <%@page import="java.time.LocalDate"%>
 <%@page import="verify.verifyCanMap"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.time.LocalDateTime"%>
+
 <%@page import="java.sql.Timestamp"%>
 <%@page import="objects.CanMap"%>
 <%@page import="objects.DataAccessObject"%>
@@ -72,8 +72,12 @@ CanMap user=new CanMap();
 	user.put("cPhoneNumber", request.getParameter("phoneNumber"));
 	user.put("cDescription", request.getParameter("briefBiography"));
 	user.put("cJobHistory", request.getParameter("jobHistory"));
-	user.put("cDateCreated", Timestamp.valueOf(LocalDateTime.now()).toString());
-	user.put("cDateLastModified", Timestamp.valueOf(LocalDateTime.now()).toString()); //didn't seem to work: Timestamp.valueOf("1000-1-1 00:00:00")
+	//ORIGINALS: might still work
+	//user.put("cDateCreated", Timestamp.valueOf(LocalDateTime.now()).toString());
+	//user.put("cDateLastModified", Timestamp.valueOf(LocalDateTime.now()).toString()); //didn't seem to work: Timestamp.valueOf("1000-1-1 00:00:00")
+	//NEW: seems to also work, but check new candidates in db
+	user.put("cDateCreated", Timestamp.valueOf("1000-1-1 00:00:00").toString());
+	user.put("cDateLastModified", Timestamp.valueOf("1000-1-1 00:00:00").toString());
 	
 	//verify CanMap
 	ArrayList<String> problems=verifyCanMap.verify(user);

@@ -46,13 +46,13 @@ Please create a Username and a Password for your new account.<br>
 <fieldset>
 <legend>Step 2: Captcha</legend>
 
-	<!-- //Capcha -->
-	Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)
+Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)
+
+	<!-- //Capcha -->	
 	<%
 	Captcha c=new Captcha();
 	Integer id=c.getRandomCaptchaID();
-	request.setAttribute("capid", id.toString());
-	System.out.println("CreateCandidateCredentials\n-id:"+id);
+	session.setAttribute("capid", id.toString()); //this makes it work!
 	%>
 	<br>
 	<img src="${pageContext.request.contextPath}/captcha?capid=<%=id%>" />
@@ -66,6 +66,5 @@ Please create a Username and a Password for your new account.<br>
 	<br>
 	<input type="submit" name="submit" value="Create Account">
 </form>
-
 </body>
 </html>
