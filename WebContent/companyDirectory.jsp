@@ -96,8 +96,13 @@ out.println("<tr>");
 for(String s: columnNames){
 	out.println("<td><h3><b><u>"+s+"</u></b></h3></td>");
 }
+
+	//TEST Extra row for buttons
+	out.println("<td><h3><b><u>Profile</u></b></h3></td>");
+
 out.println("</tr>");
 
+			
 //Print Company Directory
 for(CoMap c:result){
 	String row="";
@@ -112,10 +117,16 @@ for(CoMap c:result){
 			row+="<td>"+o.toString()+"</td>";
 		}		
 	}
+	
+	//Print "Full Profile" buttons
+	String id=(String)c.get("coid");
+	row+="<td><form name='toProfile' method=post action='Profile.jsp?uid="+id+"&isCompany="+"true"+"'><input type='submit' value='Full Profile'></form></td>";
+	
+	//finalize and print row
 	row+="</tr>";
-	//print row
 	out.println(row);
-}
+}//each row
+
 out.println("</table>");
 
 %>

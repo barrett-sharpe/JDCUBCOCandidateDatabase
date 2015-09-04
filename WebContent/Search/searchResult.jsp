@@ -183,7 +183,10 @@ out.println("<tr>");
 for(String s: columnNames){
 	out.println("<td><b><u>"+s+"</u></b></td>");
 }
+//Profile Column
+out.println("<td><b><u>Profile</u></b></td>");
 out.println("</tr>");
+
 
 //Print Company Directory
 for(CanMap c:result){
@@ -199,8 +202,14 @@ for(CanMap c:result){
 			row+="<td>"+o.toString()+"</td>";
 		}		
 	}
+	//Print "Full Profile" buttons
+	String id=(String)c.get("cid");
+	row+="<td><form name='toProfile' method=post action='../Profile.jsp?uid="+id+"&isCompany="+"false"+"'><input type='submit' value='Full Profile'></form></td>";
+		
+	
+	
+	//finish and print row
 	row+="</tr>";
-	//print row
 	out.println(row);
 }
 out.println("</table>");

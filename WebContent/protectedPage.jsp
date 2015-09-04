@@ -56,9 +56,12 @@ out.println("<h1> Welcome back, " + user + ".</h1>");
 		out.println("<h3><u><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Profile</a></u></h3>");
 		out.println("<h3><u><a href='companyDirectory.jsp'> Company Directory</a></u></h3>");
 		
-		//!@# to do
-		out.println("<h3><p>To Do:</p></h3>");
-		
+		//profile by GET method; Ava ... WORKS!
+		//String id="";
+		//String isCo="";
+		//out.println("<form name='toProfile' method=post action='profilePage2.jsp?uid="+id+"&isCompany="+isCo+"'>");
+		//out.println("<input type='submit' value='Full Profile'>");
+		//out.println("</form>");
 	}
 
 %>
