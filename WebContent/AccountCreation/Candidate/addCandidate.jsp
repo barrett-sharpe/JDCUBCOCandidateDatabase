@@ -1,7 +1,6 @@
-<%@page import="java.time.LocalDate"%>
+<%@page import="objects.Candidate"%>
 <%@page import="verify.verifyCanMap"%>
 <%@page import="java.util.ArrayList"%>
-
 <%@page import="java.sql.Timestamp"%>
 <%@page import="objects.CanMap"%>
 <%@page import="objects.DataAccessObject"%>
@@ -55,6 +54,8 @@ CanMap user=new CanMap();
 		dob+="0";
 	}
 	dob+=d.toString();
+	//Use Candidate.formTimestamp() with above date
+	dob=Candidate.formTimestamp(dob).toString();
 %>
 	
 <!-- Attempt to add the Candidate to the DB -->
