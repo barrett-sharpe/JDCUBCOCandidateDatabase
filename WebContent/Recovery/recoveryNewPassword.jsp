@@ -7,6 +7,10 @@
 <title>Set New Password</title>
 </head>
 <body>
+<!-- Authorized Page -->
+<%@ include file="../auth.jsp"%>
+
+
 <!-- Title -->
 <h1>Enter Your New Password</h1>
 <p>Please enter your new password below. Retype your password to confirm.
@@ -23,11 +27,11 @@
 	<table width="40%">
 		<tr>
 			<td><div align="right">New Password:</div></td>
-			<td><input type="text" name="pass1" size=20 value=""></td>
+			<td><input type="password" name="pass1" size=20 value=""></td>
 		</tr>
 		<tr>
 			<td><div align="right">Retype:</div></td>
-			<td><input type="text" name="pass2" size=20 value=""></td>
+			<td><input type="password" name="pass2" size=20 value=""></td>
 		</tr>
 	</table>
 	<input type="submit" name="Submit" value="Change Password">

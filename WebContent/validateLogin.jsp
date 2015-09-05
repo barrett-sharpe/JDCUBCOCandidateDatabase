@@ -44,7 +44,7 @@
 	//Collect the username (usr) and password (psw), entered by the user, from the session.
 	usr = request.getParameter("username");
 	pswd = request.getParameter("password");
-	System.out.println("Username: "+usr+"\nPassword: "+pswd+"."); //TESTPrint
+	//System.out.println("Username: "+usr+"\nPassword: "+pswd+"."); //TESTPrint
 	%>
 	
 	

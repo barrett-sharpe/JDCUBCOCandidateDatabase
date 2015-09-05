@@ -17,7 +17,6 @@ session.invalidate();
 %>
 
 <!-- Redirect to External Page -->
-<!--<jsp:forward page="http://www.google.ca/"></jsp:forward>-->
 <%
 //String site="http://www.google.ca/";
 //response.setStatus(response.SC_MOVED_TEMPORARILY);

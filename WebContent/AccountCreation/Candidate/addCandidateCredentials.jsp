@@ -72,13 +72,16 @@ if(!(recoveryString.equals(rerecov))){
 	Integer id=Integer.parseInt(capid);//capid
 	capCorrect=c.validateCaptchaAnswer(captchaInput, id );
 	System.out.println("capCorrect:"+capCorrect);//TEST
-	//Check If User Already Exists
-	exists=dao.userInCandidateDB(username);
+	
+	//Check If User Already Exists //!@#$problem. Need to check both db's because "user" candidate == "user" company
+	if(!dao.userInCandidateDB(username)&&!dao.userInCompanyDB(username)){
+		exists=false;
+	}
 	
 	//Attempt to add if human and available. Beep Boop Beep.
 	if(!exists && capCorrect){
 		//add
-		cid=dao.addCredentialsCandidate(username, password); //!@#$ RESUME HERE needs to add recoveryString
+		cid=dao.addCredentialsCandidate(username, password, recoveryString);
 	}
 %>
 

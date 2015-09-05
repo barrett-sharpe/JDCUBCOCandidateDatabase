@@ -28,7 +28,7 @@
 		</tr>
 		<tr>
 			<td><div align="right">Recovery String:</div></td>
-			<td><input type="text" name="token" size=20 value=""></td>
+			<td><input type="password" name="token" size=20 value=""></td>
 		</tr>
 	</table>
 	<input type="submit" name="Submit" value="Recover">

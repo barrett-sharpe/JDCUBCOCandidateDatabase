@@ -1,3 +1,4 @@
+<%@page import="objects.DataAccessObject"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,9 +9,20 @@
 </head>
 <body>
 
+<!-- Authorized Page -->
+<%@ include file="../auth.jsp"%>
+
 <!-- Declarations and Constants -->
 	<%! String pass1; %>
 	<%! String pass2; %>
+
+<!-- Variables -->
+<%
+session=request.getSession();
+String user=(String)session.getAttribute("authenticatedUser");
+//TEST
+System.out.println("got the username "+user+" from the session");
+%>
 
 <!-- Session Object Request for Passwords-->
 	<%
@@ -35,12 +47,21 @@ if(!pass1.equals(pass2)){
 %>
 
 <!-- DAO update (METHODS TO UPDATE PASSWOR DNOT IN PLACE YET. forward to login -->
+<%
+DataAccessObject dao=new DataAccessObject();
+boolean reset=dao.resetPassword(user, pass1);
 
-<%request.getRequestDispatcher("../login.jsp").forward(request, response); %>
+//if properly reset
+if(reset){
+	request.getRequestDispatcher("../login.jsp").forward(request, response);
+}else{
+	session.setAttribute("recoveryNewPasswordMessage", "There was an error reseting your password. Please try again.");
+	response.sendRedirect("recoveryNewPassword.jsp");
+}
+			
+%>
 
-<!-- UNFUNCTIONAL AT THE MOMENT -->
-
-DO DO DO DO DO DOD ODODODODODODDODODODO
+<!-- request.getRequestDispatcher("../login.jsp").forward(request, response); -->
 
 
 

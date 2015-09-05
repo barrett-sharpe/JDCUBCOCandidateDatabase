@@ -35,20 +35,20 @@ public class DataAccessObject {
 	
 //	//!@#$local
 //	//_________________LocalHost________________________________
-	//
-    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
-    private static String DBUSERNAME = "iamroot";
-    private static String DBPASSWORD = "iamroot";
+//	//
+//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "iamroot";
+//    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
-//    //_______________OpenShift PMA via 'rhc port-forward'________________
-//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
+    //_______________OpenShift PMA via 'rhc port-forward'________________
+    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+    private static String DBPASSWORD = "Y1TxvCHy--cN";
+    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -81,13 +81,13 @@ public class DataAccessObject {
     	DBPASSWORD=db_password;
     	
 //!@#$local
-    	//Establish Connection
-    	if(checkForDriver()==true){
-    		establishConnection();
-    	}
+//    	//Establish Connection
+//    	if(checkForDriver()==true){
+//    		establishConnection();
+//    	}
     	
 //!@#$webapp
-// 	establishConnection();
+ 	establishConnection();
     	
     }
 	
@@ -115,32 +115,32 @@ public class DataAccessObject {
     }
 
 //!@#$webapp establishConnection
-//    public void establishConnection(){
-//    	con=null;
-//    	try {
-//    		InitialContext ic = new InitialContext();
-//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-//    	    con = datasource.getConnection();		
-//		} catch (SQLException e) {
-//			System.err.println("I couldn't open the connection.");
-//			e.printStackTrace();
-//		} catch (NamingException e) {
-//			System.err.println("I couldn't open the connection. A Naming Exception");
-//			e.printStackTrace();
-//		}    	
-//    }    
-    
-//!@#$local establishConnection
     public void establishConnection(){
     	con=null;
     	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    con = datasource.getConnection();		
 		} catch (SQLException e) {
 			System.err.println("I couldn't open the connection.");
 			e.printStackTrace();
-		}
-    }
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
+		}    	
+    }    
+    
+//!@#$local establishConnection
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
 
     
     /**
@@ -319,8 +319,10 @@ public class DataAccessObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
-    	
+    	//update check
+    	if(up==0){
+    		return 0;
+    	}   
     	//ADDED: Add recovery token
     	boolean r=createAndAddRecoveryString(username, recoveryToken);
     	if(!r){
@@ -328,10 +330,6 @@ public class DataAccessObject {
     	}
     	
     	
-    	//update check
-    	if(up==0){
-    		return 0;
-    	}   	
     	//TEST PRINT
     	//System.out.println("Credential Instantiation Success: \""+username+"\" was added to the database.");
     	
@@ -356,7 +354,7 @@ public class DataAccessObject {
      * @param password
      * @return Integer, of the new CID of the Candidate. (0 if error)
      */
-    public Integer addCredentialsCandidate(String username, String password){       	
+    public Integer addCredentialsCandidate(String username, String password, String recoveryString){       	
     	//First, check db if credentials already exist.
     	if(userInCandidateDB(username)){
     		return 0;
@@ -400,6 +398,13 @@ public class DataAccessObject {
     	if(up==0){
     		return 0;
     	}
+    	//ADDED: Add recovery token
+    	boolean r=createAndAddRecoveryString(username, recoveryString);
+    	if(!r){
+    		return 0;
+    	}
+    	
+    	
     	//TEST PRINT
     	//System.out.println("Credential Instantiation Success: \""+username+"\" was added to the database.");
     	
@@ -698,8 +703,10 @@ public class DataAccessObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    	
-    	
+    	//update check
+    	if(up==0){
+    		return 0;
+    	}  
     	//ADDED: Add recovery token
     	boolean r=createAndAddRecoveryString(username, recoveryToken);
     	if(!r){
@@ -707,10 +714,6 @@ public class DataAccessObject {
     	}
     	
     	
-    	//update check
-    	if(up==0){
-    		return 0;
-    	}   	
     	//TEST PRINT
     	//System.out.println("Credential Instantiation Success: \""+username+"\" was added to the database.");
     	
@@ -734,7 +737,7 @@ public class DataAccessObject {
      * @param password
      * @return Integer, of the new Company's COID. (0, if error)
      */
-    public Integer addCredentialsCompany(String username, String password){       	
+    public Integer addCredentialsCompany(String username, String password, String recoveryString){       	
     	//First, check db if credentials already exist.
     	if(userInCompanyDB(username)){
     		return 0;
@@ -771,11 +774,17 @@ public class DataAccessObject {
 			up=ps.executeUpdate();	
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
+		}
     	//update check
     	if(up==0){
     		return 0;
     	}
+    	//ADDED: Add recovery token
+    	boolean r=createAndAddRecoveryString(username, recoveryString);
+    	if(!r){
+    		return 0;
+    	}
+    	
     	//System.out.println("Credential Instantiation Success: \""+username+"\" was added to the database."); //TEST PRINT
     	return newCOID;	
     }
@@ -863,12 +872,80 @@ public class DataAccessObject {
 		return result;
     }
     
+    
+    //
+    //
+    //
+    //Password Resetting______________________________________________________________________________________
+    //
+    //
+    
+    public boolean resetPassword(String username, String newPassword){
+    	//Step 1: determine isComp
+    	boolean isComp=getIsCompany(username);
+    	
+    	//Step 2: Hash the password using the user's salt   	
+    	//Fetch User's Salt
+    	String salt="";
+    	try{
+			PreparedStatement stmt3= con.prepareStatement("SELECT salt FROM "+(isComp? CODB : CANDB)+" WHERE username=?;");/////
+			stmt3.setString(1, username);
+			ResultSet rst3= stmt3.executeQuery();
+			rst3.first();
+			salt=rst3.getString("salt");
+    	}catch(SQLException x){
+    		x.printStackTrace();
+    	}
+    	
+    	//The user's password hash function must now be computed
+    	//PasswordHash.pbkdf2Public() to compute hash
+		byte[] passwordHash = null;
+		try {
+			passwordHash=PasswordHash.pbkdf2Public(newPassword.toCharArray(), salt.getBytes(), PasswordHash.PBKDF2_ITERATIONS, PasswordHash.HASH_BYTE_SIZE);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+		String stringHashPassword=PasswordHash.toHexPublic(passwordHash);
+    	
+    	
+    	//Step 3: update/add StringHashPassword to db
+    	Integer up=0;
+    	try {
+			PreparedStatement ps=con.prepareStatement("UPDATE "+(isComp? CODB : CANDB)+" SET passwordhash= ? WHERE username=?");
+			ps.setString(1, stringHashPassword);
+			ps.setString(2, username);
+			up=ps.executeUpdate();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	    	
+//    	//TEST PRINTING TO CONSOLE
+//    	String print="createAndAddRecoveryString() Method Variables:\n";
+//    	print+="Inputs:\n\tusername:"+username+"\n\t(input)token:"+token; //inputs
+//    	print+="\n\nOutputs\n\t(DB)salt:"+salt; //outputs
+//    	print+="\nComputed stringHashToken:"+stringHashToken; //computed token hash
+//    	//print
+//    	System.out.println(print);
+    	
+    	
+    	//update check
+    	if(up==0){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    
    //
     //
     //
     //RecoveryString______________________________________________________________________________________________________________
     //
     //
+    
+    
     /**
      * Used to create/update a user's recoveryString in the database, given a username and the plaintext token. 
      * @param username

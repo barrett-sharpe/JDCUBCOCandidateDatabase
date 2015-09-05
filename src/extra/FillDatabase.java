@@ -11,8 +11,8 @@ public class FillDatabase {
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
 	private static String RECOVERY="forgot"; //ALL RECOVERYSTRINGS ARE "forgot" !!!
-	private static Integer NUM_CANDIDATES=1;
-	private static Integer NUM_COMPANIES=1;
+	private static Integer NUM_CANDIDATES=10;
+	private static Integer NUM_COMPANIES=10;
 	public static DataAccessObject dao2=new DataAccessObject();
 	
 	//Constructor
@@ -67,8 +67,6 @@ public class FillDatabase {
 	public static void main(String[] args) {
 		FillDatabase.fill(true,NUM_COMPANIES);
 		FillDatabase.fill(false,NUM_CANDIDATES);
-		//System.out.println(dao2.nextAvailableCID());
-		//System.out.println(dao2.nextAvailableCOID());
 	}//main
 
 }//class

@@ -46,8 +46,7 @@ out.println("<h1> Welcome back, " + user + ".</h1>");
 		//Company
 		out.println("<h3><u><a href='profilePage.jsp'> View Company's Profile</a></u></h3>");
 		out.println("<h3><u><a href='Search/search.jsp'>Search For A Candidate</a></u></h3>");
-		//!@# to do
-		out.println("<h3><p>To Do:</p></h3>");
+		out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></u></h3>");
 		out.println("<h3><u> Edit Company Profile</u></h3>");
 		
 	}else{
@@ -55,6 +54,7 @@ out.println("<h1> Welcome back, " + user + ".</h1>");
 		out.println("<h3><u><a href='profilePage.jsp'> View Your Profile</a></u></h3>");
 		out.println("<h3><u><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Profile</a></u></h3>");
 		out.println("<h3><u><a href='companyDirectory.jsp'> Company Directory</a></u></h3>");
+		out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></u></h3>");
 		
 		//profile by GET method; Ava ... WORKS!
 		//String id="";
