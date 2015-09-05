@@ -10,6 +10,7 @@ public class FillDatabase {
 
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
+	private static String RECOVERY="forgot"; //ALL RECOVERYSTRINGS ARE "forgot" !!!
 	private static Integer NUM_CANDIDATES=1;
 	private static Integer NUM_COMPANIES=1;
 	public static DataAccessObject dao2=new DataAccessObject();
@@ -29,7 +30,7 @@ public class FillDatabase {
 			//for each company
 			for(Company c: arr){
 				//username:(lowercase/nospaces anywhere)name+[random number 0-99]
-				dao.addCredentialsCompany(c.getCoName().toLowerCase().replaceAll(" ", "")+(rand.nextInt(100)), PASSWORD,c.getCoid());
+				dao.addCredentialsCompany(c.getCoName().toLowerCase().replaceAll(" ", "")+(rand.nextInt(100)), PASSWORD, RECOVERY, c.getCoid());
 				if(!dao.addCompany(c.getCompany())){
 					count--;
 				}
@@ -39,7 +40,7 @@ public class FillDatabase {
 			//for each candidate
 			for(Candidate c: arr2){
 				//username:(lowercase)firstlast+[random number 0-999]
-				dao.addCredentialsCandidate(c.getcFirstName().toLowerCase()+c.getcLastName().toLowerCase()+(rand.nextInt(1000)), PASSWORD,c.getCid());
+				dao.addCredentialsCandidate(c.getcFirstName().toLowerCase()+c.getcLastName().toLowerCase()+(rand.nextInt(1000)), PASSWORD, RECOVERY, c.getCid());
 				if(!dao.addCandidate(c.getCandidate())){
 					count--;
 				}

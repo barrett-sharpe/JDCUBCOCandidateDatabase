@@ -12,11 +12,11 @@
 <h3> Please select one of the below options:</h3>
 
 <a href="login.jsp">Login as Existing User</a><br>
-<a href="AccountCreation/Candidate/createCandidateCredentials.jsp">Create and Login a New User</a>
-
+<a href="AccountCreation/Candidate/createCandidateCredentials.jsp">Create and Login a New User</a><br>
+<a href="Recovery/recoveryLogin.jsp">Reset Password</a>
 
 <!-- !@# TEST mysql.jsp to connect to rhcloud mysql -->
-<%@ include file="mysql.jsp" %>
+<!-- %@ include file="mysql.jsp" % -->
 
 
 </body>

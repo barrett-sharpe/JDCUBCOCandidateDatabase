@@ -87,7 +87,7 @@ public class DataAccessObject {
     	}
     	
 //!@#$webapp
-//   	establishConnection();
+// 	establishConnection();
     	
     }
 	
@@ -194,7 +194,7 @@ public class DataAccessObject {
     //
     //
     //
-    //CANDIDATE
+    //CANDIDATE____________________________________________________________________________________________________________________
     //
     //   
     //
@@ -280,13 +280,15 @@ public class DataAccessObject {
     
     
     /**
+     * 
+     * DEV USE ONLY
      * Adds the given Candidate credentials to the CanCredentials table.
      * @param username
      * @param password
      * @param setCID
      * @return Integer, of the new CID of the Candidate. (0 if error)
      */
-    public Integer addCredentialsCandidate(String username, String password, String setCID){
+    public Integer addCredentialsCandidate(String username, String password, String recoveryToken, String setCID){
     	//NOTE: given the CID as a parameter, the collision check has been removed
     	
     	//Salt
@@ -317,6 +319,15 @@ public class DataAccessObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    	
+    	
+    	//ADDED: Add recovery token
+    	boolean r=createAndAddRecoveryString(username, recoveryToken);
+    	if(!r){
+    		return 0;
+    	}
+    	
+    	
     	//update check
     	if(up==0){
     		return 0;
@@ -559,12 +570,11 @@ public class DataAccessObject {
 		return result;
     }//update
     
-    //!@#$ need to create an update candidate (and companny) method
     
     //
     //
     //
-    // COMPANY
+    // COMPANY______________________________________________________________________________________________________________________
     //
     //
     //
@@ -650,13 +660,14 @@ public class DataAccessObject {
     }
     
     /**
+     * DEV USE ONLY
      * Adds the given Company credentials to the CoCredentials table.
      * @param username
      * @param password
      * @param setCOID
      * @return Integer, of the new Company's COID. (0, if error)
      */
-    public Integer addCredentialsCompany(String username, String password, String setCOID){
+    public Integer addCredentialsCompany(String username, String password, String recoveryToken, String setCOID){
     	//NOTE: given the COID as a parameter, the collision check has been removed
     	
     	//Salt
@@ -687,6 +698,15 @@ public class DataAccessObject {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    	
+    	
+    	//ADDED: Add recovery token
+    	boolean r=createAndAddRecoveryString(username, recoveryToken);
+    	if(!r){
+    		return 0;
+    	}
+    	
+    	
     	//update check
     	if(up==0){
     		return 0;
@@ -843,15 +863,146 @@ public class DataAccessObject {
 		return result;
     }
     
+   //
+    //
+    //
+    //RecoveryString______________________________________________________________________________________________________________
+    //
+    //
+    /**
+     * Used to create/update a user's recoveryString in the database, given a username and the plaintext token. 
+     * @param username
+     * @param token
+     * @return boolean, indicating success of operation.
+     */
+    public boolean createAndAddRecoveryString(String username, String token){
+    	//Step 1: determin isComp
+    	boolean isComp=getIsCompany(username);
+    	
+    	//Step 2: Hash the token using the user's salt   	
+    	//Fetch User's Salt
+    	String salt="";
+    	try{
+			PreparedStatement stmt3= con.prepareStatement("SELECT salt FROM "+(isComp? CODB : CANDB)+" WHERE username=?;");/////
+			stmt3.setString(1, username);
+			ResultSet rst3= stmt3.executeQuery();
+			rst3.first();
+			salt=rst3.getString("salt");
+    	}catch(SQLException x){
+    		x.printStackTrace();
+    	}
+    	
+    	//The user's token hash function must now be computed
+    	//PasswordHash.pbkdf2Public() to compute hash
+		byte[] tokenHash = null;
+		try {
+			tokenHash=PasswordHash.pbkdf2Public(token.toCharArray(), salt.getBytes(), PasswordHash.PBKDF2_ITERATIONS, PasswordHash.HASH_BYTE_SIZE);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+		String stringHashToken=PasswordHash.toHexPublic(tokenHash);
+    	
+    	
+    	//Step 3: update/add StringHashToken to db
+    	Integer up=0;
+    	try {
+			PreparedStatement ps=con.prepareStatement("UPDATE "+(isComp? CODB : CANDB)+" SET recoveryString= ? WHERE username=?");
+			ps.setString(1, stringHashToken);
+			ps.setString(2, username);
+			up=ps.executeUpdate();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	
+//    	//TEST PRINTING TO CONSOLE
+//    	String print="createAndAddRecoveryString() Method Variables:\n";
+//    	print+="Inputs:\n\tusername:"+username+"\n\t(input)token:"+token; //inputs
+//    	print+="\n\nOutputs\n\t(DB)salt:"+salt; //outputs
+//    	print+="\nComputed stringHashToken:"+stringHashToken; //computed token hash
+//    	//print
+//    	System.out.println(print);
+    	
+    	
+    	
+    	//update check
+    	if(up==0){
+    		return false;
+    	}
+    	return true;
+    }
+    
+    
+    public boolean validateRecoveryToken(String username, String token){
+    	
+    	//Step 1: determine isComp
+    	boolean isComp=getIsCompany(username);
+    	
+    	//Step 2: Collect the user's hashed recoveryString and salt   	
+    	
+    	//Fetch User's Salt
+    	String salt="";
+    	String recoveryHash="";
+    	byte[] byteRecoveryHash;
+    	try{
+			PreparedStatement stmt3= con.prepareStatement("SELECT salt, recoveryString FROM "+(isComp? CODB : CANDB)+" WHERE username=?;");/////
+			stmt3.setString(1, username);
+			ResultSet rst3= stmt3.executeQuery();
+			rst3.first();
+			salt=rst3.getString("salt");
+			recoveryHash=rst3.getString("recoveryString");
+    	}catch(SQLException x){
+    		x.printStackTrace();
+    	}
+    	//Convert db recoveryString to Byte[] for comparison
+    	byteRecoveryHash=PasswordHash.fromHexPublic(salt);
+    	
+    	
+    	
+    	//Step 3: The user's token hash function must now be computed, using the collected salt
+    	//PasswordHash.pbkdf2Public() to compute hash
+		byte[] tokenHash = null;
+		try {
+			tokenHash=PasswordHash.pbkdf2Public(token.toCharArray(), salt.getBytes(), PasswordHash.PBKDF2_ITERATIONS, PasswordHash.HASH_BYTE_SIZE);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+		
+    	//Compare slow equals //SEEMS TO BE MISBEHAVING. USING REGULAR EQUALS, AS TEMPORAL VUNERABILITIES CLOUDED WITH HOSTING SERVICE EMMULATION INCONSISTENCY
+		//boolean result=PasswordHash.slowEqualsPublic(tokenHash,byteRecoveryHash);
+    	boolean result=recoveryHash.equals(PasswordHash.toHexPublic(tokenHash));
+		
+		
+//		//TEST PRINTING TO CONSOLE
+		String print="ValidateRecoveryToken() Method Variables:\n";
+		print+="Inputs:\n\tusername:"+username+"\n\t(input)token:"+token; //inputs
+		print+="\n\nOutputs\n\t(DB)salt:"+salt+"\n\t(DB)recoveryHash:"+recoveryHash; //outputs
+		print+="\nComputed token hashing (PH.toHexPub):"+PasswordHash.toHexPublic(tokenHash); //computed token hash
+		//print
+		System.out.println(print);
+		
+		//Return result
+    	return result;
+    }
     
    
    // 
    //
-   //TABLE
+   //TABLE______________________________________________________________________________________________________________________
    //
    //
     
-    //!@# return type concern
+    /**
+     * For any given username, return the appropriate mapping (either CanMap or CoMap) for that user. Null if invalid.
+     * 
+     * This method is used when the 'isCompany' status of the user is not known, because Map<string,Object> handles both mappings. 
+     * @param username
+     * @return
+     */
     public Map<String,Object> getUser(String username){
     	boolean isComp;
     	if(userInCandidateDB(username)){

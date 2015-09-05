@@ -15,6 +15,7 @@
 <%!
 String username="";
 String password="";
+String recoveryString="";
 String captchaInput="";
 String capid="";
 Integer cid=0;
@@ -27,9 +28,11 @@ DataAccessObject dao=new DataAccessObject();
 	<%
 	// Grab session object from request.
 	session = request.getSession();
-	//Collect the username (uname) entered by the user, from the session.
+	//Collect 
 	username = request.getParameter("uname");
 	password = request.getParameter("pword");
+	recoveryString=request.getParameter("rs1");
+	//recoveryString here and on page before
 	
 	//Collect the Captcha Input
 	captchaInput=request.getParameter("capinput");
@@ -42,6 +45,26 @@ DataAccessObject dao=new DataAccessObject();
 	session.removeAttribute("CandidateCredentialsMessage");
 	session.removeAttribute("problemList");//?
 	%>
+
+<!-- Check the retypes -->
+<%
+//get retyped password
+String repass=request.getParameter("pword2");
+//passwords don't match
+if(!(password.equals(repass))){
+	session.setAttribute("CandidateCredentialsMessage", "The password was not retyped correctly.");
+	response.sendRedirect("createCandidateCredentials.jsp");
+}
+//get retyped
+String rerecov=request.getParameter("rs2");
+//recoveries dont match
+if(!(recoveryString.equals(rerecov))){
+	session.setAttribute("CandidateCredentialsMessage", "The recovery string was not retyped correctly.");
+	response.sendRedirect("createCandidateCredentials.jsp");
+}
+
+%>
+
 <!-- Attempt to add the Candidate to the db -->
 <%
 	//VALIDATE CAPTCHA
@@ -55,7 +78,7 @@ DataAccessObject dao=new DataAccessObject();
 	//Attempt to add if human and available. Beep Boop Beep.
 	if(!exists && capCorrect){
 		//add
-		cid=dao.addCredentialsCandidate(username, password);
+		cid=dao.addCredentialsCandidate(username, password); //!@#$ RESUME HERE needs to add recoveryString
 	}
 %>
 

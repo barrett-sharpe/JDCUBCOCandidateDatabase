@@ -68,7 +68,7 @@ if(isCompany){
 	out.println("<tr><td>"+"Company Address:"+"</td><td>"+co.getCoAddress()+"</td></tr>"); //coAddress
 	out.println("<tr><td>"+"Telephone:"+"</td><td>"+co.getCoTel()+"</td></tr>"); //coTel
 	out.println("<tr><td>"+"Brief Description:"+"</td><td>"+co.getCoDescription()+"</td></tr>"); //coDscription
-	out.println("<tr><td>"+"Social Medial:"+"</td><td><a href='"+co.getCoSocial()+"'>"+co.getCoSocial()+"</a></td></tr>"); //coSocial
+	out.println("<tr><td>"+"Social Media:"+"</td><td><a href='"+co.getCoSocial()+"'>"+co.getCoSocial()+"</a></td></tr>"); //coSocial
 	out.println("<tr><td>"+"Profile Created:"+"</td><td>"+co.getCoDateCreated()+"</td></tr>"); //dateCreate
 	out.println("<tr><td>"+"Profile Last Modified:"+"</td><td>"+co.getCoDateLastModified()+"</td></tr>"); //dateLastModified
 	out.println("</table>");

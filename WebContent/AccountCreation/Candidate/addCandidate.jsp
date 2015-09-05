@@ -77,8 +77,8 @@ CanMap user=new CanMap();
 	//user.put("cDateCreated", Timestamp.valueOf(LocalDateTime.now()).toString());
 	//user.put("cDateLastModified", Timestamp.valueOf(LocalDateTime.now()).toString()); //didn't seem to work: Timestamp.valueOf("1000-1-1 00:00:00")
 	//NEW: seems to also work, but check new candidates in db
-	user.put("cDateCreated", Timestamp.valueOf("1000-1-1 00:00:00").toString());
-	user.put("cDateLastModified", Timestamp.valueOf("1000-1-1 00:00:00").toString());
+	user.put("cDateCreated", Timestamp.valueOf("1970-01-01 00:00:01").toString());
+	user.put("cDateLastModified", Timestamp.valueOf("1970-01-01 00:00:01").toString());
 	
 	//verify CanMap
 	ArrayList<String> problems=verifyCanMap.verify(user);

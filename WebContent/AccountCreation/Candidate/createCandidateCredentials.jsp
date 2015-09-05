@@ -14,9 +14,6 @@
 <body>
 
 <h1>Join the JDC West UBC Okanagan Candidate Database Today!</h1>
-<h3>
-Please create a Username and a Password for your new account.<br>
-</h3>
 	
 <!-- Print Prior Error Account Message If Needed -->
 <%
@@ -29,8 +26,7 @@ Please create a Username and a Password for your new account.<br>
 
 <fieldset >
 <legend>Step 1: Account</legend>
-
-
+<p>Please create a Username and a Password for your new account.</p><br>
 	<table width="70%">
 	<tr>
 		<td>Username:</td>
@@ -39,14 +35,34 @@ Please create a Username and a Password for your new account.<br>
 	<tr>
 		<td>Password:</td>
 		<td><input type='password' name='pword' value=''></td>
+	</tr>
+	<tr>
+		<td>Retype Password:</td>
+		<td><input type='password' name='pword2' value=''></td>
 	</tr>	
 	</table>
 </fieldset>
 
 <fieldset>
-<legend>Step 2: Captcha</legend>
+<legend>Step 2: Recovery String</legend>
+<p>This is your backup string. //!@# fix description later.</p>
+<br>
+<table width="70%">
+	<tr>
+		<td>Recovery String:</td>
+		<td><input type='text' name='rs1' value=''></td>
+	</tr>
+	<tr>
+		<td>Retype Recovery String:</td>
+		<td><input type='text' name='rs2' value=''></td>
+	</tr>
+</table>	
+</fieldset>
 
-Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)
+
+<fieldset>
+<legend>Step 3: Captcha</legend>
+<p>Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)</p>
 
 	<!-- //Capcha -->	
 	<%

@@ -24,8 +24,8 @@ public class Company implements Serializable{
 	private String coTel="";
 	private String coDescription="";
 	private String coSocial="";
-	private Timestamp coDateCreated=Timestamp.valueOf("1000-1-1 00:00:00");
-	private Timestamp coDateLastModified=Timestamp.valueOf("1000-1-1 00:00:00");
+	private Timestamp coDateCreated=Timestamp.valueOf("1970-01-01 00:00:01");
+	private Timestamp coDateLastModified=Timestamp.valueOf("1970-01-01 00:00:01");
 	
 	//Constructor
 	public Company(){}
@@ -175,13 +175,13 @@ public class Company implements Serializable{
 			setCoTel(map.get("coTel").toString());
 			setCoDescription(map.get("coDescription").toString());
 			setCoSocial(map.get("coSocial").toString());
-			if(map.get("coDateCreated").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
-				setCoDateCreated(Timestamp.valueOf("1000-1-1 00:00:00"));
+			if(map.get("coDateCreated").toString().equalsIgnoreCase(Timestamp.valueOf("1970-01-01 00:00:01").toString())){
+				setCoDateCreated(Timestamp.valueOf("1970-01-01 00:00:01"));
 			}else{
 				setCoDateCreated(Timestamp.valueOf(map.get("coDateCreated").toString()));
 			}
-			if(map.get("coDateLastModified").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
-				setCoDateLastModified(Timestamp.valueOf("1000-1-1 00:00:00"));
+			if(map.get("coDateLastModified").toString().equalsIgnoreCase(Timestamp.valueOf("1970-01-01 00:00:01").toString())){
+				setCoDateLastModified(Timestamp.valueOf("1970-01-01 00:00:01"));
 			}else{
 				setCoDateLastModified(Timestamp.valueOf(map.get("coDateLastModified").toString()));
 			}

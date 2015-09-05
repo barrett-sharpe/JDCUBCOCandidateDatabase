@@ -17,7 +17,7 @@ public class Candidate implements Serializable {
 	private String cid="";
 	private String cFirstName="";
 	private String cLastName="";
-	private Timestamp dob=Timestamp.valueOf("1000-1-1 00:00:00");
+	private Timestamp dob=Timestamp.valueOf("1970-01-01 00:00:01");
 	private Integer cYear=0;
 	public Gender gender=Gender.NotDeclared;
 	public Degree degree=Degree.None_Of_Above;
@@ -26,8 +26,8 @@ public class Candidate implements Serializable {
 	private String cPhoneNumber="";
 	private String cDescription="";
 	private String cJobHistory="";
-	private Timestamp cDateCreated=Timestamp.valueOf("1000-1-1 00:00:00");
-	private Timestamp cDateLastModified=Timestamp.valueOf("1000-1-1 00:00:00");
+	private Timestamp cDateCreated=Timestamp.valueOf("1970-01-01 00:00:01");
+	private Timestamp cDateLastModified=Timestamp.valueOf("1970-01-01 00:00:01");
 	
 	//Constructors
 	public Candidate(){}
@@ -62,7 +62,7 @@ public class Candidate implements Serializable {
 		}
 		
 		//String
-		String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)+" 00:00:00.0";
+		String date=String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day)+" 00:00:00";
 		
 		//TEST
 		System.out.println(date);
@@ -78,7 +78,7 @@ public class Candidate implements Serializable {
 	 * @return Timestamp
 	 */
 	public static Timestamp formTimestamp(String stringDate){
-		Timestamp ts=Timestamp.valueOf(stringDate+" 00:00:00.0");
+		Timestamp ts=Timestamp.valueOf(stringDate+" 00:00:00");
 		return ts;
 	}
 	
@@ -255,8 +255,8 @@ public class Candidate implements Serializable {
 			setcFirstName(map.get("cFirstName").toString());
 			setcLastName(map.get("cLastName").toString());
 			
-			if(map.get("dob").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
-				setDob(Timestamp.valueOf("1000-1-1 00:00:00"));
+			if(map.get("dob").toString().equalsIgnoreCase(Timestamp.valueOf("1970-01-01 00:00:01").toString())){
+				setDob(Timestamp.valueOf("1970-01-01 00:00:01"));
 			}else{
 				setDob(Timestamp.valueOf(map.get("dob").toString()));
 			}
@@ -277,13 +277,13 @@ public class Candidate implements Serializable {
 			setcDescription(map.get("cDescription").toString());
 			setcJobHistory(map.get("cJobHistory").toString());	
 			
-			if(map.get("cDateCreated").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
-				setcDateCreated(Timestamp.valueOf("1000-1-1 00:00:00"));
+			if(map.get("cDateCreated").toString().equalsIgnoreCase(Timestamp.valueOf("1970-01-01 00:00:01").toString())){
+				setcDateCreated(Timestamp.valueOf("1970-01-01 00:00:01"));
 			}else{
 				setcDateCreated(Timestamp.valueOf(map.get("cDateCreated").toString()));
 			}
-			if(map.get("cDateLastModified").toString().equalsIgnoreCase(Timestamp.valueOf("1000-1-1 00:00:00").toString())){
-				setcDateLastModified(Timestamp.valueOf("1000-1-1 00:00:00"));
+			if(map.get("cDateLastModified").toString().equalsIgnoreCase(Timestamp.valueOf("1970-01-01 00:00:01").toString())){
+				setcDateLastModified(Timestamp.valueOf("1970-01-01 00:00:01"));
 			}else{
 				setcDateLastModified(Timestamp.valueOf(map.get("cDateLastModified").toString()));
 			}
@@ -302,7 +302,7 @@ public class Candidate implements Serializable {
 		c.put("cFirstName", String.valueOf(getcFirstName()));
 		c.put("cLastName", String.valueOf(getcLastName()));
 		//c.put("dob", getDob().toString());
-		c.put("dob", (getDob()==null)? "1000-1-1 00:00:00" : getDob().toString());
+		c.put("dob", (getDob()==null)? "1970-01-01 00:00:01" : getDob().toString());
 		c.put("cYear",Integer.valueOf(getcYear()));
 		c.put("gender",getGender().toString());
 		c.put("degree",getDegree().toString());
@@ -311,8 +311,8 @@ public class Candidate implements Serializable {
 		c.put("cPhoneNumber",String.valueOf(getcPhoneNumber()));
 		c.put("cDescription",String.valueOf(getcDescription()));
 		c.put("cJobHistory",String.valueOf(getcJobHistory()));
-		c.put("cDateCreated",(getcDateCreated()==null)? "1000-1-1 00:00:00" : getcDateCreated().toString());
-		c.put("cDateLastModified",(getcDateLastModified()==null)? "1000-1-1 00:00:00" : getcDateLastModified().toString());
+		c.put("cDateCreated",(getcDateCreated()==null)? "1970-01-01 00:00:01" : getcDateCreated().toString());
+		c.put("cDateLastModified",(getcDateLastModified()==null)? "1970-01-01 00:00:01" : getcDateLastModified().toString());
 		return c;
 	}
 	
