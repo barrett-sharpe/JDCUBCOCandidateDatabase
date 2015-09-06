@@ -13,14 +13,21 @@
 
 <!-- Declared Vars -->
 <%!
+//Variables
 String username="";
 String password="";
 String recoveryString="";
 String captchaInput="";
 String capid="";
 Integer cid=0;
+
+//Conditions
 boolean exists=true;
 boolean capCorrect=false;
+boolean retyped=false;
+boolean samePassword=false;
+String page="";
+//DAO
 DataAccessObject dao=new DataAccessObject();
 %>
 
@@ -39,35 +46,24 @@ DataAccessObject dao=new DataAccessObject();
 	//capid = (String)request.getSession().getAttribute("capid").toString(); //from internet. Works also!!! Inspired below line
 	capid=session.getAttribute("capid").toString();
 	
+	//get retyped password and string
+	String repass=request.getParameter("pword2");
+	String rerecov=request.getParameter("rs2");
+	
 	//Clean session of unwanted attributes
 	session.removeAttribute("authenticatedUser");
 	session.removeAttribute("cid");
 	session.removeAttribute("CandidateCredentialsMessage");
 	session.removeAttribute("problemList");//?
+	
+	//Prevent null from being in the error message
+	session.setAttribute("CandidateCredentialsMessage", " ");			
 	%>
 
-<!-- Check the retypes -->
-<%
-//get retyped password
-String repass=request.getParameter("pword2");
-//passwords don't match
-if(!(password.equals(repass))){
-	session.setAttribute("CandidateCredentialsMessage", "The password was not retyped correctly.");
-	response.sendRedirect("createCandidateCredentials.jsp");
-}
-//get retyped
-String rerecov=request.getParameter("rs2");
-//recoveries dont match
-if(!(recoveryString.equals(rerecov))){
-	session.setAttribute("CandidateCredentialsMessage", "The recovery string was not retyped correctly.");
-	response.sendRedirect("createCandidateCredentials.jsp");
-}
-
-%>
 
 <!-- Attempt to add the Candidate to the db -->
 <%
-	//VALIDATE CAPTCHA
+	//Validate CAPTCHA
 	Captcha c=new Captcha();
 	Integer id=Integer.parseInt(capid);//capid
 	capCorrect=c.validateCaptchaAnswer(captchaInput, id );
@@ -78,29 +74,57 @@ if(!(recoveryString.equals(rerecov))){
 		exists=false;
 	}
 	
-	//Attempt to add if human and available. Beep Boop Beep.
-	if(!exists && capCorrect){
-		//add
-		cid=dao.addCredentialsCandidate(username, password, recoveryString);
+	//Captcha and REcovery retyped corretly
+	if(recoveryString.equals(rerecov)){
+		retyped=true;
+	}
+
+	//passwords are not the same
+	if(password.equals(repass)){
+		samePassword=true;
 	}
 %>
 
-<!-- Redirects-->
+<!-- Messages -->
+<%
+//passwords dont match
+if(!password.equals(repass)){
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The recovery string was not retyped correctly. ");
+}
+//if recoveries dont match
+if(!recoveryString.equals(rerecov)){
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The password was not retyped correctly. ");
+}
+//if captcha not correct
+if(!capCorrect){
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The captcha entered was incorrect. ");
+}
+%>
+
+<!-- Remove error message if needed -->
+<%
+if(session.getAttribute("CandidateCredentialsMessage").toString().length()<=1){
+	session.setAttribute("CandidateCredentialsMessage", null);
+}
+%>
+
+<!-- Final Confirmation and Redirect -->
 <% 
-	if(!exists && capCorrect){
+//if all conditions met
+	if(!exists && capCorrect && retyped && samePassword){
+		//Attempt to add.
+		cid=dao.addCredentialsCandidate(username, password, recoveryString);
+		//set and redirect appropriately
 		out.println("<h1> Thank you "+username+" !</h3>" ); 
 		session.setAttribute("cid", cid);
 		response.sendRedirect("createCandidate.jsp");
-	}else if(!exists && !capCorrect){
-		out.println("<h1>Invalid</h1>");
-		session.setAttribute("CandidateCredentialsMessage", "The captcha entered was incorrect. However, the username '"+username+"' is still available, so lucky for you!");
-		response.sendRedirect("createCandidateCredentials.jsp");	
 	}else{
 		out.println("<h1>Invalid</h1>");
-		session.setAttribute("CandidateCredentialsMessage", "The username '"+username+"' already exists. Please choose another username.");
 		response.sendRedirect("createCandidateCredentials.jsp");
 	}
 %>
+
+
 
 </body>
 </html>
