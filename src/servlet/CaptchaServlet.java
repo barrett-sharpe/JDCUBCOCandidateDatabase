@@ -16,12 +16,12 @@ import objects.Captcha;
  * Servlet implementation class ImageServlet
  */
 @WebServlet("/captcha/*")
-public class ImageServlet extends HttpServlet {
+public class CaptchaServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;  
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ImageServlet() {
+    public CaptchaServlet() {
         super();
     }
 
