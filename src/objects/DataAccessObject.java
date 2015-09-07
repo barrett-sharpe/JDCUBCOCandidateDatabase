@@ -35,20 +35,20 @@ public class DataAccessObject {
 	
 //	//!@#$local
 //	//_________________LocalHost________________________________
-	//
-    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
-    private static String DBUSERNAME = "iamroot";
-    private static String DBPASSWORD = "iamroot";
+//	//
+//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "iamroot";
+//    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
-//    //_______________OpenShift PMA via 'rhc port-forward'________________
-//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
+    //_______________OpenShift PMA via 'rhc port-forward'________________
+    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+    private static String DBPASSWORD = "Y1TxvCHy--cN";
+    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -81,13 +81,13 @@ public class DataAccessObject {
     	DBPASSWORD=db_password;
     	
 //!@#$local
-    	//Establish Connection
-    	if(checkForDriver()==true){
-    		establishConnection();
-    	}
+//    	//Establish Connection
+//    	if(checkForDriver()==true){
+//    		establishConnection();
+//    	}
     	
 //!@#$webapp
-//	establishConnection();
+	establishConnection();
     	
     }
 	
@@ -115,32 +115,32 @@ public class DataAccessObject {
     }
 
 //!@#$webapp establishConnection
-//    public void establishConnection(){
-//    	con=null;
-//    	try {
-//    		InitialContext ic = new InitialContext();
-//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-//    	    con = datasource.getConnection();		
-//		} catch (SQLException e) {
-//			System.err.println("I couldn't open the connection.");
-//			e.printStackTrace();
-//		} catch (NamingException e) {
-//			System.err.println("I couldn't open the connection. A Naming Exception");
-//			e.printStackTrace();
-//		}    	
-//    }    
-    
-//!@#$local establishConnection
     public void establishConnection(){
     	con=null;
     	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    con = datasource.getConnection();		
 		} catch (SQLException e) {
 			System.err.println("I couldn't open the connection.");
 			e.printStackTrace();
-		}
-    }
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
+		}    	
+    }    
+    
+//!@#$local establishConnection
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
 
     
     /**
@@ -1022,7 +1022,8 @@ public class DataAccessObject {
     	//Fetch User's Salt
     	String salt="";
     	String recoveryHash="";
-    	byte[] byteRecoveryHash;
+    	@SuppressWarnings("unused")
+		byte[] byteRecoveryHash;
     	try{
 			PreparedStatement stmt3= con.prepareStatement("SELECT salt, recoveryString FROM "+(isComp? CODB : CANDB)+" WHERE username=?;");/////
 			stmt3.setString(1, username);
@@ -1110,9 +1111,6 @@ public class DataAccessObject {
     }   
     
     
-    
-    
-    
     /**
      * Updates the DataAccessObject.isCompany boolean value, representing if the given username is 
      * a Company (true) or a Candidate (false). This method is called when 
@@ -1134,6 +1132,36 @@ public class DataAccessObject {
     }
     
     
+    
+    public byte[] fetchProfileImageBytes(Integer uid){
+    	byte[] imageBytes=null;
+    	//determine isCompany of uid (Candidate.cid>=1000000)
+    	boolean isComp=(uid>999999? false:true);    	
+    	//contact db for byte[]
+    	if(isComp){
+	    	try {
+	    		PreparedStatement ps=con.prepareStatement("SELECT cophoto FROM "+DataAccessObject.COMPANY+" WHERE coid = ?");
+	    		ps.setInt(1, uid);
+	    		ResultSet rs=ps.executeQuery();
+	    		rs.first();
+	    		imageBytes=rs.getBytes("cophoto");
+	    	} catch (SQLException e) {
+	    		e.printStackTrace();
+	    	}
+    	}else{
+    		try {
+	    		PreparedStatement ps=con.prepareStatement("SELECT cphoto FROM "+DataAccessObject.CANDIDATE+" WHERE cid = ?");
+	    		ps.setInt(1, uid);
+	    		ResultSet rs=ps.executeQuery();
+	    		rs.first();
+	    		imageBytes=rs.getBytes("cphoto");
+	    	} catch (SQLException e) {
+	    		e.printStackTrace();
+	    	}
+    	}
+    	return imageBytes;
+    }
+    
     //GETTERS AND SETTERS
     
     
@@ -1154,6 +1182,7 @@ public class DataAccessObject {
 		this.con = con;
 	}
     
+	@Deprecated
     public CachedRowSetImpl convertToCRSI(ResultSet r){
     	CachedRowSetImpl crsi = null;
     	try {
