@@ -1,10 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+   
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Protected Page</title>
+
+<title>Welcome Back</title>
+<!-- Require $pagecontext for css ref -->
+<link href='${pageContext.request.contextPath}/css/protectedPage.css' rel='stylesheet' type='text/css'>
+
 </head>
 
 <body>
@@ -29,12 +35,12 @@
 
 <!-- Logout -->
 <%
-out.println("<a href=\"logout.jsp\">Log Out</a>");
+out.println("<div class='logout'><a href='logout.jsp'>Log Out</a></div>");
 %>
 
 <!-- Header -->
 <%
-out.println("<h1> Welcome back, " + user + ".</h1>");
+out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h1>");
 %>
 
 
@@ -44,24 +50,79 @@ out.println("<h1> Welcome back, " + user + ".</h1>");
 
 	if(isCompany){
 		//Company
-		out.println("<h3><u><a href='profilePage.jsp'> View Company's Profile</a></u></h3>");
-		out.println("<h3><u><a href='Search/search.jsp'>Search For A Candidate</a></u></h3>");
-		out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></u></h3>");
-		out.println("<h3><u> Edit Company Profile</u></h3>");
+		//out.println("<h3><u><a href='profilePage.jsp'> View Company Profile</a></u></h3>");
+		//out.println("<h3><u> Edit Company Profile</u></h3>");
+		//out.println("<h3><u><a href='companyDirectory.jsp'>Directory Of All Companies</a></u></h3>");
+		//out.println("<h3><u><a href='Search/search.jsp'>Search For A Candidate</a></u></h3>");
+		//out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></u></h3>");
 		
+		//table form
+		out.println("<table>");
+		out.println("<tr>");
+		//row 1
+		out.println("<td><div class='divBox'><a href='profilePage.jsp'> View Company Profile</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 2 EDIT COMPANY DIRECTORY NEEDS TO GO HERE
+		out.println("<td><div class='divBox'></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 3
+		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of All Companies</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 4
+		out.println("<td><div class='divBox'><a href='Search/search.jsp'>Search For A Candidate</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 5
+		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("</table>");
 	}else{
 		//Candidate
-		out.println("<h3><u><a href='profilePage.jsp'> View Your Profile</a></u></h3>");
-		out.println("<h3><u><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Profile</a></u></h3>");
-		out.println("<h3><u><a href='companyDirectory.jsp'> Company Directory</a></u></h3>");
-		out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></u></h3>");
+		//out.println("<h3><u><a href='profilePage.jsp'> View Your Profile</a></u></h3>");
+		//out.println("<h3><u><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Your Profile</a></u></h3>");
+		//out.println("<h3><u><a href='companyDirectory.jsp'>Directory Of All Companies</a></u></h3>");
+		//out.println("<h3><u><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></u></h3>");
 		
-		//profile by GET method; Ava ... WORKS!
-		//String id="";
-		//String isCo="";
-		//out.println("<form name='toProfile' method=post action='profilePage2.jsp?uid="+id+"&isCompany="+isCo+"'>");
-		//out.println("<input type='submit' value='Full Profile'>");
-		//out.println("</form>");
+		//table form
+		out.println("<table>");
+		out.println("<tr>");
+		//row 1
+		out.println("<td><div class='divBox'><a href='profilePage.jsp'> View Your Profile</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 2
+		out.println("<td><div class='divBox'><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Your Profile</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 3
+		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of All Companies</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 4
+		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></div></td>");
+		out.println("<td><p>DESCRIPTION</p></td>");
+		//
+		out.println("</tr>");
+		out.println("</table>");
 	}
 
 %>

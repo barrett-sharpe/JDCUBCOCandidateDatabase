@@ -17,12 +17,23 @@ body{
 }
 tr{
 	border: 3px solid black;
-	border-radius: 3px;
 }
 img{
 	border: 5px solid black;
 	border-radius: 6px;
 }
+.fieldName{
+	background-color: #EDEDED;
+	text-align: center;
+	border: 1px solid #9E9E9E;
+}
+.paragraph{
+	/*for the long paragraph elements*/
+	
+	/*need help in making it look like a paragraph in a td element*/
+	
+}
+
 </style>
 </head>
 <!-- Authorized Page.-->
@@ -73,20 +84,20 @@ out.println("<a href=\"protectedPage.jsp\">Return To Page</a>");
 <%
 if(isCompany){
 	//Company Profile
-	out.println("<h3>"+co.getCoName()+"</h3>");
+	out.println("<h2>"+co.getCoName()+"</h2>");
 	out.println("<table id=theTable>");
-	out.println("<tr><td>"+"CoID:"+"</td><td>"+co.getCoid()+"</td></tr>"); //coid
-	out.println("<tr><td>"+"Company Name:"+"</td><td>"+co.getCoName()+"</td></tr>"); //coName
-	out.println("<tr><td>"+"Company Established:"+"</td><td>"+co.getCoYearEstablished()+"</td></tr>"); //coYearEst
-	out.println("<tr><td>"+"Company Email:"+"</td><td>"+co.getCoEmail()+"</td></tr>"); //coEmail
-	out.println("<tr><td>"+"Company Website:"+"</td><td><a href='"+co.getCoUrl()+"'>"+co.getCoUrl()+"</a></td></tr>"); //coUrl
-	out.println("<tr><td>"+"Contact Name:"+"</td><td>"+co.getCoContactName()+"</td></tr>"); //coContactName
-	out.println("<tr><td>"+"Company Address:"+"</td><td>"+co.getCoAddress()+"</td></tr>"); //coAddress
-	out.println("<tr><td>"+"Telephone:"+"</td><td>"+co.getCoTel()+"</td></tr>"); //coTel
-	out.println("<tr><td>"+"Brief Description:"+"</td><td>"+co.getCoDescription()+"</td></tr>"); //coDscription
-	out.println("<tr><td>"+"Social Medial:"+"</td><td><a href='"+co.getCoSocial()+"'>"+co.getCoSocial()+"</a></td></tr>"); //coSocial
-	out.println("<tr><td>"+"Profile Created:"+"</td><td>"+co.getCoDateCreated()+"</td></tr>"); //dateCreate
-	out.println("<tr><td>"+"Profile Last Modified:"+"</td><td>"+co.getCoDateLastModified()+"</td></tr>"); //dateLastModified
+	out.println("<tr><td><div class='fieldName'>"+"CoID:"+"</div></td><td>"+co.getCoid()+"</td></tr>"); //coid
+	out.println("<tr><td><div class='fieldName'>"+"Company Name:"+"</div></td><td>"+co.getCoName()+"</td></tr>"); //coName
+	out.println("<tr><td><div class='fieldName'>"+"Company Established:"+"</div></td><td>"+co.getCoYearEstablished()+"</td></tr>"); //coYearEst
+	out.println("<tr><td><div class='fieldName'>"+"Company Email:"+"</div></td><td>"+co.getCoEmail()+"</td></tr>"); //coEmail
+	out.println("<tr><td><div class='fieldName'>"+"Company Website:"+"</div></td><td><a href='"+co.getCoUrl()+"'>"+co.getCoUrl()+"</a></td></tr>"); //coUrl
+	out.println("<tr><td><div class='fieldName'>"+"Contact Name:"+"</div></td><td>"+co.getCoContactName()+"</td></tr>"); //coContactName
+	out.println("<tr><td><div class='fieldName'>"+"Company Address:"+"</div></td><td>"+co.getCoAddress()+"</td></tr>"); //coAddress
+	out.println("<tr><td><div class='fieldName'>"+"Telephone:"+"</div></td><td>"+co.getCoTel()+"</td></tr>"); //coTel
+	out.println("<tr><td><div class='fieldName'>"+"Brief Description:"+"</div></td><td><div class='paragraph'>"+co.getCoDescription()+"</div></td></tr>"); //coDscription
+	out.println("<tr><td><div class='fieldName'>"+"Social Medial:"+"</div></td><td><a href='"+co.getCoSocial()+"'>"+co.getCoSocial()+"</a></td></tr>"); //coSocial
+	out.println("<tr><td><div class='fieldName'>"+"Profile Created:"+"</div></td><td>"+co.getCoDateCreated()+"</td></tr>"); //dateCreate
+	out.println("<tr><td><div class='fieldName'>"+"Profile Last Modified:"+"</div></td><td>"+co.getCoDateLastModified()+"</td></tr>"); //dateLastModified
 	out.println("</table>");
 }else{
 	//Candidate Profile
@@ -96,20 +107,20 @@ if(isCompany){
 	dob=(String)dob.subSequence(0,dob.length()-11); //" 00:00:00" is 11 indexes (9 chars+space)	
 	
 	//Profile HTML	
-	out.println("<h3>"+can.getcFirstName()+" "+can.getcLastName()+"</h3>");
+	out.println("<h2>"+can.getcFirstName()+" "+can.getcLastName()+"</h2>");
 	out.println("<table id=theTable>");
-	out.println("<tr><td>"+"Candidate ID:"+"</td><td>"+can.getCid()+"</td></tr>"); //cid
-	out.println("<tr><td>"+"Gender:"+"</td><td>"+can.getGender().toString()+"</td></tr>"); //Gender
-	out.println("<tr><td>"+"Date Of Birth:"+"</td><td>"+dob+"</td></tr>"); //date of birth //!@#
-	out.println("<tr><td>"+"Year Of Study:"+"</td><td>"+can.getcYear()+"</td></tr>"); //year of study
-	out.println("<tr><td>"+"Degree/Area:"+"</td><td>"+can.getDegree().toString()+"</td></tr>"); //DEGREE
-	out.println("<tr><td>"+"Job History:"+"</td><td>"+can.getcJobHistory()+"</td></tr>"); //job history
-	out.println("<tr><td>"+"Email Address:"+"</td><td>"+can.getcEmail()+"</td></tr>"); //email
-	out.println("<tr><td>"+"Phone Number:"+"</td><td>"+can.getcPhoneNumber()+"</td></tr>"); //phone number
-	out.println("<tr><td>"+"Resume HyperLink:"+"</td><td><a href='"+can.getcResumeLink()+"'>"+can.getcResumeLink()+"</a></td></tr>"); //resume link
-	out.println("<tr><td>"+"Biography:"+"</td><td>"+can.getcDescription()+"</td></tr>"); //description/biography
-	out.println("<tr><td>"+"Profile Created:"+"</td><td>"+can.getcDateCreated()+"</td></tr>"); //cdatecreated
-	out.println("<tr><td>"+"Profile Last Modified:"+"</td><td>"+can.getcDateLastModified()+"</td></tr>"); //clastmodified
+	out.println("<tr><td><div class='fieldName'>"+"Candidate ID:"+"</div></td><td>"+can.getCid()+"</td></tr>"); //cid
+	out.println("<tr><td><div class='fieldName'>"+"Gender:"+"</div></td><td>"+can.getGender().toString()+"</td></tr>"); //Gender
+	out.println("<tr><td><div class='fieldName'>"+"Date Of Birth:"+"</div></td><td>"+dob+"</td></tr>"); //date of birth //!@#
+	out.println("<tr><td><div class='fieldName'>"+"Year Of Study:"+"</div></td><td>"+can.getcYear()+"</td></tr>"); //year of study
+	out.println("<tr><td><div class='fieldName'>"+"Degree/Area:"+"</div></td><td>"+can.getDegree().toString()+"</td></tr>"); //DEGREE
+	out.println("<tr><td><div class='fieldName'>"+"Job History:"+"</div></td><td><div class='paragraph'>"+can.getcJobHistory()+"</div></td></tr>"); //job history
+	out.println("<tr><td><div class='fieldName'>"+"Email Address:"+"</div></td><td>"+can.getcEmail()+"</td></tr>"); //email
+	out.println("<tr><td><div class='fieldName'>"+"Phone Number:"+"</div></td><td>"+can.getcPhoneNumber()+"</td></tr>"); //phone number
+	out.println("<tr><td><div class='fieldName'>"+"Resume HyperLink:"+"</div></td><td><a href='"+can.getcResumeLink()+"'>"+can.getcResumeLink()+"</a></td></tr>"); //resume link
+	out.println("<tr><td><div class='fieldName'>"+"Biography:"+"</div></td><td><div class='paragraph'>"+can.getcDescription()+"</div></td></tr>"); //description/biography
+	out.println("<tr><td><div class='fieldName'>"+"Profile Created:"+"</div></td><td>"+can.getcDateCreated()+"</td></tr>"); //cdatecreated
+	out.println("<tr><td><div class='fieldName'>"+"Profile Last Modified:"+"</div></td><td>"+can.getcDateLastModified()+"</td></tr>"); //clastmodified
 	out.println("</table>");
 }
 %>
