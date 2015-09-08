@@ -3,9 +3,17 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>Search Results</title>
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<link href='../css/Search/searchResults.css' rel='stylesheet' type='text/css'>
+
+
 </head>
 <body>
 
@@ -53,7 +61,7 @@
 
 <!-- Back Button -->
 <%
-out.println("<a href=\"search.jsp\">Return To Search</a>");
+out.println("<div class='returnButton'><a href=\"search.jsp\">Return To Search</a></div>");
 %>
 <!-- Header -->
 <h3>Search Results for Candidates:</h3>

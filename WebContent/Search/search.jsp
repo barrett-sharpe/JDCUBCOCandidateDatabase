@@ -2,18 +2,106 @@
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
 <title>Search</title>
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+body{
+	font-family: Roboto;
+	background-color: #F9F9F9; /* off white*/
+}
+td{
+	padding: 5px;	
+	/*testing purposes only*/
+	/*border: 1px solid #000000;*/
+}
+/*legend*/
+legend{
+	font-weight: bold; 
+}
+
+/*RETURN BUTTON*/
+.returnButton{
+	width: 140px;
+    height: 25px;
+    border: 1px solid #D8D8C8;
+    background-color: #FFFFCE; /*grey*/
+}
+.returnButton a{
+	 width: 100%;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: #000000;
+	
+}
+.returnButton a:VISITED a:ACTIVE a:AFTER {
+	text-decoration: none;
+}
+.returnButton a:HOVER {
+	background-color: #FFFF66; /*red-orange*/
+	border: 1px solid #000000;
+}
+
+/*button*/
+.myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #629dd1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #629dd1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#629dd1', endColorstr='#0061a7',GradientType=0);
+	background-color:#629dd1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
+}
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #629dd1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #629dd1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#629dd1',GradientType=0);
+	background-color:#0061a7;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+</style>
+
 </head>
 <body>
 
 <!-- Back Button -->
 <%
-out.println("<a href=\"../protectedPage.jsp\">Return To Page</a>");
+out.println("<div class='returnButton'><a href=\"../protectedPage.jsp\">Return To Page</a></div>");
 %>
-<!-- Error Message -->
-<p>Potential Error Message</p>
+
+<!-- Title -->
+<h2>Search For A Candidate</h2>
 
 <!-- Search Form  //!@# check if 'get' or 'post' needed-->
 <form name="searchForm" method=get action="searchResult.jsp">
@@ -161,7 +249,7 @@ out.println("<a href=\"../protectedPage.jsp\">Return To Page</a>");
 	</table>
 </fieldset>
 <br>
-<div align="center"><input type="submit" name="search" value="Search"></div>
+<div align="center"><input class='myButton' type="submit" name="search" value="Search"></div>
 </form>
 
 

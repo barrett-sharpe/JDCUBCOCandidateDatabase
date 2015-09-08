@@ -9,6 +9,7 @@
 
 <title>Welcome Back</title>
 <!-- Require $pagecontext for css ref -->
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <link href='${pageContext.request.contextPath}/css/protectedPage.css' rel='stylesheet' type='text/css'>
 
 </head>
@@ -72,7 +73,7 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 3
-		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of All Companies</a></div></td>");
+		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of Companies</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");
@@ -84,7 +85,7 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 5
-		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></div></td>");
+		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");
@@ -112,13 +113,13 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 3
-		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of All Companies</a></div></td>");
+		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of Companies</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 4
-		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Account Password</a></div></td>");
+		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");

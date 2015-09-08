@@ -85,7 +85,7 @@ td{
 <!--  Form (note that ACTION $pageContext works)-->
 <form name="MyForm" method=post action="${pageContext.servletContext.contextPath}/validateLogin.jsp"> 
 	
-	<table width="40%">
+	<table width="80%">
 		<tr>
 			<td>
 				<div class='fieldName'>

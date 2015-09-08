@@ -14,6 +14,7 @@
 <title>Company Directory</title>
 
 <!-- Require $pagecontext for css ref -->
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 <link href='${pageContext.request.contextPath}/css/companyDirectory.css' rel='stylesheet' type='text/css'>
 
 </head>
