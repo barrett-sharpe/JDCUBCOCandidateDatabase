@@ -22,9 +22,12 @@ img{
 	border: 5px solid black;
 	border-radius: 6px;
 }
+
+/*PROFILE ELEMENTS*/
+
 .fieldName{
 	background-color: #EDEDED;
-	text-align: center;
+	text-align: left;
 	border: 1px solid #9E9E9E;
 }
 .paragraph{
@@ -32,6 +35,31 @@ img{
 	
 	/*need help in making it look like a paragraph in a td element*/
 	
+}
+
+/*RETURN BUTTON*/
+
+.returnButton{
+	width: 140px;
+    height: 25px;
+    border: 1px solid #D8D8C8;
+    background-color: #FFFFCE; /*grey*/
+}
+.returnButton a{
+	 width: 100%;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: #000000;
+	
+}
+.returnButton a:VISITED a:ACTIVE a:AFTER {
+	text-decoration: none;
+}
+.returnButton a:HOVER {
+	background-color: #FFFF66; /*red-orange*/
+	border: 1px solid #000000;
 }
 
 </style>
@@ -73,7 +101,7 @@ img{
 
 <!-- Back Button -->
 <%
-out.println("<a href=\"protectedPage.jsp\">Return To Page</a>");
+out.println("<div class='returnButton'><a href=\"protectedPage.jsp\">Return To Page</a></div>");
 %>
 
 <!-- Image -->

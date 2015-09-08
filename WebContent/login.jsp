@@ -7,6 +7,8 @@
 
 <title>Login Page</title>
 
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
 <style type="text/css">
 body{
 	font-family: Roboto;
@@ -67,8 +69,6 @@ td{
 	position:relative;
 	top:1px;
 }
-
-
 </style>
 </head>
 

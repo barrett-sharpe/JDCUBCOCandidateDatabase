@@ -7,20 +7,58 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-	 <!--<link href="css/database.css" type="text/css" rel="stylesheet">-->
+
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Sign Up with JDCWest</title>
 <style>
 body{
 	font-family: Roboto;
-	/* background-color: #CCFFFF; */
-	background-color: #ACD8FF; /*Suggested color, same as ubcojdcwest buttons*/
+	background-color: #F9F9F9; /* off white*/
 }
-tr{
-	border: 5px solid black;
-	border-radius: 6px;
+
+/*button*/
+.myButton {
+	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	box-shadow:inset 0px 1px 0px 0px #54a3f7;
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #629dd1), color-stop(1, #0061a7));
+	background:-moz-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-webkit-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-o-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:-ms-linear-gradient(top, #629dd1 5%, #0061a7 100%);
+	background:linear-gradient(to bottom, #629dd1 5%, #0061a7 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#629dd1', endColorstr='#0061a7',GradientType=0);
+	background-color:#629dd1;
+	-moz-border-radius:3px;
+	-webkit-border-radius:3px;
+	border-radius:3px;
+	border:1px solid #124d77;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #154682;
 }
+.myButton:hover {
+	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7), color-stop(1, #629dd1));
+	background:-moz-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-webkit-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-o-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:-ms-linear-gradient(top, #0061a7 5%, #629dd1 100%);
+	background:linear-gradient(to bottom, #0061a7 5%, #629dd1 100%);
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7', endColorstr='#629dd1',GradientType=0);
+	background-color:#0061a7;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+
 </style>
 </head>
 <body>
@@ -29,7 +67,7 @@ tr{
 <h3>
 We just need some basic information in order to create your account with us.<br>
 </h3>
-<p>(* - required)</p>
+<p>(<span style = "color:red">*</span> - required)</p>
 
 <!-- Variables -->
 <%! DataAccessObject dao=new DataAccessObject(); %>
@@ -86,25 +124,22 @@ We just need some basic information in order to create your account with us.<br>
 		</td>
 	</tr> 
 	<tr>
-		<td>Date Of Birth<span style = "color:red">*</span></td>
-		<!--
-		<td><input type='text' name='dateOfBirth' value='YYYY-MM-DD'></td>
-		-->
+		<td>Date Of Birth<span style = "color:red">*</span> (yyyy-mm-dd)</td>
+		
 		<td>
-			<input type="text" name='dayOfBirth' value='DD'>
-			<input type="text" name='monthOfBirth' value='MM'>
-			<input type="text" name='yearOfBirth' value='YYYY'>
+			<input type="text" name='yearOfBirth' size="12" value='yyyy'>
+			<input type="text" name='monthOfBirth' size="8" value='mm'>
+			<input type="text" name='dayOfBirth' size="8" value='dd'>	
 		</td>
 	</tr>
 	<tr>
 		<td>Expected Graduating Year<span style = "color:red">*</span></td>
-		<td><input type="text" name='yearOfStudy' value='YYYY'></td>
+		<td><input type="text" name='yearOfStudy' value='yyyy'></td>
 	</tr>
 	<tr>
 		<td>Area of Degree/Program<span style = "color:red">*</span></td>
 		<td>
 			<select name="area">
-					<!-- <option value="null" selected="selected"></option> -->
 					<option value="Bachelors_Of_Applied_Science">Bachelors Of Applied Science</option>
 					<option value="Bachelors_Of_Arts">Bachelors Of Arts</option>
 					<option value="Bachelors_Of_Education">Bachelors Of Education</option>
@@ -141,23 +176,20 @@ We just need some basic information in order to create your account with us.<br>
 		<td><input type="text" name='phoneNumber' value=''></td>
 	</tr>
 	<tr>
-		<td>Job History</td>
-		<td><input type="text" name='jobHistory' value=''></td>
-	</tr>
-	<tr>
 		<td>Email Address</td>
 		<td><input type="text" name='emailAddress' value=''></td>
 	</tr>
 	<tr>
 		<td>Resume HyperLink:</td>
-		<td><input type="text" name='resumeHyperlink' value=''></td>
+		<td><input type="text" name='resumeHyperlink' size="80" value=''></td>
+	</tr>
+	<tr>
+		<td>Job History</td>
+		<td><textarea rows="5" cols="80" name='jobHistory'></textarea></td>
 	</tr>
 	<tr>
 		<td>Brief Biography:</td> 
 		<td>
-		<!-- 
-		<input type="text" name='briefBiography' value=''>
-		-->
 		<textarea rows="5" cols="80" name="briefBiography"></textarea>
 		</td>
 	</tr>
@@ -165,7 +197,7 @@ We just need some basic information in order to create your account with us.<br>
 	</table>
 		
 	<br>
-	<input type="submit" name="submit" value="Create User">
+	<input class='myButton' type="submit" name="submit" value="Create User">
 </form>
 
 </body>
