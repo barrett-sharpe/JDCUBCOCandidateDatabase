@@ -34,21 +34,21 @@ public class DataAccessObject {
     static String COMPANY = "company";
 	
 //	//!@#$local
-//	//_________________LocalHost________________________________
-//	//
-//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
-//    private static String DBUSERNAME = "iamroot";
-//    private static String DBPASSWORD = "iamroot";
+	//_________________LocalHost________________________________
+	//
+    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
+    private static String DBUSERNAME = "iamroot";
+    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
-    //_______________OpenShift PMA via 'rhc port-forward'________________
-    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-    private static String DBPASSWORD = "Y1TxvCHy--cN";
-    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    //_______________OpenShift PMA via 'rhc port-forward'________________
+//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+//    private static String DBPASSWORD = "Y1TxvCHy--cN";
+//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -81,13 +81,13 @@ public class DataAccessObject {
     	DBPASSWORD=db_password;
     	
 //!@#$local
-//    	//Establish Connection
-//    	if(checkForDriver()==true){
-//    		establishConnection();
-//    	}
+    	//Establish Connection
+    	if(checkForDriver()==true){
+    		establishConnection();
+    	}
     	
 //!@#$webapp
-	establishConnection();
+//	establishConnection();
     	
     }
 	
@@ -115,32 +115,32 @@ public class DataAccessObject {
     }
 
 //!@#$webapp establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-    		InitialContext ic = new InitialContext();
-    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    	    con = datasource.getConnection();		
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		} catch (NamingException e) {
-			System.err.println("I couldn't open the connection. A Naming Exception");
-			e.printStackTrace();
-		}    	
-    }    
-    
-//!@#$local establishConnection
 //    public void establishConnection(){
 //    	con=null;
 //    	try {
-//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//    		InitialContext ic = new InitialContext();
+//    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+//    	    con = datasource.getConnection();		
 //		} catch (SQLException e) {
 //			System.err.println("I couldn't open the connection.");
 //			e.printStackTrace();
-//		}
-//    }
+//		} catch (NamingException e) {
+//			System.err.println("I couldn't open the connection. A Naming Exception");
+//			e.printStackTrace();
+//		}    	
+//    }    
+    
+//!@#$local establishConnection
+    public void establishConnection(){
+    	con=null;
+    	try {
+			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection.");
+			e.printStackTrace();
+		}
+    }
 
     
     /**
@@ -871,6 +871,66 @@ public class DataAccessObject {
 		
 		return result;
     }
+    
+    
+    /**
+     * This method updates a company's information in the database, by taking in a CoMap of the new values, and updating them in the DB.
+     * @param CoMap company
+     * @return Boolean, indicating success of operation.
+     */
+    public boolean updateCompany(CoMap co){
+    	boolean result=false;
+    	//check COMPANY coid
+		PreparedStatement stmt1;
+		try {
+			stmt1 = con.prepareStatement("SELECT * FROM "+COMPANY+" WHERE coid=?;");
+			stmt1.setString(1, co.get("coid").toString());
+			ResultSet rst1=stmt1.executeQuery();
+			if(rst1.first()){
+				result=true; 
+			}
+    	
+		} catch (SQLException e) {
+			System.err.println("LE-ROY JENKINS!!!");
+			e.printStackTrace();
+		}
+		
+		if(result){
+			//good to go, send update //!@#$ return
+			Integer up=0;
+	    	try {
+				PreparedStatement ps=con.prepareStatement(
+						"UPDATE "+COMPANY+" SET "
+						+"coname = ? , coyearestablished = ?, coemail = ? , courl = ? , "
+						+"cocontactname = ? , coaddress = ? , cotel = ? , codescription = ? , "
+						+"cosocial = ? "
+						+ "WHERE coid = ? ;"
+						);
+				ps.setString(1, co.get("coName").toString());
+				ps.setString(2, co.get("coYearEstablished").toString());
+				ps.setString(3, co.get("coEmail").toString());
+				ps.setString(4, co.get("coUrl").toString());
+				ps.setString(5, co.get("coContactName").toString());
+				ps.setString(6, co.get("coAddress").toString());
+				ps.setString(7, co.get("coTel").toString());
+				ps.setString(8, co.get("coDescription").toString());
+				ps.setString(9, co.get("coSocial").toString());
+				ps.setString(10, co.get("coid").toString());
+				up=ps.executeUpdate();
+				
+			} catch (SQLException e) {
+				System.err.println("Oh poop...");
+				e.printStackTrace();
+			}
+	    		
+	    	//update check
+	    	if(up==0){
+	    		result=false;
+	    	}
+		}
+		
+		return result;
+    }//update
     
     
     //

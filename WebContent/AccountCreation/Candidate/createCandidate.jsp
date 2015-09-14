@@ -11,13 +11,19 @@
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Sign Up with JDCWest</title>
+<title>Create Your Profile</title>
 <style>
 body{
 	font-family: Roboto;
 	background-color: #F9F9F9; /* off white*/
 }
 
+#Error{
+
+}
+#Error2{
+
+}
 /*button*/
 .myButton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
@@ -63,7 +69,7 @@ body{
 </head>
 <body>
 
-<h1>Join JDC West Today!</h1>
+<h2>Create Your Profile!</h2>
 <h3>
 We just need some basic information in order to create your account with us.<br>
 </h3>

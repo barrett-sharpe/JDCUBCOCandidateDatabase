@@ -44,29 +44,30 @@ System.out.println("got the username "+user+" from the session");
 
 <!-- Check if pass1==pass2 -->
 <%
-if(!pass1.equals(pass2)){
-	//redirect back to login page with a message
-	session.setAttribute("recoveryNewPasswordMessage", "You passwords do not match. Please try again.");
-	response.sendRedirect("recoveryNewPassword.jsp");	
-}
+
 %>
 
-<!-- DAO update (METHODS TO UPDATE PASSWOR DNOT IN PLACE YET. forward to login -->
+<!-- DAO -->
 <%
 DataAccessObject dao=new DataAccessObject();
-boolean reset=dao.resetPassword(user, pass1);
+boolean reset=false;
+boolean goodPassword=pass1.equals(pass2);
 
-//if properly reset
-if(reset){
+if(goodPassword){
+	reset=dao.resetPassword(user, pass1);
+}else{
+	session.setAttribute("recoveryNewPasswordMessage", session.getAttribute("recoveryNewPasswordMessage")+" You passwords do not match. Please try again.");
+}
+
+//if properly reset and passwords match
+if(reset && goodPassword){
 	request.getRequestDispatcher("../login.jsp").forward(request, response);
 }else{
-	session.setAttribute("recoveryNewPasswordMessage", "There was an error reseting your password. Please try again.");
+	session.setAttribute("recoveryNewPasswordMessage", session.getAttribute("recoveryNewPasswordMessage")+" There was an error reseting your password. Please try again.");
 	response.sendRedirect("recoveryNewPassword.jsp");
 }
 			
 %>
-
-<!-- request.getRequestDispatcher("../login.jsp").forward(request, response); -->
 
 
 

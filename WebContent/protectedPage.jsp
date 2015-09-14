@@ -59,15 +59,15 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		
 		//table form
 		out.println("<table>");
-		out.println("<tr>");
 		//row 1
+		out.println("<tr>");
 		out.println("<td><div class='divBox'><a href='profilePage.jsp'> View Company Profile</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
-		//row 2 EDIT COMPANY DIRECTORY NEEDS TO GO HERE
-		out.println("<td><div class='divBox'></div></td>");
+		//row 2
+		out.println("<td><div class='divBox'><a href='AccountEdit/Company/editCompany.jsp'> Edit Company Profile</a></div></td>");
 		out.println("<td><p>DESCRIPTION</p></td>");
 		//
 		out.println("</tr>");

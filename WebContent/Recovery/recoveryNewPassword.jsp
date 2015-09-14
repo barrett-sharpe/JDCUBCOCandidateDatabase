@@ -89,7 +89,7 @@ td{
 <%
 	// Print prior Error Login message, if needed
 	if (session.getAttribute("recoveryNewPasswordMessage") != null)
-	out.println("<p id='loginError'>" + session.getAttribute("recoveryNewPasswordMessage").toString() + "</p>");
+	out.println("<font color='red'><p>" + session.getAttribute("recoveryNewPasswordMessage").toString() + "</p></font>");
 %>
 
 <!--  Form -->
