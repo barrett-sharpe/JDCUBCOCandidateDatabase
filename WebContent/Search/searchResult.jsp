@@ -11,7 +11,8 @@
 <title>Search Results</title>
 
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-<link href='../css/Search/searchResults.css' rel='stylesheet' type='text/css'>
+<!-- CSS reference -->
+<link href='${pageContext.request.contextPath}/css/Search/searchResult.css' rel='stylesheet' type='text/css'>
 
 
 </head>

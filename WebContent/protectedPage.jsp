@@ -10,6 +10,7 @@
 <title>Welcome Back</title>
 <!-- Require $pagecontext for css ref -->
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<!-- CSS reference -->
 <link href='${pageContext.request.contextPath}/css/protectedPage.css' rel='stylesheet' type='text/css'>
 
 </head>

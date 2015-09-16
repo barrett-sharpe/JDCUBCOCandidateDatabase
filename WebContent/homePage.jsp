@@ -10,54 +10,9 @@
 <title>Candidate Database</title>
 
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<!-- CSS reference -->
+<link href='${pageContext.request.contextPath}/css/homePage.css' rel='stylesheet' type='text/css'>
 
-<style type="text/css">
-body{
-	font-family: Roboto;
-	background-color: #F9F9F9; /* off white*/
-}
-td{
-	padding: 5px;
-	
-	/*testing purposes only*/
-	/*border: 1px solid #000000;*/
-}
-table{
-	border: 2px solid #C5C5C5;
-	padding: 5px;
-}
-
-.question{
-	border: 2px solid #E2E2E2;
-	padding: 5px;
-}
-
-.divBox
-{
-    width: 120px;
-    height: 45px;
-    border: 2px solid #5F5F5F;
-    background-color: #629DD1; /*JDCWUBCO blue*/
-    font-weight: 700;
-}
-.divBox a
-{
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    color: #FFFFFF;
-}
-.divBox a:HOVER {
-	/*
-	background-color: #F0F0F0; /*light grey*/
-	background-color: #A1C4E3; /*light JDC blue*/
-}
-.divBox a:VISITED a:ACTIVE a:AFTER {
-	text-decoration: none;
-}
-</style>
 </head>
 
 <body>

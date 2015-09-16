@@ -1,0 +1,26 @@
+body{
+	font-family: Roboto;
+	/* background-color: #CCFFFF; */
+	background-color: #F9F9F9; /* off white*/
+}
+tr{
+	border: 3px solid black;
+}
+img{
+	border: 5px solid black;
+	border-radius: 6px;
+}
+
+/*PROFILE ELEMENTS*/
+
+.fieldName{
+	background-color: #EDEDED;
+	text-align: left;
+	border: 1px solid #9E9E9E;
+}
+.paragraph{
+	/*for the long paragraph elements*/
+	
+	/*need help in making it look like a paragraph in a td element*/
+	
+}

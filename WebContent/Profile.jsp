@@ -10,7 +10,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<!-- CSS reference -->
+<link href='${pageContext.request.contextPath}/css/Profile.css' rel='stylesheet' type='text/css'>
 
+</head>
 <!-- TESTING PURPOSES ONLY -->
 
 
@@ -37,6 +41,8 @@
 	Boolean isCompany = Boolean.parseBoolean(String.valueOf(request.getParameter("isCompany"))); 
 %>
 
+<body>
+
 <!-- Page Title / Grab user from DB -->
 <%
 	if(isCompany){
@@ -50,8 +56,6 @@
 	}
 %>
 
-</head>
-<body>
 
 <!-- Profile Info Table -->
 <%

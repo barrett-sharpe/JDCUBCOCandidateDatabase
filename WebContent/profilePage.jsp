@@ -7,62 +7,15 @@
  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
+
 <head>
+
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<style>
-body{
-	font-family: Roboto;
-	/* background-color: #CCFFFF; */
-	background-color: #F9F9F9; /* off white*/
-}
-tr{
-	border: 3px solid black;
-}
-img{
-	border: 5px solid black;
-	border-radius: 6px;
-}
 
-/*PROFILE ELEMENTS*/
+<link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+<!-- CSS reference -->
+<link href='${pageContext.request.contextPath}/css/profilePage.css' rel='stylesheet' type='text/css'>
 
-.fieldName{
-	background-color: #EDEDED;
-	text-align: left;
-	border: 1px solid #9E9E9E;
-}
-.paragraph{
-	/*for the long paragraph elements*/
-	
-	/*need help in making it look like a paragraph in a td element*/
-	
-}
-
-/*RETURN BUTTON*/
-
-.returnButton{
-	width: 140px;
-    height: 25px;
-    border: 1px solid #D8D8C8;
-    background-color: #FFFFCE; /*grey*/
-}
-.returnButton a{
-	 width: 100%;
-    height: 100%;
-    text-align: center;
-    text-decoration: none;
-    display: block;
-    color: #000000;
-	
-}
-.returnButton a:VISITED a:ACTIVE a:AFTER {
-	text-decoration: none;
-}
-.returnButton a:HOVER {
-	background-color: #FFFF66; /*red-orange*/
-	border: 1px solid #000000;
-}
-
-</style>
 </head>
 <!-- Authorized Page.-->
 <%@ include file="auth.jsp"%>
@@ -104,7 +57,7 @@ img{
 out.println("<div class='returnButton'><a href=\"protectedPage.jsp\">Return To Page</a></div>");
 %>
 
-<!-- Image -->
+<!--Check for Image -->
 <br> <br> <br>
 <img src='${pageContext.request.contextPath}/profilePicture?uid=<%=Integer.valueOf(id)%>' align="right" />
 

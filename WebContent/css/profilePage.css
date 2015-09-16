@@ -1,29 +1,34 @@
 body{
 	font-family: Roboto;
+	/* background-color: #CCFFFF; */
 	background-color: #F9F9F9; /* off white*/
 }
-td{
-	padding: 3px;
-	/*light table outline*/
-	border: 1px solid #e6e6e6;
+tr{
+	border: 3px solid black;
+}
+img{
+	border: 5px solid black;
+	border-radius: 6px;
 }
 
-/*PROFILE BUTTON TO LINK*/
+/*PROFILE ELEMENTS*/
 
-form input[type="submit"]{
-    background: none;
-    border: none;
-    color: purple;
-    font-size: medium;
-    font-family: inherit;
-    text-decoration: underline;
-    cursor: pointer;
+.fieldName{
+	background-color: #EDEDED;
+	text-align: left;
+	border: 1px solid #9E9E9E;
+}
+.paragraph{
+	/*for the long paragraph elements*/
+	
+	/*need help in making it look like a paragraph in a td element*/
+	
 }
 
 /*RETURN BUTTON*/
 
 .returnButton{
-	width: 170px;
+	width: 140px;
     height: 25px;
     border: 1px solid #D8D8C8;
     background-color: #FFFFCE; /*grey*/

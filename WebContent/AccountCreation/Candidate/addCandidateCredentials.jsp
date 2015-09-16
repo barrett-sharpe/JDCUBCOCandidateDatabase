@@ -87,17 +87,21 @@ DataAccessObject dao=new DataAccessObject();
 
 <!-- Messages -->
 <%
+//if user already exists
+if(exists){
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The username '"+username+"' has already been taken. Please select another username. ");
+}
 //passwords dont match
 if(!password.equals(repass)){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The recovery string was not retyped correctly. ");
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The password was not retyped correctly. ");
 }
 //if recoveries dont match
 if(!recoveryString.equals(rerecov)){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The password was not retyped correctly. ");
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The recovery string was not retyped correctly. ");
 }
 //if captcha not correct
 if(!capCorrect){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"The captcha entered was incorrect. ");
+	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The captcha entered was incorrect. ");
 }
 %>
 
