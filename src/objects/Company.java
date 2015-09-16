@@ -204,8 +204,8 @@ public class Company implements Serializable{
 		c.put("coTel", String.valueOf(getCoTel()));
 		c.put("coDescription", String.valueOf(getCoDescription()));
 		c.put("coSocial", String.valueOf(getCoSocial()));
-		c.put("coDateCreated", String.valueOf(getCoDateCreated()));
-		c.put("coDateLastModified", String.valueOf(getCoDateLastModified()));
+		c.put("coDateCreated", (getCoDateCreated()==null)? "1970-01-01 00:00:01" : getCoDateCreated().toString());
+		c.put("coDateLastModified", (getCoDateLastModified()==null)? "1970-01-01 00:00:01" : getCoDateLastModified().toString());
 		return c;
 	}
 

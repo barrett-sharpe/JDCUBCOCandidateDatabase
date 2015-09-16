@@ -1,20 +1,17 @@
-<%@page import="objects.Company"%>
+<%@page import="objects.Captcha"%>
 <%@page import="objects.DataAccessObject"%>
-<%@page import="objects.CoMap"%>
-<%@page import="java.sql.Timestamp" %>
 <%@page import="java.util.ArrayList" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html>
 
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
-<title>Edit Your Profile</title>
+<title>Sign Up with JDC West UBC Okanagan</title>
 
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
@@ -22,6 +19,21 @@
 body{
 	font-family: Roboto;
 	background-color: #F9F9F9; /* off white*/
+}
+
+/*error*/
+#error{
+	font-style: "color:red";
+}
+
+/*legend*/
+legend{
+	font-weight: bold; 
+}
+
+/*Captcha*/
+img{
+	border: 2px solid #999999;
 }
 
 /*button*/
@@ -64,95 +76,90 @@ body{
 	position:relative;
 	top:1px;
 }
+
 </style>
 
+
 </head>
+
 <body>
 
-<h3>
-Please edit your profile information below, and hit save at the bottom of the page.
-</h3>
-<p>(<span style = "color:red">*</span> - required)</p>
-
-<!-- Variables -->
-<%! DataAccessObject dao=new DataAccessObject(); %>
+<h1>Join the JDC West UBC Okanagan Candidate Database Today!</h1>
 	
-<!-- Session Object Request for Username-->
-	<%
-	// Grab session object from request.
-	session = request.getSession();
-	//Collect the user id (cid), from the session.
-	Integer coid=Integer.parseInt((String)session.getAttribute("uid")); 
-	
-	//Clean session of unwanted attributes
-	
-	
-	%>
-
 <!-- Print Prior Error Account Message If Needed -->
 <%
-	// Print prior error login message if needed
-	if (session.getAttribute("UpdateMessage") != null){
-		out.println("<p id='loginError'>" + session.getAttribute("UpdateMessage").toString() + "</p>");
-	}
-
-	if(session.getAttribute("problemList")!= null){
-		out.println("<h5 id='Error2'>" + session.getAttribute("problemList").toString() + "</h5>");
-	}
+	if (session.getAttribute("CompanyCredentialsMessage") != null)
+	out.println("<span style='color:red><p>" + session.getAttribute("CompanyCredentialsMessage").toString() + "</p></span>");
 %>
 
-<!-- Get the Company's Info from the DB -->
-<%
-	CoMap co=dao.getCompany(coid);
-%>
+<!-- Account Form -->
+<form name="CompanyCredentialsForm" action="addCompanyCredentials.jsp" method=POST>
 
-<!-- Form -->
-<form name="EditUserForm" action="updateCompany.jsp" method=POST>
+<fieldset >
+<legend>Step 1: Account</legend>
+<p>Please create a Username and a Password for your new account.</p>
 	<table width="70%">
 	<tr>
-		<td> Company ID:</td>
-		<td><%out.println(coid);%></td>
+		<td>Username:</td>
 	</tr>
 	<tr>
-		<td>Company Name:<span style = "color:red">*</span></td>
-		<td><input type='text' name='coName' value='<%=co.get("coName").toString()%>'></td>
+		<td><input type='text' name='uname' value=''></td>
 	</tr>
 	<tr>
-		<td>Established:</td>
-		<td><input type="text" name='coYearEstablished' value='<%=co.get("coYearEstablished").toString()%>'></td>
+		<td>Password:</td>
 	</tr>
 	<tr>
-		<td>Company Address:</td>
-		<td><input type="text" name='coAddress' value='<%=co.get("coAddress").toString()%>'></td>
+		<td><input type='password' name='pword' value=''></td>
 	</tr>
 	<tr>
-		<td>Telephone:</td>
-		<td><input type="text" name='coTel' value='<%=co.get("coTel").toString()%>'></td>
-	</tr>
-	<tr>	
-		<td>Company Email:</td>
-		<td><input type="text" name='coEmail' value='<%=co.get("coEmail").toString()%>'></td>
+		<td>Retype Password:</td>
 	</tr>
 	<tr>
-		<td>Company Contact:</td>
-		<td><input type="text" name='coContactName' value='<%=co.get("coContactName").toString()%>'></td>
+		<td><input type='password' name='pword2' value=''></td>
+	</tr>	
+	</table>
+</fieldset>
+<br>
+<fieldset>
+<legend>Step 2: Recovery String</legend>
+<p>This functions like a secret word or phrase. If you forget your password, you can use this word or phrase to reset your password. Do not forget this secret word or phrase, as this is the <span style = "color:red">ONLY</span> way to recover your account. We suggest that you write this down somewhere!</p>
+<table width="70%">
+	<tr>
+		<td>Recovery String:</td>
 	</tr>
 	<tr>
-		<td>Company Website:</td>
-		<td><input type="text" name='coUrl' value='<%=co.get("coUrl").toString()%>'></td>
+		<td><input type='password' name='rs1' value=''></td>
 	</tr>
 	<tr>
-		<td>Company Social:</td>
-		<td><input type="text" name='coSocial' value='<%=co.get("coSocial").toString()%>'></td>
+		<td>Retype Recovery String:</td>
 	</tr>
 	<tr>
-		<td>Company Description:</td>
-		<td><textarea rows="5" cols="80" name='coDescription'><%=co.get("coDescription").toString()%></textarea>
+		<td><input type='password' name='rs2' value=''></td>
 	</tr>
-	</table>	
-	<br>
-	<input class='myButton' type="submit" name="submit" value="Save Changes">
-</form>
+</table>	
+</fieldset>
+<br>
+<fieldset>
+<legend>Step 3: Captcha</legend>
+<p>Please complete the following captcha, to prevent a robot uprising in our database. Thank-you :)</p>
 
+	<!-- //Capcha -->	
+	<%
+	Captcha c=new Captcha();
+	Integer id=c.getRandomCaptchaID();
+	session.setAttribute("capid", id.toString()); //this makes it work!
+	%>
+	<img src="${pageContext.request.contextPath}/captcha?capid=<%=id%>" />
+	<br>Captcha:<br>
+	<input type="text" name='capinput'>
+	
+	<br>
+	
+</fieldset>	
+	
+	<br>
+	<br>
+	<input class='myButton' type="submit" name="submit" value="Create Account">
+</form>
 </body>
 </html>

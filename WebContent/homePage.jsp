@@ -103,7 +103,7 @@ table{
 <tr>
 	<td>
 		<div class="divBox">
-		<a href="AccountCreation/Candidate/createCompanyCredentials.jsp">New Company</a>
+		<a href="AccountCreation/Company/createCompanyCredentials.jsp">New Company</a>
 		</div>
 	</td>
 	<td>

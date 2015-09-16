@@ -1,29 +1,29 @@
-<%@page import="objects.Company"%>
 <%@page import="objects.DataAccessObject"%>
-<%@page import="objects.CoMap"%>
-<%@page import="java.sql.Timestamp" %>
+
 <%@page import="java.util.ArrayList" %>
 
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
 <html>
-
 <head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-
-<title>Edit Your Profile</title>
 
 <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 
-<style type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Create Your Profile</title>
+<style>
 body{
 	font-family: Roboto;
 	background-color: #F9F9F9; /* off white*/
 }
 
+#Error{
+
+}
+#Error2{
+
+}
 /*button*/
 .myButton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;
@@ -64,36 +64,36 @@ body{
 	position:relative;
 	top:1px;
 }
-</style>
 
+</style>
 </head>
 <body>
 
+<h2>Create Your Profile!</h2>
 <h3>
-Please edit your profile information below, and hit save at the bottom of the page.
+We just need some basic information in order to create your account with us.<br>
 </h3>
 <p>(<span style = "color:red">*</span> - required)</p>
 
 <!-- Variables -->
 <%! DataAccessObject dao=new DataAccessObject(); %>
 	
-<!-- Session Object Request for Username-->
+<!-- Session Object Request for Username/Password-->
 	<%
 	// Grab session object from request.
 	session = request.getSession();
-	//Collect the user id (cid), from the session.
-	Integer coid=Integer.parseInt((String)session.getAttribute("uid")); 
+	//Collect the username (uname) entered by the user, from the session.
+	String coid=String.valueOf(session.getAttribute("coid"));
 	
 	//Clean session of unwanted attributes
-	
-	
+	session.removeAttribute("authenticatedUser");
+	session.removeAttribute("CompanyMessage");
 	%>
 
 <!-- Print Prior Error Account Message If Needed -->
 <%
-	// Print prior error login message if needed
-	if (session.getAttribute("UpdateMessage") != null){
-		out.println("<p id='loginError'>" + session.getAttribute("UpdateMessage").toString() + "</p>");
+	if (session.getAttribute("CompanyMessage") != null){
+		out.println("<h5 id='Error'>" + session.getAttribute("CompanyMessage").toString() + "</h5>");
 	}
 
 	if(session.getAttribute("problemList")!= null){
@@ -101,13 +101,8 @@ Please edit your profile information below, and hit save at the bottom of the pa
 	}
 %>
 
-<!-- Get the Company's Info from the DB -->
-<%
-	CoMap co=dao.getCompany(coid);
-%>
-
 <!-- Form -->
-<form name="EditUserForm" action="updateCompany.jsp" method=POST>
+<form name="NewCompanyForm" action="addCompany.jsp" method=POST>
 	<table width="70%">
 	<tr>
 		<td> Company ID:</td>
@@ -115,43 +110,44 @@ Please edit your profile information below, and hit save at the bottom of the pa
 	</tr>
 	<tr>
 		<td>Company Name:<span style = "color:red">*</span></td>
-		<td><input type='text' name='coName' value='<%=co.get("coName").toString()%>'></td>
+		<td><input type='text' name='coName' value=''></td>
 	</tr>
 	<tr>
 		<td>Established:</td>
-		<td><input type="text" name='coYearEstablished' value='<%=co.get("coYearEstablished").toString()%>'></td>
+		<td><input type="text" name='coYearEstablished' value=''></td>
 	</tr>
 	<tr>
 		<td>Company Address:</td>
-		<td><input type="text" name='coAddress' value='<%=co.get("coAddress").toString()%>'></td>
+		<td><input type="text" name='coAddress' value=''></td>
 	</tr>
 	<tr>
 		<td>Telephone:</td>
-		<td><input type="text" name='coTel' value='<%=co.get("coTel").toString()%>'></td>
+		<td><input type="text" name='coTel' value=''></td>
 	</tr>
 	<tr>	
 		<td>Company Email:</td>
-		<td><input type="text" name='coEmail' value='<%=co.get("coEmail").toString()%>'></td>
+		<td><input type="text" name='coEmail' value=''></td>
 	</tr>
 	<tr>
 		<td>Company Contact:</td>
-		<td><input type="text" name='coContactName' value='<%=co.get("coContactName").toString()%>'></td>
+		<td><input type="text" name='coContactName' value=''></td>
 	</tr>
 	<tr>
 		<td>Company Website:</td>
-		<td><input type="text" name='coUrl' value='<%=co.get("coUrl").toString()%>'></td>
+		<td><input type="text" name='coUrl' value=''></td>
 	</tr>
 	<tr>
 		<td>Company Social:</td>
-		<td><input type="text" name='coSocial' value='<%=co.get("coSocial").toString()%>'></td>
+		<td><input type="text" name='coSocial' value=''></td>
 	</tr>
 	<tr>
 		<td>Company Description:</td>
-		<td><textarea rows="5" cols="80" name='coDescription'><%=co.get("coDescription").toString()%></textarea>
+		<td><textarea rows="5" cols="80" name='coDescription'></textarea>
 	</tr>
-	</table>	
+	</table>
+		
 	<br>
-	<input class='myButton' type="submit" name="submit" value="Save Changes">
+	<input class='myButton' type="submit" name="submit" value="Create User">
 </form>
 
 </body>
