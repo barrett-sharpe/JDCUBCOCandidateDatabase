@@ -49,8 +49,8 @@ CoMap co=new CoMap();
 	co.put("coTel", request.getParameter("coTel"));
 	co.put("coDescription", request.getParameter("coDescription"));
 	co.put("coSocial", request.getParameter("coSocial"));
-	co.put("cDateCreated", Timestamp.valueOf("1970-01-01 00:00:01").toString());
-	co.put("cDateLastModified", Timestamp.valueOf("1970-01-01 00:00:01").toString());
+	co.put("coDateCreated", Timestamp.valueOf("1970-01-01 00:00:01").toString());
+	co.put("coDateLastModified", Timestamp.valueOf("1970-01-01 00:00:01").toString());
 	
 	//verify CanMap
 	ArrayList<String> problems=verifyCoMap.verify(co);
@@ -72,7 +72,7 @@ CoMap co=new CoMap();
 <% 
 if(added){
 	out.println("<h1> Thank you "+request.getParameter("coName")+" ! Information Updated.</h1>" ); 
-	response.sendRedirect("../../protectedPage.jsp");
+	response.sendRedirect("../../login.jsp");
 }else{
 	session.setAttribute("UpdateMessage", "Some of the information you entered was not valid. Please try again.");
 	out.println("<h1>Error.</h1>" ); 

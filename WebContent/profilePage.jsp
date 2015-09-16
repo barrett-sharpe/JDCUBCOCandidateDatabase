@@ -59,7 +59,14 @@ out.println("<div class='returnButton'><a href=\"protectedPage.jsp\">Return To P
 
 <!--Check for Image -->
 <br> <br> <br>
+<%
+if(dao.checkForProfileImage(Integer.parseInt(id))){
+	out.println("<img src='${pageContext.request.contextPath}/profilePicture?uid="+id+"' align='right'/>");
+}
+%>
+<!-- old image
 <img src='${pageContext.request.contextPath}/profilePicture?uid=<%=Integer.valueOf(id)%>' align="right" />
+-->
 
 <!-- Profile Info Table -->
 <%

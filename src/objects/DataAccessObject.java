@@ -859,7 +859,8 @@ public class DataAccessObject {
 				ps.setString(10, user.get("coSocial").toString());
 				ps.setString(11, user.get("coDateCreated").toString());
 				ps.setString(12, user.get("coDateLastModified").toString());
-				up=ps.executeUpdate();				
+				up=ps.executeUpdate();
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}		
@@ -1191,8 +1192,51 @@ public class DataAccessObject {
     	}	
     }
     
+    /**
+     * Returns a boolean indicating the presence of a photo attached to the given uid's profile.
+     * @param uid
+     * @return
+     */
+    public boolean checkForProfileImage(Integer uid){
+    	//determine isCompany of uid (Candidate.cid>=1000000)
+    	boolean isComp=(uid>999999? false:true);
+    	//query for uid and profile image
+    	boolean result=false;
+    	int count=0;
+    	if(isComp){
+	    	try {
+	    		PreparedStatement ps=con.prepareStatement("SELECT count(coid) AS count FROM "+COMPANY+" WHERE cophoto IS NOT NULL AND coid = ?");
+	    		ps.setInt(1, uid);
+	    		ResultSet rs=ps.executeQuery();
+	    		rs.first();
+	    		count=rs.getInt("count");
+	    	} catch (SQLException e) {
+	    		e.printStackTrace();
+	    	}
+    	}else{
+    		try {
+	    		PreparedStatement ps=con.prepareStatement("SELECT count(cid) AS count FROM "+CANDIDATE+" WHERE cphoto IS NOT NULL AND cid = ?");
+	    		ps.setInt(1, uid);
+	    		ResultSet rs=ps.executeQuery();
+	    		rs.first();
+	    		count=rs.getInt("count");
+	    	} catch (SQLException e) {
+	    		e.printStackTrace();
+	    	}
+    	}
+    	//if 1 found, result true.
+    	if(count==1){
+    		result=true;
+    	}
+    	//System.out.println("hasImage:"+result);//TEST
+    	return result;
+    }
     
-    
+    /**
+     * Returns the byte[] of the image stored in the table pertaining to the given user id.
+     * @param uid
+     * @return
+     */
     public byte[] fetchProfileImageBytes(Integer uid){
     	byte[] imageBytes=null;
     	//determine isCompany of uid (Candidate.cid>=1000000)
