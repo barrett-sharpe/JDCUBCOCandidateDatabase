@@ -18,7 +18,7 @@
 <body>
 
 <!-- Title -->
-<h2><u>JDC West UBC Okanagan Candidate Database</u></h2>
+<h2><u>JDC West UBC Okanagan - Candidate Database</u></h2>
 
 <!-- Table -->
 <h3> Please select one of the below options:</h3>

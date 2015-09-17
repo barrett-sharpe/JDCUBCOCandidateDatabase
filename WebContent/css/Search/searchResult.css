@@ -1,6 +1,8 @@
 body{
 	font-family: Roboto;
 	background-color: #F9F9F9; /* off white*/
+	margin-left: 10%;
+	margin-right: 10%;
 }
 
 td{

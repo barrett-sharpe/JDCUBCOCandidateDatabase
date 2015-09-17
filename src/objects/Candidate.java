@@ -98,6 +98,21 @@ public class Candidate implements Serializable {
 		return result;
 	}
 	
+	public static Integer[] extractDateFromString(String date){
+		//result
+		Integer[] result=new Integer[3];
+		//split on "-"
+		String[] tokens=date.split("-");
+		//year
+		result[0]=Integer.parseInt(tokens[0]);
+		//month
+		result[1]=Integer.parseInt(tokens[1]);
+		//day
+		result[2]=Integer.parseInt(tokens[2]);
+		
+		return result;
+	}
+	
 	public void printToConsole(){
 		System.out.println(printoutString(true));
 	}

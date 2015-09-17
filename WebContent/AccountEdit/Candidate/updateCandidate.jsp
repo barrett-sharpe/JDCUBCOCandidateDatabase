@@ -43,9 +43,16 @@ CanMap user=new CanMap();
 	user.put("cid",cid);
 	user.put("cFirstName",request.getParameter("firstName"));
 	user.put("cLastName", request.getParameter("lastName"));
-	//Date Of Birth
-	String dob=request.getParameter("dateOfBirth");
-	Timestamp ts=Candidate.formTimestamp(dob); //see if formTimestamp
+	//Date Of Birth V1
+	//String dob=request.getParameter("dateOfBirth");
+	//Timestamp ts=Candidate.formTimestamp(dob); //see if formTimestamp
+	
+	//v2
+	Integer year=Integer.parseInt(request.getParameter("yearOfBirth").toString());
+	Integer month=Integer.parseInt(request.getParameter("monthOfBirth").toString());
+	Integer day=Integer.parseInt(request.getParameter("dayOfBirth").toString());
+	Timestamp ts=Candidate.formTimestamp(year,month,day);
+	
 	user.put("dob", ts.toString());  //using toString
 	user.put("cYear", request.getParameter("yearOfStudy"));
 	user.put("gender", request.getParameter("gender"));

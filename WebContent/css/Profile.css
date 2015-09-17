@@ -1,7 +1,8 @@
 body{
 	font-family: Roboto;
-	/* background-color: #CCFFFF; */
 	background-color: #F9F9F9; /* off white*/
+	margin-left: 10%;
+	margin-right: 10%;
 }
 tr{
 	border: 3px solid black;
