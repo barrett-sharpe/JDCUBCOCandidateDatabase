@@ -1,0 +1,37 @@
+body{
+	font-family: Roboto;
+	background-color: #F9F9F9; /* off white*/
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+#candidate{
+	background-color: #FFD6D6;
+}
+#company{
+	background-color: #CFF3FA;
+}
+
+/*RETURN BUTTON*/
+.returnButton{
+	width: 140px;
+    height: 25px;
+    border: 1px solid #D8D8C8;
+    background-color: #FFFFCE; /*grey*/
+}
+.returnButton a{
+	 width: 100%;
+    height: 100%;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    color: #000000;
+	
+}
+.returnButton a:VISITED a:ACTIVE a:AFTER {
+	text-decoration: none;
+}
+.returnButton a:HOVER {
+	background-color: #FFFF66; /*red-orange*/
+	border: 1px solid #000000;
+}

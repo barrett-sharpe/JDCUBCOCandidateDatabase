@@ -32,6 +32,7 @@ public class DataAccessObject {
     static String CODB = "cocredentials";
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
+    static String RESOURCES = "resources";
 	
 //	//!@#$local
 	//_________________LocalHost________________________________
@@ -1265,6 +1266,26 @@ public class DataAccessObject {
     	}
     	return imageBytes;
     }
+    
+    /**
+     * Collect image resources from the site, given the resource id.
+     * @param rid
+     * @return
+     */
+    public byte[] fetchResourceImageBytes(Integer rid){
+    	byte[] imageBytes=null;  	
+	    try {
+	    	PreparedStatement ps=con.prepareStatement("SELECT rphoto FROM "+DataAccessObject.RESOURCES+" WHERE rid = ?");
+	    	ps.setInt(1, rid);
+	    	ResultSet rs=ps.executeQuery();
+	    	rs.first();
+	    	imageBytes=rs.getBytes("rphoto");
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+    	return imageBytes;
+    }
+    
     
     //GETTERS AND SETTERS
     
