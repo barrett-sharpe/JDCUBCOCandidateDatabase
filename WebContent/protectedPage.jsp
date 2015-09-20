@@ -1,3 +1,4 @@
+<%@page import="objects.DataAccessObject"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
    
@@ -40,9 +41,12 @@
 out.println("<div class='logout'><a href='logout.jsp'>Log Out</a></div>");
 %>
 
-<!-- Header -->
+<!-- Named Header -->
 <%
-out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h1>");
+DataAccessObject dao=new DataAccessObject();
+String name=dao.fetchNameString(id, isCompany);
+out.println("<h1> Welcome back, " +name+ "!</h1>");
+dao.closeConnection();
 %>
 
 
@@ -63,31 +67,31 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		//row 1
 		out.println("<tr>");
 		out.println("<td><div class='divBox'><a href='profilePage.jsp'> View Company Profile</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>View your Company's profile.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 2
 		out.println("<td><div class='divBox'><a href='AccountEdit/Company/editCompany.jsp'> Edit Company Profile</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>Update information on your Company's Profile.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 3
 		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of Companies</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>View the directory of all of the other Companies that are also using the Candidate Database.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 4
 		out.println("<td><div class='divBox'><a href='Search/search.jsp'>Search For A Candidate</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>Search the Candidate Database for an ideal Candidate.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 5
 		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>Change your Company's account password.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("</table>");
@@ -103,25 +107,25 @@ out.println("<h1> Welcome back, " + (isCompany? " Company":" Candidate") + ".</h
 		out.println("<tr>");
 		//row 1
 		out.println("<td><div class='divBox'><a href='profilePage.jsp'> View Your Profile</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>View your profile page.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 2
 		out.println("<td><div class='divBox'><a href='AccountEdit/Candidate/editCandidate.jsp'> Edit Your Profile</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>Update information on your Profile page.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 3
 		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of Companies</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>View the Profiles of all of the Companies that are using the Candidate Database.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 4
 		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></div></td>");
-		out.println("<td><p>DESCRIPTION</p></td>");
+		out.println("<td><p>Change your account password.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("</table>");

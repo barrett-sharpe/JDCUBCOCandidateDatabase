@@ -12,16 +12,12 @@
 <!-- Clear session and redirect -->
 <%
 session=request.getSession();
-session.removeValue("authenticatedUser");
+session.removeAttribute("authenticatedUser");
 session.invalidate();
 %>
 
-<!-- Redirect to External Page -->
+<!-- Redirect to homepage -->
 <%
-//String site="http://www.google.ca/";
-//response.setStatus(response.SC_MOVED_TEMPORARILY);
-//response.setHeader("Location", site);
-//response.sendRedirect(site);
 response.sendRedirect("homePage.jsp");
 %>
 

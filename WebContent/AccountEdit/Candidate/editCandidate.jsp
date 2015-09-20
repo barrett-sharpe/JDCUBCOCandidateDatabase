@@ -58,10 +58,6 @@ Please edit your profile information below, and hit save at the bottom of the pa
 <!-- Get the Candidate's Info from the DB -->
 <%
 	CanMap can=dao.getCandidate(cid);
-	//TEST
-	//Candidate ct=new Candidate();
-	//ct.setCandidate(can);
-	//out.println("<br>"+ct.printoutString(true));
 %>
 
 <!-- Form -->

@@ -103,10 +103,8 @@ out.println("<tr>");
 for(String s: columnNames){
 	out.println("<td><h3><b><u>"+s+"</u></b></h3></td>");
 }
-
-	//TEST Extra row for buttons
-	out.println("<td><h3><b><u>Profile</u></b></h3></td>");
-
+//Extra row for buttons
+out.println("<td><h3><b><u>Profile</u></b></h3></td>");
 out.println("</tr>");
 
 			
@@ -135,7 +133,6 @@ for(CoMap c:result){
 }//each row
 
 out.println("</table>");
-
 %>
 
 </body>

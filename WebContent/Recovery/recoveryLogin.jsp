@@ -26,7 +26,7 @@
 <%
 	// Print prior Error Login message, if needed
 	if (session.getAttribute("recoveryLoginMessage") != null)
-	out.println("<p id='loginError'>" + session.getAttribute("recoveryLoginMessage").toString() + "</p>");
+	out.println("<p class='error'>" + session.getAttribute("recoveryLoginMessage").toString() + "</p>");
 %>
 
 <!--  Form (note that ACTION $pageContext works)-->

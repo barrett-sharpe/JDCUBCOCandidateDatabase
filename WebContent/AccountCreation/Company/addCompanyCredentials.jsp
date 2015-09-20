@@ -19,6 +19,7 @@ String password="";
 String recoveryString="";
 String captchaInput="";
 String capid="";
+String tos="";
 Integer coid=0;
 
 //Conditions
@@ -26,13 +27,18 @@ boolean exists=true;
 boolean capCorrect=false;
 boolean retyped=false;
 boolean samePassword=false;
+boolean agree=false;
 String page="";
 //DAO
 DataAccessObject dao=new DataAccessObject();
 %>
 
 <!-- Session Object Request for Username/Password-->
-	<%
+<%
+String repass="";
+String rerecov="";
+		
+try{
 	// Grab session object from request.
 	session = request.getSession();
 	//Collect 
@@ -47,8 +53,8 @@ DataAccessObject dao=new DataAccessObject();
 	capid=session.getAttribute("capid").toString();
 	
 	//get retyped password and string
-	String repass=request.getParameter("pword2");
-	String rerecov=request.getParameter("rs2");
+	repass=request.getParameter("pword2");
+	rerecov=request.getParameter("rs2");
 	
 	//Clean session of unwanted attributes
 	session.removeAttribute("authenticatedUser");
@@ -56,13 +62,15 @@ DataAccessObject dao=new DataAccessObject();
 	session.removeAttribute("CompanyCredentialsMessage");
 	session.removeAttribute("problemList");//?
 	
+	//get TermsOfService
+	tos=((request.getParameter("agree").toString()==null)? "": "on");			
+			
 	//Prevent null from being in the error message
 	session.setAttribute("CompanyCredentialsMessage", " ");			
-	%>
+	
 
-
-<!-- Attempt to add the Candidate to the db -->
-<%
+	//CONDITIONS
+	
 	//Validate CAPTCHA
 	Captcha c=new Captcha();
 	Integer id=Integer.parseInt(capid);//capid
@@ -83,35 +91,44 @@ DataAccessObject dao=new DataAccessObject();
 	if(password.equals(repass)){
 		samePassword=true;
 	}
-%>
+	
+	//agree
+	if((request.getParameter("agree").toString()).equalsIgnoreCase("on")){
+		agree=true;
+	}
 
-<!-- Messages -->
-<%
-//passwords dont match
-if(!password.equals(repass)){
-	session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The recovery string was not retyped correctly. ");
-}
-//if recoveries dont match
-if(!recoveryString.equals(rerecov)){
-	session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The password was not retyped correctly. ");
-}
-//if captcha not correct
-if(!capCorrect){
-	session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The captcha entered was incorrect. ");
-}
-%>
 
-<!-- Remove error message if needed -->
-<%
-if(session.getAttribute("CompanyCredentialsMessage").toString().length()<=1){
-	session.setAttribute("CompanyCredentialsMessage", null);
-}
-%>
+	//MESSAGES
+	
+	//passwords dont match
+	if(!password.equals(repass)){
+		session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The recovery string was not retyped correctly. ");
+	}
+	//if recoveries dont match
+	if(!recoveryString.equals(rerecov)){
+		session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The password was not retyped correctly. ");
+	}
+	//if captcha not correct
+	if(!capCorrect){
+		session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"The captcha entered was incorrect. ");
+	}
+	
+	//if not agreed
+	if(!agree){
+		session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage").toString()+"You must agree to the Terms Of Service. ");
+	}
+	
+	//REMOVE ERROR MESSAGE IF NEEDED
+	
+	if(session.getAttribute("CompanyCredentialsMessage").toString().length()<=1){
+		session.setAttribute("CompanyCredentialsMessage", null);
+	}
+	
+	//FINAL CONFIRMATION AND REDIRECT
 
-<!-- Final Confirmation and Redirect -->
-<% 
-//if all conditions met
-	if(!exists && capCorrect && retyped && samePassword){
+
+	//if all conditions met
+	if(!exists && capCorrect && retyped && samePassword && agree){
 		//Attempt to add.
 		coid=dao.addCredentialsCompany(username, password, recoveryString);
 		//set and redirect appropriately
@@ -119,9 +136,23 @@ if(session.getAttribute("CompanyCredentialsMessage").toString().length()<=1){
 		session.setAttribute("coid", coid);
 		response.sendRedirect("createCompany.jsp");
 	}else{
-		out.println("<h1>Invalid</h1>");
-		response.sendRedirect("createCompanyCredentials.jsp");
+		throw new ArrayIndexOutOfBoundsException();
 	}
+
+}catch(NullPointerException n){
+	//If other messages, add them to all value message
+	if(session.getAttribute("CompanyCredentialsMessage")==null){
+		session.setAttribute("CompanyCredentialsMessage", "All values must be filled in on this sign up page. ");
+	}else{
+		session.setAttribute("CompanyCredentialsMessage", session.getAttribute("CompanyCredentialsMessage")+"All values must be filled in on this sign up page. ");
+	}
+	
+	//redirect
+	response.sendRedirect("createCompanyCredentials.jsp");
+}catch(ArrayIndexOutOfBoundsException a){
+	//redirect
+	response.sendRedirect("createCompanyCredentials.jsp");
+}
 %>
 
 

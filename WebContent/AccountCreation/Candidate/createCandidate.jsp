@@ -19,13 +19,10 @@
 <body>
 
 <h2>Create Your Profile!</h2>
-<h3>
-We just need some basic information in order to create your account with us.<br>
-</h3>
+<h3>We just need some basic information in order to create your account with us.</h3>
+<br>
 <p>(<span style = "color:red">*</span> - required)</p>
 
-<!-- Variables -->
-<%! DataAccessObject dao=new DataAccessObject(); %>
 	
 <!-- Session Object Request for Username/Password-->
 	<%

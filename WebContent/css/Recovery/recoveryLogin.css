@@ -15,6 +15,11 @@ td{
 	align: right;
 }
 
+/*error*/
+.error{
+	color: #FF3300;
+}
+
 /*test online button css*/
 .myButton {
 	-moz-box-shadow:inset 0px 1px 0px 0px #54a3f7;

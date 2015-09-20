@@ -25,8 +25,9 @@
 <%
 session=request.getSession();
 String user=(String)session.getAttribute("authenticatedUser");
+
 //TEST
-System.out.println("got the username "+user+" from the session");
+//System.out.println("got the username "+user+" from the session");
 %>
 
 <!-- Session Object Request for Passwords-->
@@ -50,13 +51,16 @@ System.out.println("got the username "+user+" from the session");
 <!-- DAO -->
 <%
 DataAccessObject dao=new DataAccessObject();
+
+//reset and goodPasswor booleans
 boolean reset=false;
 boolean goodPassword=pass1.equals(pass2);
 
+//evaluate good Password, and collect reset
 if(goodPassword){
 	reset=dao.resetPassword(user, pass1);
 }else{
-	session.setAttribute("recoveryNewPasswordMessage", session.getAttribute("recoveryNewPasswordMessage")+" You passwords do not match. Please try again.");
+	session.setAttribute("recoveryNewPasswordMessage", "Your passwords do not match. Please try again.");
 }
 
 //if properly reset and passwords match

@@ -96,6 +96,11 @@ CanMap user=new CanMap();
 	}
 %>
 
+<!-- Close DAO -->
+<%
+dao.closeConnection();
+%>
+
 <!-- Redirect To Login Page -->
 <% 
 if(added){

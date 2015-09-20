@@ -28,7 +28,7 @@
 <!-- Print Prior Error Account Message If Needed -->
 <%
 	if (session.getAttribute("CandidateCredentialsMessage") != null){
-		System.out.println(session.getAttribute("CandidateCredentialsMessage").toString()); //TEST
+		//System.out.println(session.getAttribute("CandidateCredentialsMessage").toString()); //TEST
 		out.print("<h3><div class='error'>" + session.getAttribute("CandidateCredentialsMessage").toString() + "</div></h3>");
 	}
 %>
@@ -97,7 +97,18 @@
 	<br>
 	
 </fieldset>	
-	
+
+<!-- TOS -->
+<br>
+<fieldset>
+<legend>Step 4: Terms Of Service</legend>
+<br>
+<input type='checkbox' name='agree' id='tos'>
+<label for='tos'>&nbsp;I agree to JDC West Team UBC Okanagan's <a href='http://ubcojdcwest.com/'>Terms Of Service</a> regarding the Candidate Database.</label>
+<br>
+<br>
+</fieldset> 
+ 	
 	<br>
 	<br>
 	<input class='myButton' type="submit" name="submit" value="Create Account">

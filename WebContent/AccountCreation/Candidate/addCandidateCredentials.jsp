@@ -19,6 +19,7 @@ String password="";
 String recoveryString="";
 String captchaInput="";
 String capid="";
+String tos="";
 Integer cid=0;
 
 //Conditions
@@ -26,13 +27,19 @@ boolean exists=true;
 boolean capCorrect=false;
 boolean retyped=false;
 boolean samePassword=false;
+boolean agree=false;
 String page="";
 //DAO
 DataAccessObject dao=new DataAccessObject();
 %>
 
 <!-- Session Object Request for Username/Password-->
-	<%
+<%
+String repass="";
+String rerecov="";
+		
+try{
+		
 	// Grab session object from request.
 	session = request.getSession();
 	//Collect 
@@ -47,8 +54,11 @@ DataAccessObject dao=new DataAccessObject();
 	capid=session.getAttribute("capid").toString();
 	
 	//get retyped password and string
-	String repass=request.getParameter("pword2");
-	String rerecov=request.getParameter("rs2");
+	repass=request.getParameter("pword2");
+	rerecov=request.getParameter("rs2");
+	
+	//get TermsOfService
+	tos=((request.getParameter("agree").toString()==null)? "": "on");
 	
 	//Clean session of unwanted attributes
 	session.removeAttribute("authenticatedUser");
@@ -57,17 +67,18 @@ DataAccessObject dao=new DataAccessObject();
 	session.removeAttribute("problemList");//?
 	
 	//Prevent null from being in the error message
-	session.setAttribute("CandidateCredentialsMessage", " ");			
-	%>
+	session.setAttribute("CandidateCredentialsMessage", " ");
+	
 
-
-<!-- Attempt to add the Candidate to the db -->
-<%
+	
+	//COLLECT CONDITIONS
+	
+	
 	//Validate CAPTCHA
 	Captcha c=new Captcha();
 	Integer id=Integer.parseInt(capid);//capid
 	capCorrect=c.validateCaptchaAnswer(captchaInput, id );
-	System.out.println("capCorrect:"+capCorrect);//TEST
+	//System.out.println("capCorrect:"+capCorrect);//TEST
 	
 	//Check If User Already Exists //!@#$problem. Need to check both db's because "user" candidate == "user" company
 	if(!dao.userInCandidateDB(username)&&!dao.userInCompanyDB(username)){
@@ -83,39 +94,48 @@ DataAccessObject dao=new DataAccessObject();
 	if(password.equals(repass)){
 		samePassword=true;
 	}
-%>
+	
+	//agree
+	if(tos.equalsIgnoreCase("on")){
+		agree=true;
+	}
 
-<!-- Messages -->
-<%
-//if user already exists
-if(exists){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The username '"+username+"' has already been taken. Please select another username. ");
-}
-//passwords dont match
-if(!password.equals(repass)){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The password was not retyped correctly. ");
-}
-//if recoveries dont match
-if(!recoveryString.equals(rerecov)){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The recovery string was not retyped correctly. ");
-}
-//if captcha not correct
-if(!capCorrect){
-	session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The captcha entered was incorrect. ");
-}
-%>
 
-<!-- Remove error message if needed -->
-<%
-if(session.getAttribute("CandidateCredentialsMessage").toString().length()<=1){
-	session.setAttribute("CandidateCredentialsMessage", null);
-}
-%>
+	//MESSAGES
+		
+	//if user already exists
+	if(exists){
+		session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The username '"+username+"' has already been taken. Please select another username. ");
+	}
+	//passwords dont match
+	if(!password.equals(repass)){
+		session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The password was not retyped correctly. ");
+	}
+	//if recoveries dont match
+	if(!recoveryString.equals(rerecov)){
+		session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The recovery string was not retyped correctly. ");
+	}
+	//if captcha not correct
+	if(!capCorrect){
+		session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"The captcha entered was incorrect. ");
+	}
+	//if not agreed
+	if(!agree){
+		session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage").toString()+"You must agree to the Terms Of Service. ");
+	}
 
-<!-- Final Confirmation and Redirect -->
-<% 
+	//REMOVE ERROR MESSAGES IF NEEDED
+	
+	
+	if(session.getAttribute("CandidateCredentialsMessage").toString().length()<=1){
+		session.setAttribute("CandidateCredentialsMessage", null);
+	}
+	
+	//FINAL CONFIRMATION AND REDIRCET
+
+
 //if all conditions met
-	if(!exists && capCorrect && retyped && samePassword){
+	if(!exists && capCorrect && retyped && samePassword && agree){
 		//Attempt to add.
 		cid=dao.addCredentialsCandidate(username, password, recoveryString);
 		//set and redirect appropriately
@@ -123,9 +143,28 @@ if(session.getAttribute("CandidateCredentialsMessage").toString().length()<=1){
 		session.setAttribute("cid", cid);
 		response.sendRedirect("createCandidate.jsp");
 	}else{
-		out.println("<h1>Invalid</h1>");
+		//any condition false, throw a (different expection). Too lazy to write custom exception. Sorry, not sorry: it works
+		throw new ArrayIndexOutOfBoundsException();
+	}
+
+
+	//CLOSE THE DAO
+	dao.closeConnection();
+	
+	}catch(NullPointerException x){
+		//If other messages, add them to all value message
+		if(session.getAttribute("CandidateCredentialsMessage")==null){
+			session.setAttribute("CandidateCredentialsMessage", "All values must be filled in on this sign up page. ");
+		}else{
+			session.setAttribute("CandidateCredentialsMessage", session.getAttribute("CandidateCredentialsMessage")+"All values must be filled in on this sign up page. ");
+		}
+		//redirect
+		response.sendRedirect("createCandidateCredentials.jsp");
+	}catch(ArrayIndexOutOfBoundsException a){
+		//redirect
 		response.sendRedirect("createCandidateCredentials.jsp");
 	}
+
 %>
 
 

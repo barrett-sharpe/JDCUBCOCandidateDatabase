@@ -15,6 +15,17 @@ table{
 	padding: 5px;
 }
 
+/*PROFILE BUTTON TO LINK*/
+form input[type="submit"]{
+    background: none;
+    border: none;
+    color: purple;
+    font-size: medium;
+    font-family: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 /*HELP*/
 #help{
 	background-color: #009933;

@@ -34,7 +34,7 @@ public class CaptchaServlet extends HttpServlet {
     				//Get the "capid" paremeter from the request
     				String capidString=request.getParameter("capid").toString();
     				Integer capid=Integer.parseInt(capidString);
-    				System.out.println("capidString (from request):"+capidString);
+    				//System.out.println("capidString (from request):"+capidString);
     				
     	
     				Captcha c=new Captcha();

@@ -68,7 +68,7 @@
 </table>
 
 <!-- Help -->
-<h4>New To The Candidate Database? Need Help?</h4>
+<h4>New To The Candidate Database? Need Help? Lost?</h4>
 <table id='table'>
 	<tr>
 		<td>
@@ -78,7 +78,19 @@
 		</td>
 		<td>Read our Help pages</td>
 	</tr>
+	<tr>
+		<td>
+			<div class="divBox" id='help'>
+				<a href="http://ubcojdcwest.com/">UBCOJDCW</a>
+			</div>
+		</td>
+		<td>Return to Team UBC Okanagan's JDC West Page.</td>
+	</tr>
 </table>
+
+<!-- Copyright -->
+<h6>&copy; Copyright of <a href='https://ca.linkedin.com/pub/barrett-sharpe/bb/6a9/597'>Barrett Sharpe</a>, 2015. Licensed to JDC West Team UBC Okanagan.</h6>
+
 </body>
 
 </html>

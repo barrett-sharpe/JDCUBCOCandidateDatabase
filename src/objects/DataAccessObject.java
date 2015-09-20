@@ -1118,12 +1118,12 @@ public class DataAccessObject {
 		
 		
 //		//TEST PRINTING TO CONSOLE
-		String print="ValidateRecoveryToken() Method Variables:\n";
-		print+="Inputs:\n\tusername:"+username+"\n\t(input)token:"+token; //inputs
-		print+="\n\nOutputs\n\t(DB)salt:"+salt+"\n\t(DB)recoveryHash:"+recoveryHash; //outputs
-		print+="\nComputed token hashing (PH.toHexPub):"+PasswordHash.toHexPublic(tokenHash); //computed token hash
-		//print
-		System.out.println(print);
+//		String print="ValidateRecoveryToken() Method Variables:\n";
+//		print+="Inputs:\n\tusername:"+username+"\n\t(input)token:"+token; //inputs
+//		print+="\n\nOutputs\n\t(DB)salt:"+salt+"\n\t(DB)recoveryHash:"+recoveryHash; //outputs
+//		print+="\nComputed token hashing (PH.toHexPub):"+PasswordHash.toHexPublic(tokenHash); //computed token hash
+//		//print
+//		System.out.println(print);
 		
 		//Return result
     	return result;
@@ -1192,6 +1192,37 @@ public class DataAccessObject {
     		x.printStackTrace();    	   		
     	}	
     }
+ 
+    /**
+     * Fetches the name of either the candidate of company.
+     * @param uid
+     * @param isCo
+     * @return
+     */
+    public String fetchNameString(String uid, boolean isCo){
+    	String result="";
+    	
+    	try{
+	    	PreparedStatement ps=con.prepareStatement("SELECT "+(isCo? "coname" : "cfirstname")+" FROM "+(isCo?  COMPANY: CANDIDATE)+" WHERE "+(isCo? "coid": "cid")+"= ?;");
+	    	ps.setString(1, uid);
+			ResultSet rs=ps.executeQuery();
+			rs.first();
+			result=rs.getString((isCo? "coname":"cfirstname"));
+    	}catch(Exception x){
+    		//x.printStackTrace();
+    		result="User";
+    	}
+    	
+    	return result;
+    }
+    
+    //
+    //
+    //IMAGES_________________________________________________________________________________________
+    //
+    //
+    
+    
     
     /**
      * Returns a boolean indicating the presence of a photo attached to the given uid's profile.
