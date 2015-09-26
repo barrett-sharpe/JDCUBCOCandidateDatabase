@@ -26,7 +26,7 @@ out.println("<div class='returnButton'><a href='help.jsp'>Return To Help</a></di
 <br>
 
 <div class='question'>
-<p><em>"What is this 'Candidate Database' website, and who uses it?"</em></p>
+<p><em>"What is this 'Resume Database' website, and who uses it?"</em></p>
 <p>This website is used by people and companies who are associated with the UBC Okanagan team of JDC West. The purpose of this website is to better facilitate the search process happening between people and companies when looking for a job or seeking a candidate for a job position.</p>
 </div>
 <br>

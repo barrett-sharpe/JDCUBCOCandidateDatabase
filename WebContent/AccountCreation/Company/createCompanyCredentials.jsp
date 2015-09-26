@@ -85,7 +85,7 @@
 	<!-- //Capcha -->	
 	<%
 	Captcha c=new Captcha();
-	Integer id=c.getRandomCaptchaID();
+	Integer id=c.getRandomCaptchaID(); //!@#$ Error (all platforms) here
 	session.setAttribute("capid", id.toString()); //this makes it work!
 	%>
 	<img src="${pageContext.request.contextPath}/captcha?capid=<%=id%>" />

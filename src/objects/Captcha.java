@@ -13,7 +13,7 @@ public class Captcha {
 	Connection con=null;
 	//Variables
 	byte[] imageBytes;
-	Integer capid=null;
+	Integer capid=0;
 	
 	
 	//Constructor
@@ -25,12 +25,12 @@ public class Captcha {
 	
 	//METHODS
 	/**
-	 * Counts and selects a random capid from the database (So long as the capid's continue to start at 1, and increase consecutively)
+	 * Counts and selects a random capid from the database (So long as the capid's continue to start at 1, and increase consecutively). An error is id=0;
 	 * @return Integer capid
 	 */
 	public Integer getRandomCaptchaID(){
 		Random rand=new Random();
-		Integer count=null;
+		Integer count=0;
 		try {
 			PreparedStatement ps=con.prepareStatement("SELECT COUNT(*) AS count FROM captcha");
 			ResultSet rs=ps.executeQuery();

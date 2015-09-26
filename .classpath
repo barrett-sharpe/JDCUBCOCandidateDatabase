@@ -14,5 +14,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.35-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Barrett/Documents/School Documents/University/Year 4/Summer2015/JDC/Connection Pool/c3p0-0.9.5.1/lib/c3p0-0.9.5.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Barrett/Documents/School Documents/University/Year 4/Summer2015/JDC/Connection Pool/c3p0-0.9.5.1/lib/mchange-commons-java-0.2.10.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

@@ -7,11 +7,36 @@ body{
 tr{
 	border: 3px solid black;
 }
+
 img{
-	border: 5px solid black;
-	border-radius: 6px;
+	/*constrained to .imageDiv class div*/ 
+	max-height: 100%;
+	max-width: 100%;	
 }
 
+.imageDiv{
+	border: 2px solid black;
+	border-radius: 5px;
+	background-color: #CACACA; /*test*/
+	
+	/*center in .imageFrame*/
+	margin: auto;
+}
+.imageFrame{
+	/*test*/
+	/*border: 3px dotted #000000;*/
+	
+	/*padding all5px*/
+	padding: 5px;
+	
+	/*max*/
+	max-width: 40%;
+	max-height: 40%;
+	
+	/*min*/
+	min-height: 200px;
+	min-width: 200px;
+}
 /*PROFILE ELEMENTS*/
 
 .fieldName{

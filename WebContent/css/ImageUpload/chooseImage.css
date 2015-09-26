@@ -4,19 +4,9 @@ body{
 	margin-left: 10%;
 	margin-right: 10%;
 }
-td{
-	/*testing*/
-	/*border: 1px solid #000000; */
-}
-.textInput{
-	size: 80px;
-}
-.fieldName{
-	align: right;
-}
 
 /*error*/
-.error{
+.red{
 	color: #FF3300;
 }
 

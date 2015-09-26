@@ -34,6 +34,14 @@ form input[type="submit"]{
 	background-color: #80CC99;
 }
 
+/*HELP*/
+#helpWhite{
+	background-color: #FFFFFF;
+}
+#helpWhite a:HOVER{
+	background-color: #F0F0F0;
+}
+
 /*Buttons*/
 .divBox
 {

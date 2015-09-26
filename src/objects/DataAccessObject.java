@@ -1,5 +1,9 @@
 package objects;
 
+import java.beans.PropertyVetoException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
@@ -9,7 +13,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -19,6 +25,14 @@ import javax.sql.DataSource;
 import com.sun.rowset.CachedRowSetImpl;
 
 import hashing.PasswordHash;
+
+
+
+
+
+
+//c3p0
+import com.mchange.v2.c3p0.*;
 
 /**
  * DAO, using internal variables, and void commands.
@@ -34,22 +48,28 @@ public class DataAccessObject {
     static String COMPANY = "company";
     static String RESOURCES = "resources";
 	
+    //!@#$BOTH
+    static Boolean webapp = false;
+    
+    
 //	//!@#$local
-	//_________________LocalHost________________________________
-	//
-    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
-    private static String DBUSERNAME = "iamroot";
-    private static String DBPASSWORD = "iamroot";
+//	//_________________LocalHost________________________________
+//	//
+//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "iamroot";
+//    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
-//    //_______________OpenShift PMA via 'rhc port-forward'________________
-//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    //_______________OpenShift PMA ________________
+    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+    private static String DBPASSWORD = "Y1TxvCHy--cN";
+    //private static String DBUSERNAME = "user";
+    //private static String DBPASSWORD = "user";
+    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -71,24 +91,65 @@ public class DataAccessObject {
     private boolean isCompany;
     
     
-    //Constructors
+    //Default Constructor
     public DataAccessObject (){
-    	this(DBUSERNAME, DBPASSWORD);
+    	
+//    	//read in Property file
+//    	Properties props=new Properties();
+//		FileInputStream fis;
+//		boolean error=false;
+//		try {
+//			fis=new FileInputStream("./Properties/DatabaseProperties.properties");
+//			props.load(fis);
+//			fis.close();
+//			//Get the Properties
+//			if(webapp){
+//				DBUSERNAME=props.getProperty("OPENSHIFT_MYSQL_DBROOT_USERNAME");
+//				DBPASSWORD=props.getProperty("OPENSHIFT_MYSQL_DBROOT_PASSWORD");
+//				URL=props.getProperty("OPENSHIFT_MYSQL_DBROOT_URL");
+//				DRIVER=props.getProperty("LOCAL_DB_DRIVER"); //local driver?
+//			}else{
+//				DBUSERNAME=props.getProperty("LOCAL_DB_USERNAME");
+//				DBPASSWORD=props.getProperty("LOCAL_DB_PASSWORD");
+//				URL=props.getProperty("LOCAL_DB_URL");
+//				DRIVER=props.getProperty("LOCAL_DB_DRIVER");
+//			}
+//			props.getProperty("ATTRIBUTE");
+//		} catch (FileNotFoundException e) {
+//			System.err.println("Database Properties File Not Found");
+//			error=true;
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			System.err.println("Database Properties I/O Error");
+//			error=true;
+//			e.printStackTrace();
+//		}finally{
+//			if(error){	
+//			}else{
+//			}
+//		}
+//		
+//		//Establish Connection
+//		establishConnection();
+		
+		//Param Constructor
+		this(DBUSERNAME, DBPASSWORD);
     }
     
+    //Parameter Constructor
     public DataAccessObject (String db_username, String db_password){
     	//Change USERNAME and PASWORD
     	DBUSERNAME=db_username;
     	DBPASSWORD=db_password;
     	
 //!@#$local
-    	//Establish Connection
-    	if(checkForDriver()==true){
-    		establishConnection();
-    	}
+//    	//Establish Connection
+//    	if(checkForDriver()==true){
+//    		establishConnection();
+//    	}
     	
 //!@#$webapp
-//	establishConnection();
+	establishConnection();
     	
     }
 	
@@ -115,8 +176,45 @@ public class DataAccessObject {
     	return isConnected;
     }
 
+//!@#$V.2 webapp establishConnection (Attempting c3p0 integration)
+    public void establishConnection(){
+    	//DataSource's
+    	DataSource ds=null;
+    	DataSource ds_pooled = null;
+    	
+    	//establish
+    	try {    		
+    		//DataSource Factory
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    ds = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    
+    	       	    
+    	    //create ds_pooled
+    	    ds_pooled=DataSources.pooledDataSource(ds);
+    	    //get connection (with username and password).
+    	    //con=ds_pooled.getConnection(DBUSERNAME, DBPASSWORD); //not supported with basic datasource
+    	    con=ds_pooled.getConnection();
+    	    
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection. A SQLException");
+			e.printStackTrace();
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
+		}finally{
+			//clean up datasources with .destroy
+//			try {
+//				DataSources.destroy(ds);
+//				DataSources.destroy(ds_pooled);
+//			} catch (SQLException e) {
+//				//empty
+//			}
+		}
+    }    
+    
 //!@#$webapp establishConnection
-//    public void establishConnection(){
+//  public void establishConnection(){
 //    	con=null;
 //    	try {
 //    		InitialContext ic = new InitialContext();
@@ -133,15 +231,15 @@ public class DataAccessObject {
 //    }    
     
 //!@#$local establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		}
-    }
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
 
     
     /**
@@ -1296,6 +1394,15 @@ public class DataAccessObject {
 	    	}
     	}
     	return imageBytes;
+    }
+    
+    
+    public Integer uploadProfileBytes(byte[] picture){
+    	
+    	
+    	
+    	
+    	return 0;
     }
     
     /**

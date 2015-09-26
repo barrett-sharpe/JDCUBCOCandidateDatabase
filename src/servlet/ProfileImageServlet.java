@@ -37,10 +37,13 @@ public class ProfileImageServlet extends HttpServlet {
     				Integer uid=Integer.parseInt(uidString);
     				//System.out.println("uidString (from request):"+uidString);
     				
-    				//Fetch the image
+    				//Fetch the image. on condition that it exists
     				DataAccessObject dao=new DataAccessObject();
-                    byte[] content = dao.fetchProfileImageBytes(uid);
-            		                     
+    				byte[] content={};
+    				if(dao.checkForProfileImage(uid)){
+    					//image
+    					content = dao.fetchProfileImageBytes(uid);
+    				}
                     //Write image to Response's output stream
                     response.reset();
                     response.setContentType("image/jpg");
@@ -48,9 +51,6 @@ public class ProfileImageServlet extends HttpServlet {
                     response.getOutputStream().write(content);
                     response.getOutputStream().flush();
                     response.getOutputStream().close();
-                    
-                    //Send the "uid" String in BOTH the Session AND the Request
-                    //request.setAttribute("uid", uidString);
                     
     }//doGET
 

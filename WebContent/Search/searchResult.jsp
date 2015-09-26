@@ -211,9 +211,9 @@ for(CanMap c:result){
 			row+="<td>"+o.toString()+"</td>";
 		}		
 	}
-	//Print "Full Profile" buttons
+	//Print "Full Profile" buttons (to be opened in a new window)
 	String id=(String)c.get("cid");
-	row+="<td><form name='toProfile' method=post action='../Profile.jsp?uid="+id+"&isCompany="+"false"+"'><input type='submit' value='Full Profile'></form></td>";
+	row+="<td><form name='toProfile' method=post action='../Profile.jsp?uid="+id+"&isCompany="+"false"+"' target='_blank'><input type='submit' value='Full Profile'></form></td>";
 		
 	
 	

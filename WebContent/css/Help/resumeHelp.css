@@ -8,6 +8,13 @@ img{
 	/*testing*/
 	border: 1px solid #000000;
 }
+
+/*remove list bullets*/
+ul
+{
+    list-style-type: none;
+}
+
 #g{
 	background-color: #FFD6D6;
 }

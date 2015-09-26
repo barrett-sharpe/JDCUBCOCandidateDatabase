@@ -112,9 +112,12 @@ out.println("<div class='returnButton'><a href=\"../protectedPage.jsp\">Return T
 		<!-- Radio buttons: less/equal/greater -->
 		<td>
 			<div align="center">
-				<input type="radio" name="yearLogic" value="lessThan">Less Than
-				<input type="radio" name="yearLogic" value="equal" checked>Equal
-				<input type="radio" name="yearLogic" value="greaterThan">Greater Than
+				<input type="radio" name="yearLogic" value="lessThan" id='l'>
+				<label for='l'>Before</label>
+				<input type="radio" name="yearLogic" value="equal" id='e' checked>
+				<label for='e'>Equal</label>
+				<input type="radio" name="yearLogic" value="greaterThan" id='g'>
+				<label for='g'>After</label>
 			</div>
 		</td>
 		<!-- field -->
@@ -148,9 +151,10 @@ out.println("<div class='returnButton'><a href=\"../protectedPage.jsp\">Return T
 			</select>
 			, in 
 			<!-- DIRECTION -->
-			<input type="radio" name="orderByDirection" value="asc" checked>Ascending
-			<input type="radio" name="orderByDirection" value="desc">Descending
-			 order, 
+			<input type="radio" name="orderByDirection" value="asc" id='up' checked>
+			<label for='up'>Ascending</label>
+			<input type="radio" name="orderByDirection" value="desc" id='down'>
+			<label for='down'>Descending order,</label> 
 			
 			<!-- NUMRESULTS -->
 			limiting the page to 

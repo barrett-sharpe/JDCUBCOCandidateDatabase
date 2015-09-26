@@ -54,7 +54,6 @@ out.println("<div class='returnButton'><a href='../homePage.jsp'>To Homepage</a>
 <h4>Here are the help categories for Companies</h4>
 <ul>
 	<li><a href='faq.jsp'>FAQ - Frequently Asked Questions</a></li>
-	<li>How your Profile Page should be used</li>
 </ul>
 
 

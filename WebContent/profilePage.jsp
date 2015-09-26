@@ -52,21 +52,51 @@
 <body>
 
 
+
 <!-- Back Button -->
 <%
 out.println("<div class='returnButton'><a href=\"protectedPage.jsp\">Return To Page</a></div>");
 %>
+<br> <br> <br>
+
+
+
+
+
+
+<!-- IMAGE -->
+<div class='imageFrame' align="center">
+<div class='imageDiv'>
 
 <!--Check for Image -->
-<br> <br> <br>
+<img src='${pageContext.request.contextPath}/profilePicture?uid=<%=id%>' alt='No Profile Image'/>
+
+
 <%
+//Conditional Picture
 if(dao.checkForProfileImage(Integer.parseInt(id))){
-	out.println("<img src='${pageContext.request.contextPath}/profilePicture?uid="+id+"' align='right'/>");
+	System.out.println("Profile Image Found");
+	//out.println("<img src='${pageContext.request.contextPath}/profilePicture?uid="+id+"' align='right'/>");
+}else{
+	System.out.println("Profile Image NOT Found");
+
 }
 %>
+
+
+
+
 <!-- old image
 <img src='${pageContext.request.contextPath}/profilePicture?uid=<%=Integer.valueOf(id)%>' align="right" />
 -->
+
+
+
+</div>
+</div>
+
+
+
 
 <!-- Profile Info Table -->
 <%

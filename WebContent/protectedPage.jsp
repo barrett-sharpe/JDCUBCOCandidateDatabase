@@ -94,6 +94,12 @@ dao.closeConnection();
 		out.println("<td><p>Change your Company's account password.</p></td>");
 		//
 		out.println("</tr>");
+		out.println("<tr>");
+		//row 6
+		out.println("<td><div class='divBox'><a href=''>Upload Profile Photo</a></div></td>");
+		out.println("<td><p>Upload a Photo for your profile.</p></td>");
+		//
+		out.println("</tr>");
 		out.println("</table>");
 	}else{
 		//Candidate
@@ -119,13 +125,19 @@ dao.closeConnection();
 		out.println("<tr>");
 		//row 3
 		out.println("<td><div class='divBox'><a href='companyDirectory.jsp'>Directory Of Companies</a></div></td>");
-		out.println("<td><p>View the Profiles of all of the Companies that are using the Candidate Database.</p></td>");
+		out.println("<td><p>View the profiles of all of the Companies that are using the Candidate Database.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("<tr>");
 		//row 4
 		out.println("<td><div class='divBox'><a href='Recovery/recoveryNewPassword.jsp'>Change Password</a></div></td>");
 		out.println("<td><p>Change your account password.</p></td>");
+		//
+		out.println("</tr>");
+		out.println("<tr>");
+		//row 6
+		out.println("<td><div class='divBox'><a href=''>Upload Profile Photo</a></div></td>");
+		out.println("<td><p>Upload a Photo for your profile.</p></td>");
 		//
 		out.println("</tr>");
 		out.println("</table>");

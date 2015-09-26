@@ -39,7 +39,7 @@ public class GeneratorCompany {
 			c.setCoContactName(first2[random.nextInt(first2.length)]+" "+(last2[random.nextInt(last2.length)]));
 			c.setCoAddress("1234 Anywhere Street\nCity, Province\nPostal Code");
 			c.setCoTel((random.nextInt(900000000)+100000000)+"");
-			c.setCoDescription("blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah");
+			c.setCoDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vitae ex mattis, convallis velit vel, volutpat ex. Nulla egestas lorem quis ullamcorper semper. Curabitur feugiat ligula non nisi elementum hendrerit. Fusce ut tortor ut sapien sollicitudin volutpat eu vitae tellus. Mauris non diam eget nisl luctus pretium. Nulla rutrum congue venenatis. Vivamus vitae maximus enim. Donec venenatis at turpis sit amet aliquet. Sed in sapien rutrum quam maximus molestie. Aliquam erat volutpat.Quisque nunc ante, commodo in cursus in, euismod ut magna. Vivamus ut leo eget diam malesuada luctus ac non nisi. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur lacinia nunc, non vestibulum velit bibendum vel. Fusce at orci sagittis, blandit augue in, iaculis nulla. Cras elementum varius quam, quis blandit ante faucibus nec. Integer ac diam in leo venenatis tincidunt. Aenean malesuada rhoncus quam, eu rhoncus enim condimentum dignissim. In finibus eros vel orci sag");
 			c.setCoSocial(c.getCoUrl());
 			Timestamp ts=Timestamp.valueOf(LocalDateTime.of(random.nextInt(40)+1970, random.nextInt(11)+1, random.nextInt(27)+1, random.nextInt(24), random.nextInt(60), random.nextInt(60)));
 			c.setCoDateCreated(ts);

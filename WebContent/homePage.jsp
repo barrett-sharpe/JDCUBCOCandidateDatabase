@@ -18,7 +18,7 @@
 <body>
 
 <!-- Title -->
-<h2><u>JDC West UBC Okanagan - Candidate Database</u></h2>
+<h1><u>JDC West UBC Okanagan - Resume Database</u></h1>
 
 <!-- Table -->
 <h3> Please select one of the below options:</h3>
@@ -40,7 +40,7 @@
 		</div>
 	</td>
 	<td>
-		Forgotten the password for your account? Click on "Forgot Password" to begin to reset your password.
+		Forgotten the password for your account? Click on "Forgot Password" to reset your password.
 	</td>
 </tr>
 <tr>
@@ -50,7 +50,7 @@
 		</div>
 	</td>
 	<td>
-		Are you looking to start a profile, and have your resume viewed by companies looking to hire? Click on "New Candidate" to get started creating your profile.
+		Are you a current JDC West member or an alumni of our program? Enter your information and resume link here. <!-- Small change because Image upload will be within profile, not on creation -->
 	</td>
 </tr>
 
@@ -62,13 +62,13 @@
 		</div>
 	</td>
 	<td>
-		Are you a corporate sponsor of JDC West UBC Okanagan, or looking to access the potential of JDC West UBC Okanagan's candidate pool? Click on "New Company" to begin creating an account for your organization.
+		Are you a current or past sponsor of JDC West UBC Okanagan? Enter your information here to begin browsing the top talent our program has to offer.
 	</td>
 </tr>
 </table>
 
 <!-- Help -->
-<h4>New To The Candidate Database? Need Help? Lost?</h4>
+<h4>New To The Resume Database? Need Help? Lost?</h4>
 <table id='table'>
 	<tr>
 		<td>
@@ -76,17 +76,37 @@
 				<a href="Help/help.jsp">Help</a>
 			</div>
 		</td>
-		<td>Read our Help pages</td>
+		<td>FAQ's and Resume Link Upload tutorials.</td>
 	</tr>
 	<tr>
+	<!-- old button 
 		<td>
 			<div class="divBox" id='help'>
 				<a href="http://ubcojdcwest.com/">UBCOJDCW</a>
 			</div>
 		</td>
-		<td>Return to Team UBC Okanagan's JDC West Page.</td>
+		-->
+		<td>
+			<div class="divBox" id='helpWhite'>
+				<a href="http://ubcojdcwest.com/"><img src="${pageContext.request.contextPath}/resource?rid=99" alt='ubcojdcwest.com' /></a>
+			</div>
+		</td>
+		<td>JDC West UBC Okanagan: Return to the team page.</td>
 	</tr>
 </table>
+
+<!-- Test Pages -->
+<br>
+<a href='testPages/testQuery.jsp'>Test Page: testQuery.jsp</a>
+<br>
+<a href='testPages/testQuery.jsp'>Test Page: </a>
+<br>
+
+
+<!-- Test DB Connections -->
+<div>
+<%@ include file='mysql.jsp'%>
+</div>
 
 <!-- Copyright -->
 <h6>&copy; Copyright of <a href='https://ca.linkedin.com/pub/barrett-sharpe/bb/6a9/597'>Barrett Sharpe</a>, 2015. Licensed to JDC West Team UBC Okanagan.</h6>
