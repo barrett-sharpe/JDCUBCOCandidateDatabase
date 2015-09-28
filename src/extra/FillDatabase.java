@@ -11,9 +11,8 @@ public class FillDatabase {
 	//Vars
 	private static String PASSWORD="password"; //ALL PASSWORDS ARE "password" !!!
 	private static String RECOVERY="forgot"; //ALL RECOVERYSTRINGS ARE "forgot" !!!
-	private static Integer NUM_CANDIDATES=10;
-	private static Integer NUM_COMPANIES=10;
-	public static DataAccessObject dao2=new DataAccessObject();
+	private static Integer NUM_CANDIDATES=0;
+	private static Integer NUM_COMPANIES=20;
 	
 	//Constructor
 	public FillDatabase(){}

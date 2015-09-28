@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +26,6 @@ import javax.sql.DataSource;
 import com.sun.rowset.CachedRowSetImpl;
 
 import hashing.PasswordHash;
-
-
-
-
 
 
 //c3p0
@@ -49,7 +46,7 @@ public class DataAccessObject {
     static String RESOURCES = "resources";
 	
     //!@#$BOTH
-    static Boolean webapp = false;
+    static Boolean webapp = true;
     
     
 //	//!@#$local
@@ -79,11 +76,7 @@ public class DataAccessObject {
      */
     
 //    //!@#$ PORT FORWARDING (rhc port-forward -a candidatedatabase). Use the 'local' methods and 'webapp' credentials above
-   
-//    private static String DBUSERNAME = "adminSjSmTnT";
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
+
     
     
     //Variables
@@ -142,15 +135,15 @@ public class DataAccessObject {
     	DBUSERNAME=db_username;
     	DBPASSWORD=db_password;
     	
-//!@#$local
-//    	//Establish Connection
-//    	if(checkForDriver()==true){
-//    		establishConnection();
-//    	}
-    	
-//!@#$webapp
-	establishConnection();
-    	
+
+    	//Establish Connection
+    	if(webapp){
+    		establishConnection();
+    	}else{
+	    	if(checkForDriver()==true){
+	    		establishConnection();
+	    	}
+    	}
     }
 	
     //Methods
@@ -177,58 +170,58 @@ public class DataAccessObject {
     }
 
 //!@#$V.2 webapp establishConnection (Attempting c3p0 integration)
-    public void establishConnection(){
-    	//DataSource's
-    	DataSource ds=null;
-    	DataSource ds_pooled = null;
-    	
-    	//establish
-    	try {    		
-    		//DataSource Factory
-    		InitialContext ic = new InitialContext();
-    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-    	    ds = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    	    
-    	       	    
-    	    //create ds_pooled
-    	    ds_pooled=DataSources.pooledDataSource(ds);
-    	    //get connection (with username and password).
-    	    //con=ds_pooled.getConnection(DBUSERNAME, DBPASSWORD); //not supported with basic datasource
-    	    con=ds_pooled.getConnection();
-    	    
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection. A SQLException");
-			e.printStackTrace();
-		} catch (NamingException e) {
-			System.err.println("I couldn't open the connection. A Naming Exception");
-			e.printStackTrace();
-		}finally{
-			//clean up datasources with .destroy
-//			try {
-//				DataSources.destroy(ds);
-//				DataSources.destroy(ds_pooled);
-//			} catch (SQLException e) {
-//				//empty
-//			}
-		}
-    }    
-    
-//!@#$webapp establishConnection
-//  public void establishConnection(){
-//    	con=null;
-//    	try {
+//    public void establishConnection(){
+//    	//DataSource's
+//    	DataSource ds=null;
+//    	DataSource ds_pooled = null;
+//    	
+//    	//establish
+//    	try {    		
+//    		//DataSource Factory
 //    		InitialContext ic = new InitialContext();
 //    	    Context initialContext = (Context) ic.lookup("java:comp/env");
-//    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-//    	    con = datasource.getConnection();		
+//    	    ds = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+//    	    
+//    	       	    
+//    	    //create ds_pooled
+//    	    ds_pooled=DataSources.pooledDataSource(ds);
+//    	    //get connection (with username and password).
+//    	    //con=ds_pooled.getConnection(DBUSERNAME, DBPASSWORD); //not supported with basic datasource
+//    	    con=ds_pooled.getConnection();
+//    	    
 //		} catch (SQLException e) {
-//			System.err.println("I couldn't open the connection.");
+//			System.err.println("I couldn't open the connection. A SQLException");
 //			e.printStackTrace();
 //		} catch (NamingException e) {
 //			System.err.println("I couldn't open the connection. A Naming Exception");
 //			e.printStackTrace();
-//		}    	
+//		}finally{
+//			//clean up datasources with .destroy
+////			try {
+////				DataSources.destroy(ds);
+////				DataSources.destroy(ds_pooled);
+////			} catch (SQLException e) {
+////				//empty
+////			}
+//		}
 //    }    
+    
+//!@#$webapp establishConnection
+  public void establishConnection(){
+    	con=null;
+    	try {
+    		InitialContext ic = new InitialContext();
+    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+    	    con = datasource.getConnection();
+		} catch (SQLException e) {
+			System.err.println("I couldn't open the connection.");
+			e.printStackTrace();
+		} catch (NamingException e) {
+			System.err.println("I couldn't open the connection. A Naming Exception");
+			e.printStackTrace();
+		}    	
+    }    
     
 //!@#$local establishConnection
 //    public void establishConnection(){
@@ -1310,6 +1303,30 @@ public class DataAccessObject {
     		//x.printStackTrace();
     		result="User";
     	}
+    	
+    	return result;
+    }
+    
+    /**
+     * Gets the db table sizes, and returns them in a string. "Error" if error has occured.
+     * @return String result
+     */
+    public String queryDBSize(){
+    	String result="";
+    	try{
+    		Statement s=con.createStatement();
+    		ResultSet rs=s.executeQuery("SELECT table_name AS 'Tables', round(((data_length + index_length) / 1024), 2) 'Size in KB' FROM information_schema.TABLES WHERE table_schema = 'candidatedatabase' ORDER BY (data_length + index_length) DESC;");
+			rs.first();
+			while(rs.next()){
+				result+=rs.getString("Tables")+"="+rs.getDouble("Size in KB")+" KB |";
+			}
+    	}catch(Exception x){
+    		//x.printStackTrace();
+    		result="Error Querying DB Size";
+    	}
+    	
+    	//test print
+    	System.out.println("DBSize:"+result);
     	
     	return result;
     }

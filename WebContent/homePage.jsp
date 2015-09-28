@@ -78,14 +78,8 @@
 		</td>
 		<td>FAQ's and Resume Link Upload tutorials.</td>
 	</tr>
+ 
 	<tr>
-	<!-- old button 
-		<td>
-			<div class="divBox" id='help'>
-				<a href="http://ubcojdcwest.com/">UBCOJDCW</a>
-			</div>
-		</td>
-		-->
 		<td>
 			<div class="divBox" id='helpWhite'>
 				<a href="http://ubcojdcwest.com/"><img src="${pageContext.request.contextPath}/resource?rid=99" alt='ubcojdcwest.com' /></a>
@@ -93,6 +87,7 @@
 		</td>
 		<td>JDC West UBC Okanagan: Return to the team page.</td>
 	</tr>
+
 </table>
 
 <!-- Test Pages -->
@@ -105,6 +100,11 @@
 
 <!-- Test DB Connections -->
 <div>
+<h3>queryDBSize():</h3>
+<%@ include file='testPages/dbSize.jsp' %>
+</div>
+<div>
+<h3>MYSQL.jsp</h3>
 <%@ include file='mysql.jsp'%>
 </div>
 

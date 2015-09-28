@@ -26,13 +26,13 @@
 
 <p>RedHat's DataSource:</p>
 <%
-Connection result = null;
+Connection result2 = null;
 try {
     InitialContext ic = new InitialContext();
     Context initialContext = (Context) ic.lookup("java:comp/env");
     DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
-    result = datasource.getConnection();
-    Statement stmt = result.createStatement() ;
+    result2 = datasource.getConnection();
+    Statement stmt = result2.createStatement() ;
     String query = "select * from names;" ;
     ResultSet rs = stmt.executeQuery(query) ;
     out.println("<p> Attempting to fetch from rhcloud MySQL 'names' using their DataSource connection.</p><br>");
@@ -50,8 +50,8 @@ try {
 
 <%
 try{
-	DataAccessObject dao=new DataAccessObject();
-	Connection c=dao.getCon();
+	DataAccessObject dao2=new DataAccessObject();
+	Connection c=dao2.getCon();
 	if(c==null){
 		out.println("<p>con was null :( </p>");
 	}else{
@@ -65,7 +65,7 @@ while (rs.next()) {
     out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + "<br />");
 }
 } catch (Exception ex) {
-	out.println("<p>DAO Exception:</p>");
+	out.println("<p>dao2 Exception:</p>");
     out.println("<p>getMessage(): " + ex.getMessage()+"</p>");
     out.println("<p>getLocalizedMessgae(): "+ex.getLocalizedMessage()+"</p>");
 }
