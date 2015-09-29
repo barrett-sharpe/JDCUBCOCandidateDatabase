@@ -13,7 +13,7 @@ DataAccessObject dao=new DataAccessObject();
 String result="";
 result=dao.queryDBSize();
 out.println("<p>Results: "+result+"</p>");
-dao.closeConnection();
+//dao.closeConnection();
 %>
 </body>
 </html>

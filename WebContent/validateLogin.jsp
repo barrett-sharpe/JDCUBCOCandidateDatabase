@@ -48,32 +48,44 @@
 	%>
 	
 	
-	<!-- NEW DAO-based Validation -->
+	<!-- DAO-based Validation -->
 	<%
+	//Variables
 	DataAccessObject access=new DataAccessObject();
-	boolean isCompany=access.getIsCompany(usr);
-	boolean valid;
-	Map<String, Object> c=access.getUser(usr);
+	Map<String, Object> c=null;
 	String id="";
-	if(isCompany){
-		valid=access.validateCompany(usr, pswd);
-		//if Company is valid, get coid
-		if(valid){
-			id=c.get("coid").toString(); 
+	boolean isCompany=false;
+	boolean valid=false;
+	boolean exists=false;
+	
+	//Check if user exists (candidate||company)
+	if((access.userInCandidateDB(usr)||(access.userInCompanyDB(usr)))){
+		//username exists, get User
+		c=access.getUser(usr);
+		//determine user isCompany
+		isCompany=access.getIsCompany(usr);
+		
+		//check valididty
+		if(isCompany){
+			valid=access.validateCompany(usr, pswd);
+			//if Company username/password is valid, get coid
+			if(valid){
+				id=c.get("coid").toString(); 
+			}
+		}else{
+			valid=access.validateCandidate(usr, pswd);
+			//if Candidate username/password is valid, get cid number
+			if(valid){
+				id=c.get("cid").toString();
+			}
 		}
 	}else{
-		valid=access.validateCandidate(usr, pswd);
-		//if Candidate is valid, get cid number
-		if(valid){
-			id=c.get("cid").toString();
-		}
+		//username given not either candidate or company
+		valid=false;
 	}
 	
-	
-	
-	
+	//If valid Login
 	//System.out.println("ID: "+valid+"."); //TEST PRINT
-	
 	if(valid){
 		//Successful Login by user
 		session.setAttribute("isCompany", String.valueOf(isCompany)); //isCompany string
@@ -88,11 +100,6 @@
 	}
 	
 	%>
-
-	
-
-		
-	
 	
 </body>
 </html>

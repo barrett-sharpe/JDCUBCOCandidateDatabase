@@ -101,11 +101,11 @@
 <!-- Test DB Connections -->
 <div>
 <h3>queryDBSize():</h3>
-<%@ include file='testPages/dbSize.jsp' %>
+@ include file='testPages/dbSize.jsp' %>
 </div>
 <div>
 <h3>MYSQL.jsp</h3>
-<%@ include file='mysql.jsp'%>
+@ include file='mysql.jsp'%>
 </div>
 
 <!-- Copyright -->
