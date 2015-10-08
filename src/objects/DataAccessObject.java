@@ -44,29 +44,29 @@ public class DataAccessObject {
     static String CANDIDATE = "candidate";
     static String COMPANY = "company";
     static String RESOURCES = "resources";
+    static Integer MAX_CONNECTION_ATTEMPTS=3;
 	
     //!@#$BOTH
-    static Boolean webapp = false;
-    
+    static Boolean webapp = true;
     
 //	//!@#$local
 //	//_________________LocalHost________________________________
-	//
-    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
-    private static String DRIVER = "com.mysql.jdbc.Driver";
-    private static String DBUSERNAME = "iamroot";
-    private static String DBPASSWORD = "iamroot";
+//	//
+//    private static String URL = "jdbc:mysql://localhost:3306/jdcdb";
+//    private static String DRIVER = "com.mysql.jdbc.Driver";
+//    private static String DBUSERNAME = "iamroot";
+//    private static String DBPASSWORD = "iamroot";
     
 
 //	//!@#$webapp
 //    //_______________OpenShift PMA ________________
-//    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
-//    private static String DBPASSWORD = "Y1TxvCHy--cN";
-//    //private static String DBUSERNAME = "user";
-//    //private static String DBPASSWORD = "user";
-//    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
-//    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
-//    private static String DRIVER = "com.mysql.jdbc.Driver";
+    private static String DBUSERNAME = "adminSjSmTnT"; //!@#Note: This is admin. Change user before launch
+    private static String DBPASSWORD = "Y1TxvCHy--cN";
+    //private static String DBUSERNAME = "user";
+    //private static String DBPASSWORD = "user";
+    ////private static String URL = "mysql://"+DBUSERNAME+":"+DBPASSWORD+"@127.6.67.130:3306/candidatedatabase";
+    private static String URL = "jdbc:mysql://127.0.0.1:3306/candidatedatabase";
+    private static String DRIVER = "com.mysql.jdbc.Driver";
     
     /*
      * INSTRUCTIONS:
@@ -138,7 +138,8 @@ public class DataAccessObject {
 
     	//Establish Connection
     	if(webapp){
-    		establishConnection();
+    		//establishConnection(); //!@#test
+    		establishConnection2();
     	}else{
 	    	if(checkForDriver()==true){
 	    		establishConnection();
@@ -205,9 +206,32 @@ public class DataAccessObject {
 ////			}
 //		}
 //    }    
+
+    
+//!@#$test establishConnection2()
+    public void establishConnection2(){   	
+    	loop:
+    	for(int i=0; i<MAX_CONNECTION_ATTEMPTS; i++){
+    		con=null;
+	    	try {
+	    		InitialContext ic = new InitialContext();
+	    	    Context initialContext = (Context) ic.lookup("java:comp/env");
+	    	    DataSource datasource = (DataSource) initialContext.lookup("jdbc/MySQLDS");
+	    	    con = datasource.getConnection();
+	    	    if(con!=null){
+	    	    	System.out.println("Attempt "+i+": Connection Established.");
+	    	    	break loop;
+	    	    }
+			} catch (Exception e) {
+				System.err.println("Attempt "+i+": Exception Failure.");
+			}
+    	}//for
+    }//method
     
 //!@#$webapp establishConnection
-//  public void establishConnection(){
+  public void establishConnection(){
+	  establishConnection2();
+	  
 //    	con=null;
 //    	try {
 //    		InitialContext ic = new InitialContext();
@@ -221,18 +245,18 @@ public class DataAccessObject {
 //			System.err.println("I couldn't open the connection. A Naming Exception");
 //			e.printStackTrace();
 //		}    	
-//    }    
+    }    
     
 //!@#$local establishConnection
-    public void establishConnection(){
-    	con=null;
-    	try {
-			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
-		} catch (SQLException e) {
-			System.err.println("I couldn't open the connection.");
-			e.printStackTrace();
-		}
-    }
+//    public void establishConnection(){
+//    	con=null;
+//    	try {
+//			con = DriverManager.getConnection(URL, DBUSERNAME, DBPASSWORD);
+//		} catch (SQLException e) {
+//			System.err.println("I couldn't open the connection.");
+//			e.printStackTrace();
+//		}
+//    }
 
     
     /**
@@ -1747,7 +1771,11 @@ public class DataAccessObject {
 		return result;
     }//method
 	
+
 	
+	RHC COMMANDS:
+	rhc app show candidatedatabase  --gears quota
+	rhc app-tidy candidatedatabase
 	
 
 */
