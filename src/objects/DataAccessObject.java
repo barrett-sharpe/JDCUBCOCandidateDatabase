@@ -138,8 +138,8 @@ public class DataAccessObject {
 
     	//Establish Connection
     	if(webapp){
-    		//establishConnection(); //!@#test
-    		establishConnection2();
+    		establishConnection();
+    		//establishConnection2();
     	}else{
 	    	if(checkForDriver()==true){
 	    		establishConnection();
@@ -208,7 +208,7 @@ public class DataAccessObject {
 //    }    
 
     
-//!@#$test establishConnection2()
+//!@#$test establishConnection2() (DONT WORRY ABOUT THIS ONE FOR NOW)
     public void establishConnection2(){   	
     	loop:
     	for(int i=0; i<MAX_CONNECTION_ATTEMPTS; i++){
@@ -1259,11 +1259,10 @@ public class DataAccessObject {
      * @return
      */
     public Map<String,Object> getUser(String username){
-    	boolean isComp;
     	if(userInCandidateDB(username)){
-    		isComp=false;
+    		isCompany=false;
     	}else if(userInCompanyDB(username)){
-    		isComp=true;
+    		isCompany=true;
     	}else{
     		return null;
     	}
@@ -1272,12 +1271,12 @@ public class DataAccessObject {
 			PreparedStatement ps=con.prepareStatement("SELECT "+(isCompany? "coid" : "cid")+" FROM "+(isCompany? CODB : CANDB)+" WHERE username='"+username+"';");
 			ResultSet rs=ps.executeQuery();
 			rs.first();
-			userID=rs.getInt((isComp? "coid":"cid"));
+			userID=rs.getInt((isCompany? "coid":"cid"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     	if(userID!=0){
-    		if(isComp){
+    		if(isCompany){
     			return getCompany(userID);
     		}else{
     			return getCandidate(userID);

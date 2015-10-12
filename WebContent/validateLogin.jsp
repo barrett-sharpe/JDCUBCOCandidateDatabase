@@ -60,8 +60,10 @@
 	
 	//Check if user exists (candidate||company)
 	if((access.userInCandidateDB(usr)||(access.userInCompanyDB(usr)))){
+		
 		//username exists, get User
 		c=access.getUser(usr);
+		
 		//determine user isCompany
 		isCompany=access.getIsCompany(usr);
 		
