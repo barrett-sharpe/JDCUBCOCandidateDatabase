@@ -84,6 +84,18 @@ public class Search {
 	}
 	
 	/**
+	 * Closes the search connection
+	 */
+	public void close(){
+		try{
+			con.close();
+		}catch(Exception e){
+			
+		}
+	}
+	
+	
+	/**
 	 * Validates and sanitizes the input to the search method. Returns a boolean, indicating whether or not it can proceded with given inputs.
 	 * @return boolean
 	 */
@@ -724,6 +736,7 @@ public class Search {
 	public String getFinalQuery(){
 		return finalQuery;
 	}
+	
 	
 }//class
 
